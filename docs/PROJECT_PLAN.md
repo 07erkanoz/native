@@ -2143,5 +2143,345 @@ src/
 
 ---
 
+## 10. Çoklu Dil Desteği (i18n)
+
+### 10.1 Desteklenen Diller
+
+| Kod | Dil | Durum |
+|-----|-----|-------|
+| `tr` | Türkçe | Varsayılan |
+| `en` | English | Desteklenir |
+| `de` | Deutsch | Desteklenir |
+| `fr` | Français | Desteklenir |
+| `es` | Español | Desteklenir |
+| `ar` | العربية | Desteklenir (RTL) |
+| `ru` | Русский | Desteklenir |
+
+### 10.2 Kullanılacak Kütüphane
+
+```bash
+npm install i18next react-i18next react-native-localize
+```
+
+### 10.3 Klasör Yapısı
+
+```
+src/
+├── locales/
+│   ├── index.ts              # i18n konfigürasyonu
+│   ├── tr/
+│   │   ├── common.json       # Ortak metinler
+│   │   ├── contacts.json     # Rehber metinleri
+│   │   ├── calls.json        # Arama metinleri
+│   │   ├── calendar.json     # Takvim metinleri
+│   │   ├── notes.json        # Not metinleri
+│   │   ├── settings.json     # Ayar metinleri
+│   │   └── errors.json       # Hata mesajları
+│   ├── en/
+│   │   ├── common.json
+│   │   ├── contacts.json
+│   │   └── ...
+│   └── de/
+│       └── ...
+```
+
+### 10.4 JSON Dil Dosyası Örneği
+
+```json
+// locales/tr/common.json
+{
+  "app": {
+    "name": "CallHub",
+    "tagline": "Tüm iletişimin tek yeri"
+  },
+  "tabs": {
+    "favorites": "Favoriler",
+    "calls": "Aramalar",
+    "contacts": "Rehber",
+    "calendar": "Takvim",
+    "settings": "Ayarlar"
+  },
+  "actions": {
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "add": "Ekle",
+    "search": "Ara",
+    "confirm": "Onayla",
+    "back": "Geri",
+    "next": "İleri",
+    "done": "Tamam",
+    "retry": "Tekrar Dene"
+  },
+  "messages": {
+    "loading": "Yükleniyor...",
+    "noResults": "Sonuç bulunamadı",
+    "error": "Bir hata oluştu",
+    "success": "İşlem başarılı",
+    "confirmDelete": "Silmek istediğinize emin misiniz?"
+  },
+  "time": {
+    "now": "Şimdi",
+    "today": "Bugün",
+    "yesterday": "Dün",
+    "tomorrow": "Yarın",
+    "justNow": "Az önce",
+    "minutesAgo": "{{count}} dakika önce",
+    "hoursAgo": "{{count}} saat önce",
+    "daysAgo": "{{count}} gün önce"
+  }
+}
+
+// locales/tr/contacts.json
+{
+  "title": "Rehber",
+  "searchPlaceholder": "{{count}} kişi içinde ara...",
+  "addContact": "Kişi Ekle",
+  "editContact": "Kişiyi Düzenle",
+  "deleteContact": "Kişiyi Sil",
+  "favorites": "Favoriler",
+  "frequentContacts": "Sık İletişim Kurulanlar",
+  "allContacts": "Tüm Kişiler",
+  "noContacts": "Henüz kişi eklenmemiş",
+  "fields": {
+    "firstName": "Ad",
+    "lastName": "Soyad",
+    "phone": "Telefon",
+    "email": "E-posta",
+    "company": "Şirket",
+    "address": "Adres",
+    "birthday": "Doğum Günü",
+    "notes": "Notlar"
+  },
+  "labels": {
+    "mobile": "Cep",
+    "home": "Ev",
+    "work": "İş",
+    "other": "Diğer"
+  },
+  "actions": {
+    "call": "Ara",
+    "message": "Mesaj",
+    "video": "Görüntülü",
+    "addToFavorites": "Favorilere Ekle",
+    "removeFromFavorites": "Favorilerden Kaldır",
+    "block": "Engelle",
+    "share": "Paylaş"
+  }
+}
+
+// locales/tr/calls.json
+{
+  "title": "Aramalar",
+  "history": "Çağrı Geçmişi",
+  "dialer": "Tuş Takımı",
+  "types": {
+    "incoming": "Gelen",
+    "outgoing": "Giden",
+    "missed": "Cevapsız",
+    "rejected": "Reddedilen",
+    "blocked": "Engellenen"
+  },
+  "categories": {
+    "voice": "Sesli",
+    "video": "Görüntülü"
+  },
+  "duration": {
+    "seconds": "{{count}} sn",
+    "minutes": "{{count}} dk",
+    "hours": "{{count}} sa"
+  },
+  "inCall": {
+    "calling": "Aranıyor...",
+    "ringing": "Çalıyor...",
+    "connected": "Bağlandı",
+    "onHold": "Beklemede",
+    "ended": "Arama Sonlandı"
+  },
+  "actions": {
+    "answer": "Cevapla",
+    "reject": "Reddet",
+    "endCall": "Bitir",
+    "mute": "Sessiz",
+    "unmute": "Sesi Aç",
+    "speaker": "Hoparlör",
+    "keypad": "Tuş Takımı",
+    "hold": "Beklet",
+    "addCall": "Arama Ekle",
+    "merge": "Birleştir",
+    "swap": "Değiştir"
+  },
+  "floating": {
+    "minimize": "Küçült",
+    "maximize": "Büyüt"
+  }
+}
+
+// locales/tr/settings.json
+{
+  "title": "Ayarlar",
+  "sections": {
+    "account": "Hesap",
+    "appearance": "Görünüm",
+    "calls": "Aramalar",
+    "contacts": "Rehber",
+    "calendar": "Takvim",
+    "notifications": "Bildirimler",
+    "privacy": "Gizlilik",
+    "backup": "Yedekleme",
+    "about": "Hakkında"
+  },
+  "appearance": {
+    "theme": "Tema",
+    "darkMode": "Karanlık Mod",
+    "lightMode": "Aydınlık Mod",
+    "systemTheme": "Sistem Temasını Kullan",
+    "customTheme": "Özel Tema",
+    "themeStore": "Tema Mağazası",
+    "fontSize": "Yazı Boyutu",
+    "language": "Dil"
+  },
+  "language": {
+    "title": "Dil Seçimi",
+    "systemLanguage": "Sistem Dili",
+    "selectLanguage": "Dil Seçin"
+  }
+}
+```
+
+### 10.5 i18n Konfigürasyonu
+
+```typescript
+// src/locales/index.ts
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import * as RNLocalize from 'react-native-localize';
+
+// Dil dosyaları
+import trCommon from './tr/common.json';
+import trContacts from './tr/contacts.json';
+import trCalls from './tr/calls.json';
+import trCalendar from './tr/calendar.json';
+import trSettings from './tr/settings.json';
+
+import enCommon from './en/common.json';
+import enContacts from './en/contacts.json';
+import enCalls from './en/calls.json';
+import enCalendar from './en/calendar.json';
+import enSettings from './en/settings.json';
+
+// Kaynak tanımları
+const resources = {
+  tr: {
+    common: trCommon,
+    contacts: trContacts,
+    calls: trCalls,
+    calendar: trCalendar,
+    settings: trSettings,
+  },
+  en: {
+    common: enCommon,
+    contacts: enContacts,
+    calls: enCalls,
+    calendar: enCalendar,
+    settings: enSettings,
+  },
+};
+
+// Cihaz dilini al
+const getDeviceLanguage = (): string => {
+  const locales = RNLocalize.getLocales();
+  const deviceLanguage = locales[0]?.languageCode || 'tr';
+  return Object.keys(resources).includes(deviceLanguage) ? deviceLanguage : 'tr';
+};
+
+i18n
+  .use(initReactI18next)
+  .init({
+    resources,
+    lng: getDeviceLanguage(),
+    fallbackLng: 'tr',
+    defaultNS: 'common',
+    ns: ['common', 'contacts', 'calls', 'calendar', 'settings'],
+    interpolation: {
+      escapeValue: false,
+    },
+    react: {
+      useSuspense: false,
+    },
+  });
+
+export default i18n;
+
+// Dil değiştirme fonksiyonu
+export const changeLanguage = async (languageCode: string) => {
+  await i18n.changeLanguage(languageCode);
+  // AsyncStorage'a kaydet
+  // RNRestart.Restart(); // RTL değişikliği için restart gerekebilir
+};
+
+// Desteklenen diller listesi
+export const supportedLanguages = [
+  { code: 'tr', name: 'Türkçe', nativeName: 'Türkçe', rtl: false },
+  { code: 'en', name: 'English', nativeName: 'English', rtl: false },
+  { code: 'de', name: 'German', nativeName: 'Deutsch', rtl: false },
+  { code: 'fr', name: 'French', nativeName: 'Français', rtl: false },
+  { code: 'es', name: 'Spanish', nativeName: 'Español', rtl: false },
+  { code: 'ar', name: 'Arabic', nativeName: 'العربية', rtl: true },
+  { code: 'ru', name: 'Russian', nativeName: 'Русский', rtl: false },
+];
+```
+
+### 10.6 Kullanım Örneği
+
+```tsx
+import React from 'react';
+import { View, Text } from 'react-native';
+import { useTranslation } from 'react-i18next';
+
+const ContactListScreen = () => {
+  const { t } = useTranslation(['contacts', 'common']);
+  const contactCount = 1979;
+
+  return (
+    <View>
+      <Text>{t('contacts:title')}</Text>
+      <Text>{t('contacts:searchPlaceholder', { count: contactCount })}</Text>
+      <Text>{t('common:actions.save')}</Text>
+    </View>
+  );
+};
+```
+
+### 10.7 Yeni Dil Ekleme Rehberi
+
+1. `src/locales/` altında yeni dil klasörü oluştur (örn: `it/` İtalyanca için)
+2. Tüm JSON dosyalarını kopyala ve çevir
+3. `src/locales/index.ts` dosyasına import ekle
+4. `resources` objesine yeni dili ekle
+5. `supportedLanguages` listesine ekle
+
+```typescript
+// Yeni dil ekleme örneği
+import itCommon from './it/common.json';
+// ...
+
+const resources = {
+  // ...mevcut diller
+  it: {
+    common: itCommon,
+    // ...
+  },
+};
+
+export const supportedLanguages = [
+  // ...mevcut diller
+  { code: 'it', name: 'Italian', nativeName: 'Italiano', rtl: false },
+];
+```
+
+---
+
 *Son Güncelleme: Ocak 2026*
-*Versiyon: 2.0*
+*Versiyon: 2.1*
