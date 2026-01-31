@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_calls_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/widget_background"
+    android:padding="12dp">
+
+    <!-- Başlık -->
+    <LinearLayout
+        android:id="@+id/widget_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:id="@+id/widget_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="📞 LifeCall"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#1E1E1E" />
+
+        <ImageButton
+            android:id="@+id/widget_dial"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_call"
+            android:contentDescription="Ara"
+            android:tint="#6750A4" />
+
+        <ImageButton
+            android:id="@+id/widget_refresh"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="4dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_popup_sync"
+            android:contentDescription="Yenile"
+            android:tint="#6750A4" />
+    </LinearLayout>
+
+    <!-- Favoriler Bölümü -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Favoriler"
+        android:textSize="12sp"
+        android:textColor="#666666"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:id="@+id/favorite_1"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:gravity="center"
+            android:text="A"
+            android:textSize="20sp"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/widget_avatar_background"
+            android:layout_margin="4dp" />
+
+        <TextView
+            android:id="@+id/favorite_2"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:gravity="center"
+            android:text="B"
+            android:textSize="20sp"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/widget_avatar_background"
+            android:layout_margin="4dp" />
+
+        <TextView
+            android:id="@+id/favorite_3"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:gravity="center"
+            android:text="C"
+            android:textSize="20sp"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/widget_avatar_background"
+            android:layout_margin="4dp" />
+
+        <TextView
+            android:id="@+id/favorite_4"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:gravity="center"
+            android:text="D"
+            android:textSize="20sp"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/widget_avatar_background"
+            android:layout_margin="4dp" />
+    </LinearLayout>
+
+    <!-- Ayırıcı -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E0E0E0" />
+
+    <!-- Son Aramalar Bölümü -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Son Aramalar"
+        android:textSize="12sp"
+        android:textColor="#666666"
+        android:paddingTop="8dp"
+        android:paddingBottom="4dp" />
+
+    <!-- Son Arama 1 -->
+    <LinearLayout
+        android:id="@+id/call_1_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="6dp"
+        android:background="?android:attr/selectableItemBackground">
+
+        <ImageView
+            android:id="@+id/call_1_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@android:drawable/sym_call_outgoing"
+            android:tint="#666666" />
+
+        <TextView
+            android:id="@+id/call_1_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:text="Kişi Adı"
+            android:textSize="14sp"
+            android:textColor="#1E1E1E"
+            android:maxLines="1"
+            android:ellipsize="end" />
+
+        <TextView
+            android:id="@+id/call_1_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12:30"
+            android:textSize="12sp"
+            android:textColor="#666666" />
+    </LinearLayout>
+
+    <!-- Son Arama 2 -->
+    <LinearLayout
+        android:id="@+id/call_2_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="6dp"
+        android:background="?android:attr/selectableItemBackground">
+
+        <ImageView
+            android:id="@+id/call_2_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@android:drawable/sym_call_incoming"
+            android:tint="#666666" />
+
+        <TextView
+            android:id="@+id/call_2_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:text="Kişi Adı"
+            android:textSize="14sp"
+            android:textColor="#1E1E1E"
+            android:maxLines="1"
+            android:ellipsize="end" />
+
+        <TextView
+            android:id="@+id/call_2_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="11:45"
+            android:textSize="12sp"
+            android:textColor="#666666" />
+    </LinearLayout>
+
+    <!-- Son Arama 3 -->
+    <LinearLayout
+        android:id="@+id/call_3_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="6dp"
+        android:background="?android:attr/selectableItemBackground">
+
+        <ImageView
+            android:id="@+id/call_3_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@android:drawable/sym_call_missed"
+            android:tint="#F44336" />
+
+        <TextView
+            android:id="@+id/call_3_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:text="Kişi Adı"
+            android:textSize="14sp"
+            android:textColor="#1E1E1E"
+            android:maxLines="1"
+            android:ellipsize="end" />
+
+        <TextView
+            android:id="@+id/call_3_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dün"
+            android:textSize="12sp"
+            android:textColor="#666666" />
+    </LinearLayout>
+
+    <!-- Son Arama 4 -->
+    <LinearLayout
+        android:id="@+id/call_4_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="6dp"
+        android:background="?android:attr/selectableItemBackground">
+
+        <ImageView
+            android:id="@+id/call_4_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@android:drawable/sym_call_outgoing"
+            android:tint="#666666" />
+
+        <TextView
+            android:id="@+id/call_4_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:text="Kişi Adı"
+            android:textSize="14sp"
+            android:textColor="#1E1E1E"
+            android:maxLines="1"
+            android:ellipsize="end" />
+
+        <TextView
+            android:id="@+id/call_4_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="28.01"
+            android:textSize="12sp"
+            android:textColor="#666666" />
+    </LinearLayout>
+
+</LinearLayout>

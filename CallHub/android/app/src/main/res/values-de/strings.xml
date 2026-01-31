@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Name -->
+    <string name="app_name">LifeCall</string>
+    <string name="phone_account_name">LifeCall</string>
+    <string name="phone_account_description">LifeCall Telefonkonto</string>
+
+    <!-- Benachrichtigungskanäle -->
+    <string name="notification_channel_calls">Anrufe</string>
+    <string name="notification_channel_calls_desc">Eingehende und ausgehende Anrufe</string>
+    <string name="notification_channel_missed">Verpasste Anrufe</string>
+    <string name="notification_channel_missed_desc">Benachrichtigungen über verpasste Anrufe</string>
+
+    <!-- Eingehender Anruf -->
+    <string name="incoming_call">Eingehender Anruf</string>
+    <string name="outgoing_call">Anrufen</string>
+    <string name="answer">Annehmen</string>
+    <string name="decline">Ablehnen</string>
+    <string name="end_call">Anruf beenden</string>
+    <string name="unknown_caller">Unbekannter Anrufer</string>
+    <string name="private_number">Private Nummer</string>
+
+    <!-- Anrufaktionen -->
+    <string name="mute">Stumm</string>
+    <string name="speaker">Lautsprecher</string>
+    <string name="keypad">Tastatur</string>
+    <string name="hold">Halten</string>
+    <string name="add_call">Anruf hinzufügen</string>
+
+    <!-- Berechtigungsmeldungen -->
+    <string name="permission_phone_title">Telefonberechtigung</string>
+    <string name="permission_phone_message">Telefonberechtigung ist erforderlich, um Anrufe zu tätigen.</string>
+    <string name="permission_contacts_title">Kontaktberechtigung</string>
+    <string name="permission_contacts_message">Kontaktberechtigung ist erforderlich, um Ihre Kontakte anzuzeigen.</string>
+    <string name="permission_overlay_title">Über anderen Apps anzeigen</string>
+    <string name="permission_overlay_message">Diese Berechtigung ist für die Vollbildanzeige eingehender Anrufe erforderlich.</string>
+    <string name="permission_required">Berechtigung erforderlich</string>
+    <string name="permission_go_to_settings">Zu Einstellungen</string>
+    <string name="permission_cancel">Abbrechen</string>
+
+    <!-- Standard-App-Meldungen -->
+    <string name="default_dialer_title">Als Standard-Telefon-App festlegen</string>
+    <string name="default_dialer_message">Legen Sie LifeCall als Standard-Telefon-App fest, um alle Anrufe zu verwalten.</string>
+    <string name="default_dialer_set">Als Standard festlegen</string>
+    <string name="default_dialer_later">Später</string>
+
+    <!-- Allgemein -->
+    <string name="ok">OK</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+    <string name="error">Fehler</string>
+    <string name="success">Erfolg</string>
+</resources>

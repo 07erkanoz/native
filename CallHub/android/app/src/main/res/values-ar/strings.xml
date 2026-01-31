@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- اسم التطبيق -->
+    <string name="app_name">LifeCall</string>
+    <string name="phone_account_name">LifeCall</string>
+    <string name="phone_account_description">حساب هاتف LifeCall</string>
+
+    <!-- قنوات الإشعارات -->
+    <string name="notification_channel_calls">المكالمات</string>
+    <string name="notification_channel_calls_desc">المكالمات الواردة والصادرة</string>
+    <string name="notification_channel_missed">المكالمات الفائتة</string>
+    <string name="notification_channel_missed_desc">إشعارات المكالمات الفائتة</string>
+
+    <!-- شاشة المكالمة الواردة -->
+    <string name="incoming_call">مكالمة واردة</string>
+    <string name="outgoing_call">جاري الاتصال</string>
+    <string name="answer">رد</string>
+    <string name="decline">رفض</string>
+    <string name="end_call">إنهاء المكالمة</string>
+    <string name="unknown_caller">متصل غير معروف</string>
+    <string name="private_number">رقم خاص</string>
+
+    <!-- إجراءات المكالمة -->
+    <string name="mute">كتم الصوت</string>
+    <string name="speaker">مكبر الصوت</string>
+    <string name="keypad">لوحة المفاتيح</string>
+    <string name="hold">انتظار</string>
+    <string name="add_call">إضافة مكالمة</string>
+
+    <!-- رسائل الأذونات -->
+    <string name="permission_phone_title">إذن الهاتف</string>
+    <string name="permission_phone_message">إذن الهاتف مطلوب لإجراء المكالمات.</string>
+    <string name="permission_contacts_title">إذن جهات الاتصال</string>
+    <string name="permission_contacts_message">إذن جهات الاتصال مطلوب لعرض جهات اتصالك.</string>
+    <string name="permission_overlay_title">العرض فوق التطبيقات الأخرى</string>
+    <string name="permission_overlay_message">هذا الإذن مطلوب لعرض المكالمات الواردة بملء الشاشة.</string>
+    <string name="permission_required">الإذن مطلوب</string>
+    <string name="permission_go_to_settings">الذهاب للإعدادات</string>
+    <string name="permission_cancel">إلغاء</string>
+
+    <!-- رسائل التطبيق الافتراضي -->
+    <string name="default_dialer_title">تعيين كتطبيق هاتف افتراضي</string>
+    <string name="default_dialer_message">عيّن LifeCall كتطبيق هاتف افتراضي لإدارة جميع المكالمات.</string>
+    <string name="default_dialer_set">تعيين كافتراضي</string>
+    <string name="default_dialer_later">لاحقاً</string>
+
+    <!-- عام -->
+    <string name="ok">موافق</string>
+    <string name="cancel">إلغاء</string>
+    <string name="yes">نعم</string>
+    <string name="no">لا</string>
+    <string name="error">خطأ</string>
+    <string name="success">نجاح</string>
+</resources>

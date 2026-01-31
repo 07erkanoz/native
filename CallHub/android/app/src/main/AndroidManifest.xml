@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- ========================================== -->
+    <!-- TEMEL İZİNLER - Basic Permissions          -->
+    <!-- ========================================== -->
+
+    <!-- İnternet erişimi -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- Vibrasyon -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <!-- ========================================== -->
+    <!-- KİŞİLER İZİNLERİ - Contacts Permissions    -->
+    <!-- ========================================== -->
+
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+
+    <!-- ========================================== -->
+    <!-- TELEFON İZİNLERİ - Phone Permissions       -->
+    <!-- ========================================== -->
+
+    <!-- Telefon durumu okuma -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
+
+    <!-- Arama yapma -->
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
+    <!-- Arama kaydı -->
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <uses-permission android:name="android.permission.WRITE_CALL_LOG" />
+
+    <!-- Arama yanıtlama (API 26+) -->
+    <uses-permission android:name="android.permission.ANSWER_PHONE_CALLS" />
+
+    <!-- ========================================== -->
+    <!-- FULL-SCREEN CALLER UI İZİNLERİ             -->
+    <!-- ========================================== -->
+
+    <!-- Overlay izni - Tam ekran arama UI için -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <!-- Full-screen intent izni - Kilit ekranında tam ekran bildirim -->
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+
+    <!-- Foreground service izni -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_PHONE_CALL" />
+
+    <!-- Kilit ekranı devre dışı bırakma -->
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!-- ========================================== -->
+    <!-- TAKVİM İZİNLERİ - Calendar Permissions     -->
+    <!-- ========================================== -->
+
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+
+    <!-- ========================================== -->
+    <!-- DEPOLAMA İZİNLERİ - Storage Permissions    -->
+    <!-- ========================================== -->
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+
+    <!-- Android 13+ için medya izinleri -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+
+    <!-- ========================================== -->
+    <!-- BİLDİRİM İZİNLERİ - Notification Perms     -->
+    <!-- ========================================== -->
+
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <!-- ========================================== -->
+    <!-- ALARM İZİNLERİ - Alarm Permissions         -->
+    <!-- ========================================== -->
+
+    <!-- Exact alarm izni (Android 12+) -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+
+    <!-- ========================================== -->
+    <!-- KAMERA & MİKROFON - Camera & Microphone    -->
+    <!-- ========================================== -->
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <!-- ========================================== -->
+    <!-- VARSAYILAN UYGULAMA KAYDI                  -->
+    <!-- Default App Registration                   -->
+    <!-- ========================================== -->
+
+    <!-- Telecom Manager için -->
+    <uses-permission android:name="android.permission.MANAGE_OWN_CALLS" />
+    <uses-permission android:name="android.permission.BIND_TELECOM_CONNECTION_SERVICE"
+        tools:ignore="ProtectedPermissions" />
+
+    <!-- Telefon özelliği -->
+    <uses-feature android:name="android.hardware.telephony" android:required="false" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
+
+    <application
+        android:name=".MainApplication"
+        android:label="@string/app_name"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:allowBackup="true"
+        android:theme="@style/AppTheme"
+        android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="31">
+
+        <!-- Ana Activity -->
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true"
+            android:showWhenLocked="true"
+            android:turnScreenOn="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- Varsayılan Telefon Uygulaması Intent Filtreleri -->
+            <intent-filter>
+                <action android:name="android.intent.action.DIAL" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.DIAL" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="tel" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="tel" />
+            </intent-filter>
+        </activity>
+
+        <!-- Gelen Arama Full-Screen Activity -->
+        <activity
+            android:name=".IncomingCallActivity"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:excludeFromRecents="true"
+            android:showWhenLocked="true"
+            android:turnScreenOn="true"
+            android:taskAffinity=""
+            android:theme="@style/Theme.IncomingCall" />
+
+        <!-- Phone Account Service - Varsayılan Telefon Uygulaması İçin -->
+        <service
+            android:name=".services.CallConnectionService"
+            android:permission="android.permission.BIND_TELECOM_CONNECTION_SERVICE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.telecom.ConnectionService" />
+            </intent-filter>
+        </service>
+
+        <!-- Incoming Call Service -->
+        <service
+            android:name=".services.IncomingCallService"
+            android:exported="false"
+            android:foregroundServiceType="phoneCall" />
+
+        <!-- InCallService - HD Voice tespiti ve çağrı yönetimi -->
+        <service
+            android:name=".services.LifeCallInCallService"
+            android:permission="android.permission.BIND_INCALL_SERVICE"
+            android:exported="true">
+            <meta-data
+                android:name="android.telecom.IN_CALL_SERVICE_UI"
+                android:value="true" />
+            <meta-data
+                android:name="android.telecom.IN_CALL_SERVICE_RINGING"
+                android:value="true" />
+            <intent-filter>
+                <action android:name="android.telecom.InCallService" />
+            </intent-filter>
+        </service>
+
+        <!-- Boot Receiver - Uygulamayı başlangıçta kaydet -->
+        <receiver
+            android:name=".receivers.BootReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Phone State Receiver - Gelen arama dinleyici -->
+        <receiver
+            android:name=".receivers.PhoneStateReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.PHONE_STATE" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Calendar Reminder Receiver - Takvim hatırlatıcıları -->
+        <receiver
+            android:name=".receivers.CalendarReminderReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.lifecall.CALENDAR_REMINDER" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Calendar Snooze Receiver - Hatırlatıcı erteleme -->
+        <receiver
+            android:name=".receivers.CalendarSnoozeReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.lifecall.SNOOZE_REMINDER" />
+            </intent-filter>
+        </receiver>
+
+        <!-- ========================================== -->
+        <!-- WIDGET'LAR - App Widgets                   -->
+        <!-- ========================================== -->
+
+        <!-- Takvim Widget -->
+        <receiver
+            android:name=".widgets.CalendarWidgetProvider"
+            android:exported="true"
+            android:label="@string/widget_calendar_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.lifecall.widget.CALENDAR_REFRESH" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/calendar_widget_info" />
+        </receiver>
+
+        <!-- Takvim Widget Servis -->
+        <service
+            android:name=".widgets.CalendarWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"
+            android:exported="false" />
+
+        <!-- Aramalar Widget -->
+        <receiver
+            android:name=".widgets.CallsWidgetProvider"
+            android:exported="true"
+            android:label="@string/widget_calls_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.lifecall.widget.CALLS_REFRESH" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/calls_widget_info" />
+        </receiver>
+
+    </application>
+
+</manifest>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Uygulama Adı -->
+    <string name="app_name">LifeCall</string>
+    <string name="phone_account_name">LifeCall</string>
+    <string name="phone_account_description">LifeCall Phone Account</string>
+
+    <!-- Notification Channels -->
+    <string name="notification_channel_calls">Calls</string>
+    <string name="notification_channel_calls_desc">Incoming and outgoing calls</string>
+    <string name="notification_channel_missed">Missed Calls</string>
+    <string name="notification_channel_missed_desc">Missed call notifications</string>
+
+    <!-- Incoming Call Screen -->
+    <string name="incoming_call">Incoming Call</string>
+    <string name="outgoing_call">Calling</string>
+    <string name="answer">Answer</string>
+    <string name="decline">Decline</string>
+    <string name="end_call">End Call</string>
+    <string name="unknown_caller">Unknown Caller</string>
+    <string name="private_number">Private Number</string>
+
+    <!-- Call Actions -->
+    <string name="mute">Mute</string>
+    <string name="speaker">Speaker</string>
+    <string name="keypad">Keypad</string>
+    <string name="hold">Hold</string>
+    <string name="add_call">Add Call</string>
+
+    <!-- Permission Messages -->
+    <string name="permission_phone_title">Phone Permission</string>
+    <string name="permission_phone_message">Phone permission is required to make calls.</string>
+    <string name="permission_contacts_title">Contacts Permission</string>
+    <string name="permission_contacts_message">Contacts permission is required to view your contacts.</string>
+    <string name="permission_overlay_title">Display Over Other Apps</string>
+    <string name="permission_overlay_message">This permission is required for full-screen incoming call display.</string>
+    <string name="permission_required">Permission Required</string>
+    <string name="permission_go_to_settings">Go to Settings</string>
+    <string name="permission_cancel">Cancel</string>
+
+    <!-- Default App Messages -->
+    <string name="default_dialer_title">Set as Default Phone App</string>
+    <string name="default_dialer_message">Set LifeCall as your default phone app to handle all calls.</string>
+    <string name="default_dialer_set">Set as Default</string>
+    <string name="default_dialer_later">Later</string>
+
+    <!-- Common -->
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="error">Error</string>
+    <string name="success">Success</string>
+
+    <!-- Widgets -->
+    <string name="widget_calendar_name">LifeCall Takvim</string>
+    <string name="widget_calendar_description">Bugünün etkinliklerini gösterir</string>
+    <string name="widget_calls_name">LifeCall Aramalar</string>
+    <string name="widget_calls_description">Favoriler ve son aramaları gösterir</string>
+</resources>

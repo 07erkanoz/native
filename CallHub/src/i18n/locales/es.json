@@ -1,0 +1,888 @@
+{
+  "common": {
+    "appName": "LifeCall",
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "add": "Añadir",
+    "search": "Buscar",
+    "searchPlaceholder": "Buscar...",
+    "noResults": "No se encontraron resultados",
+    "confirm": "Confirmar",
+    "yes": "Sí",
+    "no": "No",
+    "ok": "OK",
+    "done": "Hecho",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "close": "Cerrar",
+    "retry": "Reintentar",
+    "refresh": "Actualizar",
+    "settings": "Ajustes",
+    "share": "Compartir",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "select": "Seleccionar",
+    "selectAll": "Seleccionar todo",
+    "deselectAll": "Deseleccionar todo",
+    "apply": "Aplicar",
+    "clear": "Borrar",
+    "today": "Hoy",
+    "yesterday": "Ayer",
+    "tomorrow": "Mañana",
+    "now": "Ahora",
+    "never": "Nunca",
+    "always": "Siempre",
+    "default": "Predeterminado",
+    "custom": "Personalizado",
+    "other": "Otro",
+    "unknown": "Desconocido",
+    "none": "Ninguno",
+    "all": "Todos"
+  },
+  "tabs": {
+    "favorites": "Favoritos",
+    "calls": "Llamadas",
+    "contacts": "Contactos",
+    "calendar": "Calendario",
+    "notes": "Notas",
+    "settings": "Ajustes"
+  },
+  "contacts": {
+    "title": "Contactos",
+    "searchContacts": "Buscar en {{count}} contactos",
+    "newContact": "Nuevo contacto",
+    "editContact": "Editar contacto",
+    "deleteContact": "Eliminar contacto",
+    "deleteConfirm": "¿Está seguro de que desea eliminar este contacto?",
+    "noContacts": "Sin contactos",
+    "addFirstContact": "Añade tu primer contacto",
+    "accounts": "Cuentas",
+    "groups": "Grupos",
+    "favorites": "Favoritos",
+    "allContacts": "Todos los contactos",
+    "recentContacts": "Contactos recientes",
+    "frequentContacts": "Contactos frecuentes",
+
+    "fields": {
+      "name": "Nombre",
+      "firstName": "Nombre",
+      "lastName": "Apellido",
+      "middleName": "Segundo nombre",
+      "prefix": "Prefijo",
+      "suffix": "Sufijo",
+      "nickname": "Apodo",
+      "phoneticName": "Nombre fonético",
+      "phone": "Teléfono",
+      "email": "Correo electrónico",
+      "address": "Dirección",
+      "company": "Empresa",
+      "department": "Departamento",
+      "jobTitle": "Cargo",
+      "birthday": "Cumpleaños",
+      "anniversary": "Aniversario",
+      "website": "Sitio web",
+      "note": "Nota",
+      "ringtone": "Tono de llamada",
+      "photo": "Foto"
+    },
+
+    "phoneLabels": {
+      "mobile": "Móvil",
+      "home": "Casa",
+      "work": "Trabajo",
+      "main": "Principal",
+      "fax_work": "Fax trabajo",
+      "fax_home": "Fax casa",
+      "pager": "Buscapersonas",
+      "other": "Otro",
+      "custom": "Personalizado"
+    },
+
+    "emailLabels": {
+      "personal": "Personal",
+      "work": "Trabajo",
+      "other": "Otro",
+      "custom": "Personalizado"
+    },
+
+    "addressLabels": {
+      "home": "Casa",
+      "work": "Trabajo",
+      "other": "Otro",
+      "custom": "Personalizado"
+    },
+
+    "addressFields": {
+      "street": "Calle",
+      "city": "Ciudad",
+      "state": "Provincia",
+      "postalCode": "Código postal",
+      "country": "País"
+    },
+
+    "relationTypes": {
+      "spouse": "Cónyuge",
+      "child": "Hijo/a",
+      "mother": "Madre",
+      "father": "Padre",
+      "sibling": "Hermano/a",
+      "assistant": "Asistente",
+      "partner": "Pareja",
+      "manager": "Jefe",
+      "other": "Otro",
+      "custom": "Personalizado"
+    },
+
+    "actions": {
+      "call": "Llamar",
+      "sms": "SMS",
+      "video": "Vídeo",
+      "email": "Correo",
+      "whatsappMessage": "Mensaje WhatsApp",
+      "whatsappCall": "Llamada WhatsApp",
+      "addToFavorites": "Añadir a favoritos",
+      "removeFromFavorites": "Quitar de favoritos",
+      "block": "Bloquear",
+      "unblock": "Desbloquear",
+      "share": "Compartir"
+    },
+
+    "photo": {
+      "change": "Cambiar foto",
+      "remove": "Eliminar foto",
+      "takePhoto": "Tomar foto",
+      "chooseFromGallery": "Elegir de la galería",
+      "sources": "Fotos disponibles"
+    },
+
+    "account": {
+      "selectAccount": "Seleccionar cuenta",
+      "google": "Google",
+      "samsung": "Samsung",
+      "phone": "Teléfono",
+      "whatsapp": "WhatsApp",
+      "telegram": "Telegram",
+      "microsoft": "Microsoft"
+    }
+  },
+  "calls": {
+    "title": "Llamadas",
+    "history": "Historial de llamadas",
+    "missed": "Perdida",
+    "incoming": "Entrante",
+    "outgoing": "Saliente",
+    "rejected": "Rechazada",
+    "blocked": "Bloqueada",
+    "all": "Todas",
+    "duration": "Duración",
+    "noCallHistory": "Sin llamadas",
+    "clearHistory": "Borrar historial",
+    "clearHistoryConfirm": "¿Está seguro de que desea borrar todo el historial de llamadas?",
+    "callAgain": "Volver a llamar",
+    "addNote": "Añadir nota",
+    "viewNote": "Ver nota",
+    "filter": "Filtrar llamadas",
+    "speedDial": "Marcación rápida",
+    "voicemail": "Buzón de voz",
+    "details": "Detalles",
+
+    "stats": {
+      "total": "Total",
+      "totalCalls": "Llamadas totales",
+      "totalDuration": "Duración total",
+      "averageDuration": "Duración promedio",
+      "longestCall": "Llamada más larga",
+      "firstCall": "Primera llamada",
+      "lastCall": "Última llamada",
+      "incomingCall": "Llamada entrante",
+      "outgoingCall": "Llamada saliente",
+      "missedCall": "Llamada perdida",
+      "rejectedCall": "Llamada rechazada"
+    },
+
+    "menu": {
+      "callDetail": "Detalles de llamada",
+      "blockNumber": "Bloquear número",
+      "addToContacts": "Añadir a contactos",
+      "copyNumber": "Copiar número",
+      "muteContact": "Silenciar contacto",
+      "deleteCall": "Eliminar llamada"
+    },
+
+    "status": {
+      "dialing": "Marcando...",
+      "ringing": "Llamando...",
+      "connected": "Conectado",
+      "onHold": "En espera",
+      "ended": "Terminada"
+    },
+
+    "actions": {
+      "answer": "Contestar",
+      "decline": "Rechazar",
+      "endCall": "Colgar",
+      "mute": "Silenciar",
+      "unmute": "Activar sonido",
+      "speaker": "Altavoz",
+      "keypad": "Teclado",
+      "addCall": "Añadir llamada",
+      "hold": "Espera",
+      "resume": "Reanudar",
+      "transfer": "Transferir",
+      "note": "Nota"
+    },
+
+    "autoRedial": {
+      "title": "Rellamada automática",
+      "enabled": "Activado",
+      "disabled": "Desactivado",
+      "interval": "Intervalo",
+      "attempts": "Intentos",
+      "onBusy": "Si ocupado",
+      "onNoAnswer": "Si no contesta",
+      "retrying": "Reintentando...",
+      "attempt": "Intento: {{current}}/{{max}}"
+    }
+  },
+  "favorites": {
+    "title": "Favoritos",
+    "noFavorites": "Sin favoritos",
+    "addFavorite": "Añadir favorito",
+    "editFavorites": "Editar favoritos",
+    "frequentContacts": "Contactos frecuentes",
+    "reorder": "Arrastrar para reordenar",
+    "remove": "Toca X para eliminar",
+    "viewMode": "Modo de vista",
+    "gridView": "Cuadrícula",
+    "listView": "Lista"
+  },
+  "settings": {
+    "title": "Ajustes",
+
+    "appearance": {
+      "title": "Apariencia",
+      "theme": "Tema",
+      "themeLight": "Claro",
+      "themeDark": "Oscuro",
+      "themeSystem": "Sistema",
+      "fontSize": "Tamaño de fuente",
+      "language": "Idioma"
+    },
+
+    "contacts": {
+      "title": "Contactos",
+      "displayContacts": "Mostrar contactos",
+      "nameFormat": "Formato del nombre",
+      "sortBy": "Ordenar por",
+      "firstNameFirst": "Nombre primero",
+      "lastNameFirst": "Apellido primero",
+      "formatPhoneNumbers": "Formatear números",
+      "longNames": "Nombres largos",
+      "showAlphabet": "Mostrar alfabeto",
+      "showSeparators": "Mostrar separadores",
+      "defaultAccount": "Cuenta predeterminada",
+      "hideWithoutNumber": "Ocultar contactos sin número"
+    },
+
+    "calls": {
+      "title": "Llamadas",
+      "incomingCall": "Llamada entrante",
+      "outgoingCall": "Llamada saliente",
+      "answerStyle": "Estilo de respuesta",
+      "photoLayout": "Diseño de foto",
+      "fullscreen": "Pantalla completa",
+      "proximityEnabled": "Sensor de proximidad",
+      "vibration": "Vibración",
+      "flashOnCall": "Flash en llamada"
+    },
+
+    "notifications": {
+      "title": "Notificaciones",
+      "missedCall": "Llamada perdida",
+      "sound": "Sonido",
+      "vibrate": "Vibrar",
+      "led": "LED"
+    },
+
+    "privacy": {
+      "title": "Privacidad",
+      "blockedNumbers": "Números bloqueados",
+      "hideCallerId": "Ocultar identificador"
+    },
+
+    "backup": {
+      "title": "Copia de seguridad",
+      "description": "Respaldar sus datos",
+      "autoBackup": "Copia automática",
+      "autoBackupEnabled": "Copia de seguridad automática",
+      "autoBackupDesc": "Copia de seguridad diaria automática",
+      "backupNow": "Hacer copia ahora",
+      "restore": "Restaurar",
+      "lastBackup": "Última copia",
+      "actions": "Acciones",
+      "import": "Importar desde archivo",
+      "backupList": "Copias de seguridad",
+      "noBackups": "Sin copias de seguridad",
+      "backupCreated": "Copia creada",
+      "backupFailed": "Copia fallida",
+      "restoreConfirmTitle": "Restaurar",
+      "restoreConfirmMessage": "¿Está seguro de que desea restaurar esta copia? Los datos actuales se sobrescribirán.",
+      "restoreSuccess": "Datos restaurados correctamente. Por favor reinicie la app.",
+      "restoreFailed": "Restauración fallida",
+      "deleteConfirmTitle": "Eliminar copia",
+      "deleteConfirmMessage": "¿Está seguro de que desea eliminar esta copia de seguridad?",
+      "importSuccess": "Copia importada y restaurada. Por favor reinicie la app.",
+      "importFailed": "Importación fallida",
+      "infoText": "Las copias se almacenan localmente en su dispositivo. Se respaldan ajustes, notas, eventos de calendario y lista de bloqueo."
+    },
+
+    "about": {
+      "title": "Acerca de"
+    },
+
+    "calendar": {
+      "title": "Ajustes del calendario",
+      "sync": "Sincronización",
+      "googleSync": "Sincronizar Google Calendar",
+      "googleSyncDesc": "Sincronizar con Google Calendar",
+      "autoSync": "Sincronización automática",
+      "autoSyncDesc": "Sincronizar cambios automáticamente",
+      "syncInterval": "Intervalo de sincronización",
+      "lastSync": "Última sincronización",
+      "neverSynced": "Nunca sincronizado",
+      "syncNow": "Sincronizar ahora",
+      "importExport": "Importar/Exportar",
+      "importCalendar": "Importar calendario",
+      "exportCalendar": "Exportar calendario",
+      "defaultReminder": "Recordatorio predeterminado",
+      "defaultReminderDesc": "Recordatorio predeterminado para nuevos eventos",
+      "weekStartsOn": "La semana comienza el",
+      "defaultView": "Vista predeterminada",
+      "showWeekNumbers": "Mostrar números de semana",
+      "showDeclinedEvents": "Mostrar eventos rechazados",
+      "defaultCalendar": "Calendario predeterminado",
+      "ringtone": "Tono de recordatorio",
+      "vibration": "Vibración",
+      "notificationSound": "Sonido de notificación"
+    }
+  },
+  "calendar": {
+    "title": "Calendario",
+    "today": "Hoy",
+    "year": "Año",
+    "month": "Mes",
+    "week": "Semana",
+    "day": "Día",
+    "daysAgo": "días",
+    "daysLater": "días después",
+    "agenda": "Agenda",
+    "monthView": "Vista mensual",
+    "weekView": "Vista semanal",
+    "dayView": "Vista diaria",
+    "newEvent": "Nuevo evento",
+    "editEvent": "Editar evento",
+    "deleteEvent": "Eliminar evento",
+    "deleteConfirm": "¿Está seguro de que desea eliminar este evento?",
+    "noEvents": "Sin eventos",
+    "noEventsForDay": "Sin eventos para este día",
+    "tapToAdd": "Toca para añadir",
+    "events": "Eventos",
+    "event": "Evento",
+    "eventTitle": "Título del evento",
+    "allDay": "Todo el día",
+    "startDate": "Fecha de inicio",
+    "endDate": "Fecha de fin",
+    "startTime": "Hora de inicio",
+    "endTime": "Hora de fin",
+    "reminder": "Recordatorio",
+    "reminders": "Recordatorios",
+    "addReminder": "Añadir recordatorio",
+    "repeat": "Repetir",
+    "recurrence": "Recurrencia",
+    "location": "Ubicación",
+    "selectLocation": "Seleccionar ubicación",
+    "openInMaps": "Abrir en Mapas",
+    "description": "Descripción",
+    "notes": "Notas",
+    "attachNote": "Adjuntar nota",
+    "color": "Color",
+    "calendar": "Calendario",
+    "selectCalendar": "Seleccionar calendario",
+    "participants": "Participantes",
+    "addParticipant": "Añadir participante",
+    "organizer": "Organizador",
+    "status": "Estado",
+    "busy": "Ocupado",
+    "free": "Disponible",
+    "tentative": "Provisional",
+    "callReminder": "Recordatorio de llamada",
+    "callReminderDesc": "Recordatorio para llamar a este contacto",
+    "share": "Compartir",
+    "shareEvent": "Compartir evento",
+    "exportEvent": "Exportar evento",
+
+    "reminderOptions": {
+      "none": "Ninguno",
+      "atTime": "A la hora del evento",
+      "5min": "5 minutos antes",
+      "10min": "10 minutos antes",
+      "15min": "15 minutos antes",
+      "30min": "30 minutos antes",
+      "1hour": "1 hora antes",
+      "2hours": "2 horas antes",
+      "1day": "1 día antes",
+      "2days": "2 días antes",
+      "1week": "1 semana antes"
+    },
+
+    "recurrenceOptions": {
+      "none": "No repetir",
+      "daily": "Diario",
+      "weekly": "Semanal",
+      "biweekly": "Quincenal",
+      "monthly": "Mensual",
+      "yearly": "Anual",
+      "custom": "Personalizado"
+    },
+
+    "sync": {
+      "googleSync": "Sincronizar Google Calendar",
+      "syncEnabled": "Sincronización activada",
+      "syncDisabled": "Sincronización desactivada",
+      "lastSync": "Última sincronización",
+      "syncNow": "Sincronizar ahora",
+      "syncing": "Sincronizando...",
+      "syncSuccess": "Sincronización exitosa",
+      "syncError": "Error de sincronización",
+      "connectGoogle": "Conectar cuenta Google",
+      "disconnectGoogle": "Desconectar cuenta Google",
+      "googleConnected": "Cuenta Google conectada",
+      "googleNotConnected": "Cuenta Google no conectada"
+    },
+
+    "import": {
+      "title": "Importar",
+      "importICS": "Importar desde archivo ICS",
+      "importExcel": "Importar desde Excel",
+      "importing": "Importando...",
+      "importSuccess": "{{count}} eventos importados",
+      "importError": "Error de importación",
+      "selectFile": "Seleccionar archivo"
+    },
+
+    "export": {
+      "title": "Exportar",
+      "exportICS": "Exportar como ICS",
+      "exportExcel": "Exportar como Excel",
+      "exportAll": "Exportar todos los eventos",
+      "exportRange": "Exportar rango de fechas",
+      "exporting": "Exportando...",
+      "exportSuccess": "Exportación exitosa",
+      "exportError": "Error de exportación"
+    },
+
+    "weekDays": {
+      "sun": "Dom",
+      "mon": "Lun",
+      "tue": "Mar",
+      "wed": "Mié",
+      "thu": "Jue",
+      "fri": "Vie",
+      "sat": "Sáb"
+    },
+
+    "weekDaysFull": {
+      "sunday": "Domingo",
+      "monday": "Lunes",
+      "tuesday": "Martes",
+      "wednesday": "Miércoles",
+      "thursday": "Jueves",
+      "friday": "Viernes",
+      "saturday": "Sábado"
+    },
+
+    "months": {
+      "january": "Enero",
+      "february": "Febrero",
+      "march": "Marzo",
+      "april": "Abril",
+      "may": "Mayo",
+      "june": "Junio",
+      "july": "Julio",
+      "august": "Agosto",
+      "september": "Septiembre",
+      "october": "Octubre",
+      "november": "Noviembre",
+      "december": "Diciembre"
+    },
+
+    "notifications": {
+      "eventReminder": "Recordatorio de evento",
+      "upcomingEvent": "Evento próximo: {{title}}",
+      "callReminder": "Recordatorio de llamada",
+      "timeToCall": "Hora de llamar a {{name}}"
+    }
+  },
+  "notes": {
+    "title": "Notas",
+    "newNote": "Nueva nota",
+    "editNote": "Editar nota",
+    "deleteNote": "Eliminar nota",
+    "deleteNoteConfirm": "¿Está seguro de que desea eliminar esta nota?",
+    "noNotes": "Sin notas",
+    "createFirstNote": "Crea tu primera nota",
+    "searchNotes": "Buscar notas",
+    "searchPlaceholder": "Buscar en notas...",
+    "noSearchResults": "No se encontraron notas",
+    "tryDifferentSearch": "Intenta con otro término de búsqueda",
+
+    "allNotes": "Todas las notas",
+    "archive": "Archivo",
+    "trash": "Papelera",
+    "pinned": "Fijadas",
+
+    "text": "Texto",
+    "checklist": "Lista",
+    "voice": "Voz",
+    "textNotes": "Notas de texto",
+    "checklists": "Listas de verificación",
+    "voiceNotes": "Notas de voz",
+    "voiceNote": "Nota de voz",
+    "all": "Todas",
+
+    "titlePlaceholder": "Título",
+    "contentPlaceholder": "Empieza a escribir...",
+    "emptyNote": "Nota vacía",
+    "emptyNoteError": "La nota está vacía",
+    "untitled": "Sin título",
+
+    "pin": "Fijar",
+    "unpin": "Desfijar",
+    "archiveAction": "Archivar",
+    "unarchive": "Desarchivar",
+    "moveToTrash": "Mover a papelera",
+    "restore": "Restaurar",
+    "deletePermanently": "Eliminar permanentemente",
+    "deletePermanentlyMessage": "Esta nota se eliminará permanentemente y no se podrá recuperar.",
+
+    "checklistItemPlaceholder": "Elemento de lista",
+    "addChecklistItem": "Añadir elemento",
+    "completed": "completado",
+
+    "voiceRecordingPlaceholder": "Toca para grabar",
+    "startRecording": "Iniciar grabación",
+    "stopRecording": "Detener grabación",
+    "playRecording": "Reproducir grabación",
+    "recording": "Grabando...",
+    "recordAgain": "Grabar de nuevo",
+    "deleteVoiceNote": "Eliminar nota de voz",
+    "deleteVoiceNoteConfirm": "¿Estás seguro de que quieres eliminar esta nota de voz?",
+
+    "linkContact": "Vincular contacto",
+    "unlinkContact": "Desvincular contacto",
+    "selectContacts": "Seleccionar contactos",
+    "linkedContacts": "Contactos vinculados",
+    "linkEvent": "Vincular evento",
+    "unlinkEvent": "Desvincular evento",
+    "selectEvents": "Seleccionar eventos",
+    "linkedEvents": "Eventos vinculados",
+
+    "addReminder": "Añadir recordatorio",
+    "setReminder": "Establecer recordatorio",
+    "reminders": "Recordatorios",
+    "reminderSet": "Recordatorio establecido",
+
+    "addLocation": "Añadir ubicación",
+    "location": "Ubicación",
+    "locationSet": "Ubicación establecida",
+    "viewOnMap": "Ver en el mapa",
+
+    "addTags": "Añadir etiquetas",
+    "selectTags": "Seleccionar etiquetas",
+    "tags": "Etiquetas",
+    "noTags": "Sin etiquetas",
+
+    "selectFolder": "Seleccionar carpeta",
+    "createFolder": "Crear carpeta",
+    "folder": "Carpeta",
+
+    "attachments": "Adjuntos",
+    "addAttachment": "Añadir adjunto",
+
+    "color": "Color",
+    "priority": {
+      "low": "Baja",
+      "normal": "Normal",
+      "high": "Alta",
+      "urgent": "Urgente"
+    },
+
+    "sortByUpdated": "Última modificación",
+    "sortByCreated": "Creación",
+    "sortByTitle": "Título",
+    "sortByPriority": "Prioridad",
+
+    "lastModified": "Última modificación",
+    "created": "Creada",
+
+    "unsavedChanges": "Cambios sin guardar",
+    "unsavedChangesMessage": "Tienes cambios sin guardar. ¿Deseas guardarlos?",
+    "saveError": "No se pudo guardar la nota",
+    "error": "Error",
+
+    "share": "Compartir",
+    "shareNote": "Compartir nota",
+
+    "noteNotFound": "Nota no encontrada",
+    "noteNotFoundMessage": "Esta nota puede haber sido eliminada"
+  },
+  "store": {
+    "themes": "Tienda de temas",
+    "ringtones": "Tienda de tonos",
+    "myPurchases": "Mis compras",
+    "preview": "Vista previa",
+    "buy": "Comprar",
+    "free": "Gratis",
+    "purchased": "Comprado",
+    "activate": "Activar",
+    "download": "Descargar",
+    "downloading": "Descargando..."
+  },
+  "permissions": {
+    "contacts": "Permiso de contactos requerido",
+    "phone": "Permiso de teléfono requerido",
+    "storage": "Permiso de almacenamiento requerido",
+    "camera": "Permiso de cámara requerido",
+    "microphone": "Permiso de micrófono requerido",
+    "calendar": "Permiso de calendario requerido",
+    "notifications": "Permiso de notificaciones requerido",
+    "grantPermission": "Conceder permiso",
+    "openSettings": "Abrir ajustes"
+  },
+  "errors": {
+    "generic": "Ha ocurrido un error",
+    "network": "Error de conexión",
+    "notFound": "No encontrado",
+    "unauthorized": "Acceso no autorizado",
+    "permissionDenied": "Permiso denegado",
+    "tryAgain": "Por favor, inténtelo de nuevo"
+  },
+  "time": {
+    "justNow": "Ahora mismo",
+    "minutesAgo": "Hace {{count}} minutos",
+    "hoursAgo": "Hace {{count}} horas",
+    "daysAgo": "Hace {{count}} días",
+    "weeksAgo": "Hace {{count}} semanas",
+    "monthsAgo": "Hace {{count}} meses",
+    "yearsAgo": "Hace {{count}} años"
+  },
+  "blocking": {
+    "title": "Números bloqueados",
+    "blockedNumbers": "Números bloqueados",
+    "mutedContacts": "Contactos silenciados",
+    "settings": "Ajustes",
+    "noBlockedNumbers": "No hay números bloqueados",
+    "noBlockedNumbersDesc": "Los números que bloquees aparecerán aquí",
+    "noMutedContacts": "No hay contactos silenciados",
+    "noMutedContactsDesc": "Los contactos que silencies aparecerán aquí",
+    "addBlockedNumber": "Bloquear número",
+    "enterPhoneNumber": "Introducir número de teléfono",
+    "phoneNumberPlaceholder": "ej: +34 91 123 45 67",
+    "selectReason": "Seleccionar motivo",
+    "customReason": "Motivo personalizado (opcional)",
+    "customReasonPlaceholder": "Describe el motivo...",
+    "block": "Bloquear",
+    "unblock": "Desbloquear",
+    "unblockConfirm": "¿Seguro que quieres desbloquear {{number}}?",
+    "mute": "Silenciar",
+    "unmute": "Dejar de silenciar",
+    "unmuteConfirm": "¿Seguro que quieres dejar de silenciar a {{name}}?",
+    "blocked": "Bloqueado",
+    "muted": "Silenciado",
+    "callAttempts": "{{count}} intentos de llamada",
+    "lastAttempt": "Último intento: {{date}}",
+    "blockedSince": "Bloqueado desde {{date}}",
+    "mutedSince": "Silenciado desde {{date}}",
+    "mutedUntil": "Silenciado hasta {{date}}",
+    "permanent": "Permanente",
+
+    "reasons": {
+      "userBlocked": "Bloqueado manualmente",
+      "spamReported": "Reportado como spam",
+      "scamReported": "Reportado como estafa",
+      "telemarketing": "Telemarketing",
+      "robocall": "Llamada automatizada",
+      "unknownCaller": "Llamante desconocido",
+      "privateNumber": "Número privado",
+      "imported": "Importado"
+    },
+
+    "spamProtection": {
+      "title": "Protección contra spam",
+      "enabled": "Protección contra spam activada",
+      "enabledDesc": "Detectar automáticamente llamadas sospechosas",
+      "autoBlock": "Bloqueo automático",
+      "autoBlockDesc": "Bloquear automáticamente números con alta puntuación de spam",
+      "threshold": "Umbral de bloqueo",
+      "thresholdDesc": "Puntuación de spam a partir de la cual bloquear automáticamente",
+      "showWarning": "Mostrar advertencia",
+      "showWarningDesc": "Mostrar advertencia para llamadas sospechosas"
+    },
+
+    "generalSettings": {
+      "title": "Ajustes generales",
+      "blockUnknown": "Bloquear desconocidos",
+      "blockUnknownDesc": "Bloquear llamadas de números que no están en contactos",
+      "blockPrivate": "Bloquear números privados",
+      "blockPrivateDesc": "Bloquear llamadas de números ocultos",
+      "blockInternational": "Bloquear llamadas internacionales",
+      "blockInternationalDesc": "Bloquear todas las llamadas del extranjero",
+      "notifyBlocked": "Notificar llamadas bloqueadas",
+      "notifyBlockedDesc": "Mostrar notificación para llamadas bloqueadas",
+      "logBlocked": "Registrar llamadas bloqueadas",
+      "logBlockedDesc": "Mostrar llamadas bloqueadas en el historial"
+    },
+
+    "cloudSync": {
+      "title": "Sincronización en la nube",
+      "syncEnabled": "Sincronización activada",
+      "syncEnabledDesc": "Sincronizar lista de bloqueo con la nube",
+      "contribute": "Contribuir a la base de datos",
+      "contributeDesc": "Compartir reportes de spam anónimamente para ayudar a otros"
+    },
+
+    "apiWarning": {
+      "title": "API del sistema no disponible",
+      "message": "El bloqueo del sistema requiere que LifeCall esté configurado como la aplicación de teléfono predeterminada.",
+      "openSettings": "Abrir ajustes",
+      "continueAnyway": "Continuar de todos modos"
+    },
+
+    "stats": {
+      "totalBlocked": "Total bloqueado",
+      "blockedToday": "Bloqueado hoy",
+      "spamDetected": "Spam detectado",
+      "reportsSubmitted": "Reportes enviados"
+    }
+  },
+  "spam": {
+    "reportTitle": "Reportar spam",
+    "unknownNumber": "Número desconocido",
+    "selectCategory": "Seleccionar categoría",
+    "callerName": "Nombre del llamante",
+    "callerNameDesc": "¿Cómo se presentó el llamante?",
+    "callerNamePlaceholder": "ej: Agente de seguros",
+    "description": "Descripción",
+    "descriptionDesc": "Detalles adicionales sobre la llamada",
+    "descriptionPlaceholder": "¿Qué pasó en esta llamada?",
+    "blockAfterReport": "Bloquear después de reportar",
+    "blockAfterReportDesc": "También añadir este número a la lista de bloqueo",
+    "privacyNote": "Tu reporte se compartirá anónimamente para ayudar a otros usuarios.",
+    "submit": "Enviar reporte",
+    "success": "Éxito",
+    "reportSubmitted": "Tu reporte de spam ha sido enviado correctamente.",
+    "error": "Error",
+    "noNumber": "No se proporcionó número de teléfono",
+    "submitFailed": "No se pudo enviar el reporte",
+
+    "categories": {
+      "spam": "Spam",
+      "scam": "Estafa",
+      "telemarketing": "Telemarketing",
+      "robocall": "Llamada automatizada",
+      "survey": "Encuesta",
+      "debtCollector": "Cobro de deudas",
+      "political": "Político",
+      "charity": "Organización benéfica",
+      "other": "Otro"
+    },
+
+    "categoryDesc": {
+      "spam": "Llamadas no deseadas generales",
+      "scam": "Intento de fraude o engaño",
+      "telemarketing": "Promoción de producto o servicio",
+      "robocall": "Mensaje automatizado pregrabado",
+      "survey": "Encuesta o investigación de mercado",
+      "debtCollector": "Empresa de cobro de deudas",
+      "political": "Campaña política o partido",
+      "charity": "Solicitud de donación benéfica",
+      "other": "Otras llamadas no deseadas"
+    },
+
+    "score": {
+      "low": "Riesgo bajo",
+      "medium": "Riesgo medio",
+      "high": "Riesgo alto",
+      "veryHigh": "Riesgo muy alto"
+    },
+
+    "warning": "Sospecha de spam",
+    "warningMessage": "Este número ha sido reportado {{count}} veces como spam"
+  },
+  "about": {
+    "byLifeos": "por Lifeos",
+    "version": "Versión",
+    "appDescription": "Gestiona tus llamadas de forma inteligente. Diseño moderno, funciones potentes e interfaz personalizable.",
+    "lifeos": "Ecosistema Lifeos",
+    "lifeosDescription": "Lifeos es una familia de aplicaciones diseñadas para ayudarte a organizar tu vida. LifeCall es el primer miembro de este ecosistema.",
+    "visitWebsite": "Visitar sitio web",
+    "legal": "Legal",
+    "privacyPolicy": "Política de privacidad",
+    "termsOfService": "Términos de servicio",
+    "support": "Soporte",
+    "rateApp": "Valorar app",
+    "rateAppDesc": "Si te gusta, danos 5 estrellas",
+    "contactSupport": "Contactar soporte",
+    "contactSupportDesc": "Para preguntas o sugerencias",
+    "followUs": "Síguenos",
+    "madeWithLove": "Hecho con amor en Turquía",
+    "allRightsReserved": "Todos los derechos reservados."
+  },
+  "callThemes": {
+    "title": "Tema de llamada",
+    "subtitle": "Personaliza tu pantalla de llamada entrante",
+    "allThemes": "Todos los temas",
+    "customThemes": "Mis temas",
+    "createOwn": "Crea tu propio tema",
+    "createOwnDesc": "Elige colores, fondos y animaciones",
+    "preview": "Vista previa",
+    "apply": "Aplicar",
+    "default": "Clásico",
+    "defaultDesc": "Tema predeterminado de LifeCall",
+    "iosStyle": "Estilo iOS",
+    "iosStyleDesc": "Pantalla de llamada estilo Apple iOS",
+    "minimal": "Minimal",
+    "minimalDesc": "Diseño limpio y simple",
+    "neon": "Neon Glow",
+    "neonDesc": "Efectos de neón brillantes",
+    "sunset": "Sunset",
+    "sunsetDesc": "Colores de atardecer",
+    "ocean": "Ocean",
+    "oceanDesc": "Tonos azul océano",
+    "darkPurple": "Dark Purple",
+    "darkPurpleDesc": "Tonos púrpura oscuro",
+    "nature": "Nature",
+    "natureDesc": "Tonos verdes naturales",
+    "galaxy": "Galaxy",
+    "galaxyDesc": "Tema de espacio y galaxia",
+    "roseGold": "Rose Gold",
+    "roseGoldDesc": "Tonos oro rosa elegantes",
+    "cyberpunk": "Cyberpunk",
+    "cyberpunkDesc": "Estilo cyberpunk futurista",
+    "aurora": "Aurora",
+    "auroraDesc": "Efecto aurora boreal",
+    "midnight": "Midnight",
+    "midnightDesc": "Tonos azul medianoche",
+    "fire": "Fire",
+    "fireDesc": "Efecto de fuego y llamas",
+    "luxuryGold": "Luxury Gold",
+    "luxuryGoldDesc": "Tema oro lujoso",
+    "pureWhite": "Pure White",
+    "pureWhiteDesc": "Tema blanco minimalista"
+  }
+}
