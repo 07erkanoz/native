@@ -5,15 +5,19 @@
  * - Gelen aramalar için floating notification
  * - Devam eden aramalar için floating bubble
  * - Uygulama durumuna göre otomatik geçiş
+ * - Overlay izni kontrolü
  */
 
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigation, useNavigationState } from '@react-navigation/native';
+import { NativeModules, Platform, Alert, Linking } from 'react-native';
 
 import { FloatingCallBubble } from './FloatingCallBubble';
 import { FloatingCallNotification } from './FloatingCallNotification';
 import callStateManager, { ActiveCall, AppStateInfo } from '../services/CallStateManager';
 import { defaultAppService } from '../services';
+
+const { DefaultAppModule } = NativeModules;
 
 export const CallOverlay: React.FC = () => {
   const navigation = useNavigation();
@@ -27,6 +31,62 @@ export const CallOverlay: React.FC = () => {
   const [showFloatingNotification, setShowFloatingNotification] = useState(false);
   const [showFloatingBubble, setShowFloatingBubble] = useState(false);
   const [appState, setAppState] = useState<AppStateInfo>(callStateManager.getAppState());
+  const [hasOverlayPermission, setHasOverlayPermission] = useState(true);
+
+  // Overlay izni kontrolü
+  useEffect(() => {
+    const checkOverlayPermission = async () => {
+      if (Platform.OS !== 'android') {
+        setHasOverlayPermission(true);
+        return;
+      }
+
+      try {
+        if (DefaultAppModule) {
+          const canDraw = await DefaultAppModule.canDrawOverlays();
+          setHasOverlayPermission(canDraw);
+        }
+      } catch (error) {
+        console.error('Overlay izni kontrolü hatası:', error);
+        setHasOverlayPermission(false);
+      }
+    };
+
+    checkOverlayPermission();
+
+    // Uygulama ön plana geldiğinde tekrar kontrol et
+    const interval = setInterval(checkOverlayPermission, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Overlay izni yoksa uyarı göster
+  const showOverlayPermissionAlert = useCallback(() => {
+    Alert.alert(
+      'Ekran Üstü Gösterim İzni',
+      'Gelen arama bildirimlerini gösterebilmek için "Uygulamaların üzerinde göster" iznini vermeniz gerekiyor.',
+      [
+        { text: 'Daha Sonra', style: 'cancel' },
+        {
+          text: 'Ayarlara Git',
+          onPress: async () => {
+            try {
+              if (DefaultAppModule) {
+                await DefaultAppModule.requestOverlayPermission();
+              }
+            } catch (error) {
+              Linking.openSettings();
+            }
+          },
+        },
+      ]
+    );
+  }, []);
+
+  // Floating gösterme fonksiyonu - izin kontrolü ile
+  const canShowFloating = useCallback(() => {
+    if (Platform.OS !== 'android') return true;
+    return hasOverlayPermission;
+  }, [hasOverlayPermission]);
 
   // Event dinleyicileri
   useEffect(() => {
@@ -41,7 +101,12 @@ export const CallOverlay: React.FC = () => {
 
       // Uygulama arka plandaysa mini popup
       if (!appState.isInForeground) {
-        setShowFloatingNotification(true);
+        if (canShowFloating()) {
+          setShowFloatingNotification(true);
+        } else {
+          // Overlay izni yoksa, gelen arama için native bildirim zaten gösterilecek
+          console.log('[CallOverlay] Overlay izni yok, native bildirim kullanılacak');
+        }
       } else {
         // Ön plandaysa tam ekran aç
         navigation.navigate('IncomingCall' as never, { callId: call.id } as never);
@@ -64,7 +129,9 @@ export const CallOverlay: React.FC = () => {
 
       // Çağrı ekranında değilsek floating bubble göster
       if (currentRouteName !== 'OngoingCall') {
-        setShowFloatingBubble(true);
+        if (canShowFloating()) {
+          setShowFloatingBubble(true);
+        }
       }
     };
 
@@ -81,10 +148,17 @@ export const CallOverlay: React.FC = () => {
 
       // Aktif çağrı varken arka plana geçildi
       if (activeCall && !state.isInForeground) {
-        if (activeCall.state === 'incoming') {
-          setShowFloatingNotification(true);
-        } else if (activeCall.state === 'connected') {
-          setShowFloatingBubble(true);
+        if (canShowFloating()) {
+          if (activeCall.state === 'incoming') {
+            setShowFloatingNotification(true);
+          } else if (activeCall.state === 'connected') {
+            setShowFloatingBubble(true);
+          }
+        } else {
+          // İlk kez overlay izni yokken arka plana geçildi
+          if (!hasOverlayPermission) {
+            showOverlayPermissionAlert();
+          }
         }
       }
 
@@ -100,6 +174,11 @@ export const CallOverlay: React.FC = () => {
 
     // Floating göster
     const handleShowFloating = (call: ActiveCall) => {
+      if (!canShowFloating()) {
+        console.log('[CallOverlay] Overlay izni yok, floating gösterilemiyor');
+        return;
+      }
+
       if (call.state === 'incoming') {
         setShowFloatingNotification(true);
       } else {
@@ -137,20 +216,20 @@ export const CallOverlay: React.FC = () => {
       callStateManager.off('showFloatingUI', handleShowFloating);
       callStateManager.off('hideFloatingUI', handleHideFloating);
     };
-  }, [navigation, currentRouteName, appState, activeCall]);
+  }, [navigation, currentRouteName, appState, activeCall, canShowFloating, hasOverlayPermission, showOverlayPermissionAlert]);
 
   // Navigation değiştiğinde floating durumunu güncelle
   useEffect(() => {
     if (currentRouteName === 'IncomingCall' || currentRouteName === 'OngoingCall') {
       setShowFloatingBubble(false);
       setShowFloatingNotification(false);
-    } else if (activeCall) {
+    } else if (activeCall && canShowFloating()) {
       // Çağrı ekranından çıkıldı, floating göster
       if (activeCall.state === 'connected' || activeCall.state === 'on_hold') {
         setShowFloatingBubble(true);
       }
     }
-  }, [currentRouteName, activeCall]);
+  }, [currentRouteName, activeCall, canShowFloating]);
 
   // Floating notification: Cevapla
   const handleNotificationAnswer = useCallback(async () => {
@@ -222,6 +301,12 @@ export const CallOverlay: React.FC = () => {
       callStateManager.onCallEnded();
     }
   }, [activeCall]);
+
+  // Overlay izni yoksa floating gösterme
+  if (!hasOverlayPermission && Platform.OS === 'android') {
+    // Native bildirim sistemi kullanılacak
+    return null;
+  }
 
   return (
     <>

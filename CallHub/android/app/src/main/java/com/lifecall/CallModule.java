@@ -57,6 +57,28 @@ public class CallModule extends ReactContextBaseJavaModule {
         return MODULE_NAME;
     }
 
+    // Listener sayacı (NativeEventEmitter için gerekli)
+    private int listenerCount = 0;
+
+    /**
+     * JS tarafından çağrılır - Listener eklendiğinde
+     */
+    @ReactMethod
+    public void addListener(String eventName) {
+        listenerCount++;
+    }
+
+    /**
+     * JS tarafından çağrılır - Listener kaldırıldığında
+     */
+    @ReactMethod
+    public void removeListeners(Integer count) {
+        listenerCount -= count;
+        if (listenerCount < 0) {
+            listenerCount = 0;
+        }
+    }
+
     /**
      * Singleton instance
      */
