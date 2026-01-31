@@ -192,23 +192,245 @@ LifeCall, Android için geliştirilmiş kapsamlı bir telefon, rehber, takvim ve
 
 ## Faz 6: Takvim Modülü 🔄 DEVAM EDİYOR
 
-### 6.1 Takvim Görünümü
-- [ ] CalendarScreen - Aylık görünüm
-- [ ] Haftalık görünüm
-- [ ] Günlük görünüm
-- [ ] Etkinlik göstergesi
+### 6.1 Takvim Ekranları
+- [ ] CalendarScreen - Ana takvim ekranı
+  - [ ] Aylık görünüm (varsayılan)
+  - [ ] Haftalık görünüm
+  - [ ] Günlük görünüm (agenda)
+  - [ ] Görünüm değiştirme butonu
+  - [ ] Etkinlik noktaları/göstergeleri
+  - [ ] Bugüne git butonu
+  - [ ] Ay/yıl seçici
 
-### 6.2 Etkinlik Yönetimi
+### 6.2 Etkinlik Detay Ekranı
 - [ ] EventDetailScreen
-- [ ] EventEditScreen
-- [ ] Yeni etkinlik ekleme
-- [ ] Hatırlatıcılar
-- [ ] Tekrarlayan etkinlikler
+  - [ ] Etkinlik başlığı ve açıklama
+  - [ ] Tarih ve saat bilgisi
+  - [ ] Konum bilgisi (harita entegrasyonu)
+  - [ ] Katılımcılar listesi
+  - [ ] Hatırlatıcı bilgisi
+  - [ ] Tekrar bilgisi
+  - [ ] İlişkili kişi bağlantısı
+  - [ ] İlişkili not bağlantısı
+  - [ ] **Paylaşım butonu (Native Share)**
+    - [ ] WhatsApp paylaşımı
+    - [ ] SMS paylaşımı
+    - [ ] E-posta paylaşımı
+    - [ ] Diğer uygulamalar
+  - [ ] Düzenle/Sil butonları
 
-### 6.3 Entegrasyon
-- [ ] react-native-calendar-events
-- [ ] Google Calendar senkronizasyonu
-- [ ] Arama/toplantı entegrasyonu
+### 6.3 Etkinlik Düzenleme Ekranı
+- [ ] EventEditScreen
+  - [ ] Başlık girişi
+  - [ ] Açıklama (çoklu satır)
+  - [ ] Başlangıç tarihi/saati seçici
+  - [ ] Bitiş tarihi/saati seçici
+  - [ ] Tüm gün toggle
+  - [ ] **Konum seçici**
+    - [ ] Harita entegrasyonu
+    - [ ] Adres arama
+    - [ ] Mevcut konum
+    - [ ] Kayıtlı adresler (kişilerden)
+  - [ ] **Hatırlatıcı ayarları**
+    - [ ] Çoklu hatırlatıcı desteği
+    - [ ] Zaman seçenekleri (5dk, 15dk, 30dk, 1saat, 1gün, vb.)
+    - [ ] Özel zaman girişi
+  - [ ] **Alarm/Zil sesi seçimi**
+    - [ ] Varsayılan zil sesleri
+    - [ ] Özel zil sesi seçimi
+    - [ ] Titreşim ayarı
+  - [ ] **Tekrar ayarları**
+    - [ ] Günlük
+    - [ ] Haftalık (gün seçimi)
+    - [ ] Aylık
+    - [ ] Yıllık
+    - [ ] Özel tekrar
+    - [ ] Bitiş tarihi/sayısı
+  - [ ] **Kişi bağlama**
+    - [ ] Kişi seçici
+    - [ ] Çoklu kişi desteği
+    - [ ] Arama hatırlatıcısı oluştur
+  - [ ] **Not bağlama**
+    - [ ] Mevcut not seçimi
+    - [ ] Yeni not oluştur
+  - [ ] Renk/kategori seçimi
+  - [ ] Takvim seçimi (yerel/Google)
+
+### 6.4 Google Calendar Senkronizasyonu
+- [ ] GoogleCalendarService
+  - [ ] Google Sign-In entegrasyonu
+  - [ ] OAuth 2.0 token yönetimi
+  - [ ] Takvim listesi çekme
+  - [ ] Etkinlik çekme (pull)
+  - [ ] Etkinlik gönderme (push)
+  - [ ] Çift yönlü senkronizasyon
+  - [ ] Çakışma yönetimi
+  - [ ] Son senkronizasyon zamanı kayıt
+  - [ ] Otomatik senkronizasyon (arka plan)
+  - [ ] Manuel senkronizasyon butonu
+
+### 6.5 Import/Export Servisleri
+- [ ] CalendarImportExportService
+  - [ ] **ICS Import**
+    - [ ] Dosya seçici
+    - [ ] ICS parser
+    - [ ] Önizleme ekranı
+    - [ ] Seçili etkinlikleri içe aktar
+    - [ ] Çakışma kontrolü
+  - [ ] **ICS Export**
+    - [ ] Tarih aralığı seçimi
+    - [ ] Takvim seçimi
+    - [ ] Dosya oluşturma
+    - [ ] Paylaşım/Kaydetme
+  - [ ] **Excel/CSV Import**
+    - [ ] Dosya seçici
+    - [ ] Sütun eşleştirme ekranı
+    - [ ] Önizleme
+    - [ ] İçe aktarma
+  - [ ] **Excel/CSV Export**
+    - [ ] Tarih aralığı seçimi
+    - [ ] Sütun seçimi
+    - [ ] Dosya formatı seçimi (xlsx/csv)
+    - [ ] Dışa aktarma
+
+### 6.6 Hatırlatıcı ve Bildirim Sistemi
+- [ ] CalendarNotificationService
+  - [ ] Native Android AlarmManager entegrasyonu
+  - [ ] Zamanlanmış bildirimler
+  - [ ] Bildirim kanalları (önem derecesi)
+  - [ ] Bildirim aksiyonları
+    - [ ] Ertele (5dk, 15dk, 30dk, 1saat)
+    - [ ] Kapat
+    - [ ] Detay görüntüle
+    - [ ] Ara (arama hatırlatıcısı için)
+  - [ ] Tam ekran bildirim (önemli etkinlikler)
+  - [ ] Özel zil sesi desteği
+  - [ ] Titreşim deseni
+
+### 6.7 Takvim Ayarları Ekranı
+- [ ] SettingsCalendarScreen
+  - [ ] **Google Senkronizasyon**
+    - [ ] Açma/Kapama toggle
+    - [ ] Bağlı hesap bilgisi
+    - [ ] Hesap değiştir/bağla
+    - [ ] Son senkronizasyon zamanı
+    - [ ] Şimdi senkronize et butonu
+    - [ ] Otomatik senkronizasyon aralığı
+  - [ ] **Varsayılan Ayarlar**
+    - [ ] Varsayılan görünüm (aylık/haftalık/günlük)
+    - [ ] Haftanın ilk günü
+    - [ ] Varsayılan hatırlatıcı süresi
+    - [ ] Varsayılan etkinlik süresi
+    - [ ] Varsayılan takvim
+  - [ ] **Bildirim Ayarları**
+    - [ ] Bildirim açma/kapama
+    - [ ] Varsayılan zil sesi
+    - [ ] Titreşim açma/kapama
+    - [ ] Sessiz saatler
+  - [ ] **Import/Export**
+    - [ ] ICS dosyasından içe aktar
+    - [ ] Excel/CSV'den içe aktar
+    - [ ] ICS olarak dışa aktar
+    - [ ] Excel/CSV olarak dışa aktar
+  - [ ] **Veri Yönetimi**
+    - [ ] Tüm etkinlikleri sil
+    - [ ] Eski etkinlikleri temizle
+
+### 6.8 Entegrasyonlar
+- [ ] **Telefon/Arama Entegrasyonu**
+  - [ ] Arama hatırlatıcısı oluşturma
+  - [ ] Arama sonrası takip hatırlatıcısı
+  - [ ] Kişi arama geçmişinden etkinlik
+- [ ] **Kişiler Entegrasyonu**
+  - [ ] Kişi doğum günleri takvimde
+  - [ ] Kişi yıldönümleri
+  - [ ] Kişiye bağlı etkinlikler
+  - [ ] Kişi detayından etkinlik oluştur
+- [ ] **Harita/Konum Entegrasyonu**
+  - [ ] Google Maps / OpenStreetMap
+  - [ ] Konum seçici modal
+  - [ ] Navigasyon başlat
+  - [ ] Yakınlık bildirimi
+- [ ] **Notlar Entegrasyonu**
+  - [ ] Etkinliğe not ekleme
+  - [ ] Nottan etkinlik oluşturma
+  - [ ] Çift yönlü bağlantı
+
+### 6.9 Redux State
+- [ ] calendarSlice
+  - [ ] events: CalendarEvent[]
+  - [ ] selectedDate: string
+  - [ ] viewMode: 'month' | 'week' | 'day'
+  - [ ] calendars: Calendar[]
+  - [ ] syncStatus: SyncStatus
+  - [ ] lastSyncTime: number
+  - [ ] settings: CalendarSettings
+
+### 6.10 Tipler
+```typescript
+interface CalendarEvent {
+  id: string;
+  title: string;
+  description?: string;
+  startDate: string;
+  endDate: string;
+  allDay: boolean;
+  location?: EventLocation;
+  reminders: EventReminder[];
+  recurrence?: EventRecurrence;
+  color?: string;
+  calendarId: string;
+  contactIds?: string[];
+  noteIds?: string[];
+  isGoogleEvent: boolean;
+  googleEventId?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface EventLocation {
+  address: string;
+  latitude?: number;
+  longitude?: number;
+  placeId?: string;
+}
+
+interface EventReminder {
+  id: string;
+  minutes: number;
+  type: 'notification' | 'alarm' | 'email';
+  ringtoneUri?: string;
+}
+
+interface EventRecurrence {
+  frequency: 'daily' | 'weekly' | 'monthly' | 'yearly';
+  interval: number;
+  daysOfWeek?: number[];
+  endDate?: string;
+  count?: number;
+}
+
+interface Calendar {
+  id: string;
+  name: string;
+  color: string;
+  isLocal: boolean;
+  isGoogleCalendar: boolean;
+  googleCalendarId?: string;
+  isVisible: boolean;
+  isPrimary: boolean;
+}
+
+interface CalendarSettings {
+  defaultView: 'month' | 'week' | 'day';
+  firstDayOfWeek: 0 | 1 | 6; // Sun, Mon, Sat
+  defaultReminderMinutes: number;
+  defaultEventDuration: number;
+  defaultCalendarId: string;
+  showDeclinedEvents: boolean;
+  showWeekNumbers: boolean;
+}
+```
 
 ---
 
@@ -251,6 +473,7 @@ LifeCall, Android için geliştirilmiş kapsamlı bir telefon, rehber, takvim ve
 ### 8.4 Diğer Ayarlar
 - [ ] SettingsContactsScreen
 - [ ] SettingsCallsScreen
+- [ ] SettingsCalendarScreen (Faz 6.7'de detaylı)
 - [ ] SettingsNotificationsScreen
 - [ ] SettingsPrivacyScreen
 - [ ] SettingsBackupScreen
@@ -297,14 +520,27 @@ CallHub/
 │       ├── CallConnectionService.java
 │       ├── receivers/
 │       │   ├── PhoneStateReceiver.java
-│       │   └── BootReceiver.java
+│       │   ├── BootReceiver.java
+│       │   └── CalendarReminderReceiver.java (Faz 6)
 │       └── services/
-│           └── IncomingCallService.java
+│           ├── IncomingCallService.java
+│           └── CalendarNotificationService.java (Faz 6)
 ├── src/
 │   ├── components/
 │   │   ├── CallOverlay.tsx
 │   │   ├── FloatingCallBubble.tsx
 │   │   ├── FloatingCallNotification.tsx
+│   │   ├── calendar/                    (Faz 6)
+│   │   │   ├── CalendarView.tsx
+│   │   │   ├── DayView.tsx
+│   │   │   ├── WeekView.tsx
+│   │   │   ├── MonthView.tsx
+│   │   │   ├── EventCard.tsx
+│   │   │   ├── EventForm.tsx
+│   │   │   ├── LocationPicker.tsx
+│   │   │   ├── ReminderPicker.tsx
+│   │   │   ├── RecurrencePicker.tsx
+│   │   │   └── index.ts
 │   │   └── index.ts
 │   ├── i18n/
 │   │   ├── locales/
@@ -313,6 +549,7 @@ CallHub/
 │   │   └── index.ts
 │   ├── native/
 │   │   ├── CallModule.ts
+│   │   ├── CalendarModule.ts            (Faz 6)
 │   │   └── index.ts
 │   ├── navigation/
 │   │   ├── MainTabNavigator.tsx
@@ -329,29 +566,44 @@ CallHub/
 │   │   ├── IncomingCallScreen.tsx
 │   │   ├── OngoingCallScreen.tsx
 │   │   ├── SetupWizardScreen.tsx
+│   │   ├── CalendarScreen.tsx           (Faz 6)
+│   │   ├── calendar/                    (Faz 6)
+│   │   │   ├── EventDetailScreen.tsx
+│   │   │   ├── EventEditScreen.tsx
+│   │   │   └── index.ts
 │   │   ├── settings/
 │   │   │   ├── SettingsAppearanceScreen.tsx
-│   │   │   └── SettingsLanguageScreen.tsx
+│   │   │   ├── SettingsLanguageScreen.tsx
+│   │   │   └── SettingsCalendarScreen.tsx (Faz 6)
 │   │   └── store/
 │   │       └── ThemeStoreScreen.tsx
 │   ├── services/
 │   │   ├── CallStateManager.ts
 │   │   ├── defaultAppService.ts
 │   │   ├── permissionsService.ts
+│   │   ├── calendar/                    (Faz 6)
+│   │   │   ├── GoogleCalendarService.ts
+│   │   │   ├── CalendarImportExportService.ts
+│   │   │   ├── CalendarNotificationService.ts
+│   │   │   ├── ICSParser.ts
+│   │   │   ├── ExcelParser.ts
+│   │   │   └── index.ts
 │   │   └── index.ts
 │   ├── store/
 │   │   ├── slices/
 │   │   │   ├── contactsSlice.ts
 │   │   │   ├── callsSlice.ts
 │   │   │   ├── settingsSlice.ts
-│   │   │   └── themeSlice.ts
+│   │   │   ├── themeSlice.ts
+│   │   │   └── calendarSlice.ts         (Faz 6)
 │   │   └── index.ts
 │   ├── theme/
 │   │   ├── themes.ts
 │   │   ├── ThemeProvider.tsx
 │   │   └── index.ts
 │   └── types/
-│       └── index.ts
+│       ├── index.ts
+│       └── calendar.ts                  (Faz 6)
 ├── App.tsx
 └── PROJECT_PLAN.md
 ```
@@ -368,8 +620,62 @@ CallHub/
 4. Overlay izin kontrolü
 5. NativeEventEmitter entegrasyonu
 
+**Aktif Geliştirme:**
+- Faz 6: Takvim Modülü (detaylı plan hazırlandı)
+
 **Sonraki Adımlar:**
-1. Takvim modülü geliştirme
-2. Notlar modülü
-3. Arama kaydı özelliği
-4. Widget'lar
+1. ~~Takvim modülü geliştirme~~ (Başlandı)
+   - CalendarScreen ana ekran
+   - EventDetailScreen / EventEditScreen
+   - Google Calendar senkronizasyonu
+   - ICS/Excel import-export
+   - Native bildirimler
+   - SettingsCalendarScreen
+2. Notlar modülü (Faz 7)
+3. Arama kaydı özelliği (Faz 9)
+4. Widget'lar (Faz 9)
+
+---
+
+## Gerekli Paketler (Faz 6)
+
+```bash
+# Takvim UI
+npm install react-native-calendars
+
+# Google Sign-In
+npm install @react-native-google-signin/google-signin
+
+# Dosya işlemleri
+npm install react-native-document-picker
+npm install react-native-fs
+npm install xlsx
+
+# Konum/Harita
+npm install react-native-maps
+npm install react-native-google-places-autocomplete
+
+# Paylaşım
+npm install react-native-share
+
+# Tarih işlemleri
+npm install date-fns
+```
+
+---
+
+## Öncelik Sırası (Faz 6)
+
+| Sıra | Görev | Öncelik | Bağımlılık |
+|------|-------|---------|------------|
+| 1 | calendarSlice + types | Yüksek | - |
+| 2 | CalendarScreen (temel) | Yüksek | 1 |
+| 3 | EventEditScreen | Yüksek | 1, 2 |
+| 4 | EventDetailScreen | Yüksek | 1, 2 |
+| 5 | Native bildirim servisi | Yüksek | 1 |
+| 6 | SettingsCalendarScreen | Orta | 1 |
+| 7 | Google Calendar sync | Orta | 1, 6 |
+| 8 | ICS import/export | Orta | 1 |
+| 9 | Excel import/export | Düşük | 1, 8 |
+| 10 | Konum/harita entegrasyonu | Düşük | 3, 4 |
+| 11 | Native paylaşım | Düşük | 4 |
