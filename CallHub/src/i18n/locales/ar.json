@@ -1,0 +1,376 @@
+{
+  "common": {
+    "appName": "LifeCall",
+    "loading": "جاري التحميل...",
+    "error": "خطأ",
+    "success": "نجاح",
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "add": "إضافة",
+    "search": "بحث",
+    "searchPlaceholder": "بحث...",
+    "noResults": "لم يتم العثور على نتائج",
+    "confirm": "تأكيد",
+    "yes": "نعم",
+    "no": "لا",
+    "ok": "موافق",
+    "done": "تم",
+    "back": "رجوع",
+    "next": "التالي",
+    "close": "إغلاق",
+    "retry": "إعادة المحاولة",
+    "refresh": "تحديث",
+    "settings": "الإعدادات",
+    "share": "مشاركة",
+    "copy": "نسخ",
+    "copied": "تم النسخ",
+    "select": "تحديد",
+    "selectAll": "تحديد الكل",
+    "deselectAll": "إلغاء تحديد الكل",
+    "apply": "تطبيق",
+    "clear": "مسح",
+    "today": "اليوم",
+    "yesterday": "أمس",
+    "tomorrow": "غداً",
+    "now": "الآن",
+    "never": "أبداً",
+    "always": "دائماً",
+    "default": "افتراضي",
+    "custom": "مخصص",
+    "other": "أخرى",
+    "unknown": "غير معروف",
+    "none": "لا شيء",
+    "all": "الكل"
+  },
+  "tabs": {
+    "favorites": "المفضلة",
+    "calls": "المكالمات",
+    "contacts": "جهات الاتصال",
+    "calendar": "التقويم",
+    "settings": "الإعدادات"
+  },
+  "contacts": {
+    "title": "جهات الاتصال",
+    "searchContacts": "البحث في {{count}} جهة اتصال",
+    "newContact": "جهة اتصال جديدة",
+    "editContact": "تعديل جهة الاتصال",
+    "deleteContact": "حذف جهة الاتصال",
+    "deleteConfirm": "هل أنت متأكد من حذف جهة الاتصال هذه؟",
+    "noContacts": "لا توجد جهات اتصال",
+    "addFirstContact": "أضف أول جهة اتصال",
+    "accounts": "الحسابات",
+    "groups": "المجموعات",
+    "favorites": "المفضلة",
+    "allContacts": "جميع جهات الاتصال",
+    "recentContacts": "جهات الاتصال الأخيرة",
+    "frequentContacts": "الأكثر اتصالاً",
+
+    "fields": {
+      "name": "الاسم",
+      "firstName": "الاسم الأول",
+      "lastName": "اسم العائلة",
+      "middleName": "الاسم الأوسط",
+      "prefix": "اللقب",
+      "suffix": "اللاحقة",
+      "nickname": "الاسم المستعار",
+      "phoneticName": "الاسم الصوتي",
+      "phone": "الهاتف",
+      "email": "البريد الإلكتروني",
+      "address": "العنوان",
+      "company": "الشركة",
+      "department": "القسم",
+      "jobTitle": "المسمى الوظيفي",
+      "birthday": "تاريخ الميلاد",
+      "anniversary": "ذكرى الزواج",
+      "website": "الموقع الإلكتروني",
+      "note": "ملاحظة",
+      "ringtone": "نغمة الرنين",
+      "photo": "الصورة"
+    },
+
+    "phoneLabels": {
+      "mobile": "جوال",
+      "home": "المنزل",
+      "work": "العمل",
+      "main": "الرئيسي",
+      "fax_work": "فاكس العمل",
+      "fax_home": "فاكس المنزل",
+      "pager": "جهاز النداء",
+      "other": "أخرى",
+      "custom": "مخصص"
+    },
+
+    "emailLabels": {
+      "personal": "شخصي",
+      "work": "العمل",
+      "other": "أخرى",
+      "custom": "مخصص"
+    },
+
+    "addressLabels": {
+      "home": "المنزل",
+      "work": "العمل",
+      "other": "أخرى",
+      "custom": "مخصص"
+    },
+
+    "addressFields": {
+      "street": "الشارع",
+      "city": "المدينة",
+      "state": "المنطقة",
+      "postalCode": "الرمز البريدي",
+      "country": "البلد"
+    },
+
+    "relationTypes": {
+      "spouse": "الزوج/الزوجة",
+      "child": "الطفل",
+      "mother": "الأم",
+      "father": "الأب",
+      "sibling": "الأخ/الأخت",
+      "assistant": "المساعد",
+      "partner": "الشريك",
+      "manager": "المدير",
+      "other": "أخرى",
+      "custom": "مخصص"
+    },
+
+    "actions": {
+      "call": "اتصال",
+      "sms": "رسالة",
+      "video": "فيديو",
+      "email": "بريد",
+      "whatsappMessage": "رسالة واتساب",
+      "whatsappCall": "مكالمة واتساب",
+      "addToFavorites": "إضافة للمفضلة",
+      "removeFromFavorites": "إزالة من المفضلة",
+      "block": "حظر",
+      "unblock": "إلغاء الحظر",
+      "share": "مشاركة"
+    },
+
+    "photo": {
+      "change": "تغيير الصورة",
+      "remove": "إزالة الصورة",
+      "takePhoto": "التقاط صورة",
+      "chooseFromGallery": "اختيار من المعرض",
+      "sources": "الصور المتاحة"
+    },
+
+    "account": {
+      "selectAccount": "اختر الحساب",
+      "google": "جوجل",
+      "samsung": "سامسونج",
+      "phone": "الهاتف",
+      "whatsapp": "واتساب",
+      "telegram": "تيليجرام",
+      "microsoft": "مايكروسوفت"
+    }
+  },
+  "calls": {
+    "title": "المكالمات",
+    "history": "سجل المكالمات",
+    "missed": "فائتة",
+    "incoming": "واردة",
+    "outgoing": "صادرة",
+    "rejected": "مرفوضة",
+    "blocked": "محظورة",
+    "all": "الكل",
+    "duration": "المدة",
+    "noCallHistory": "لا توجد مكالمات",
+    "clearHistory": "مسح السجل",
+    "clearHistoryConfirm": "هل أنت متأكد من مسح سجل المكالمات؟",
+    "callAgain": "إعادة الاتصال",
+    "addNote": "إضافة ملاحظة",
+    "viewNote": "عرض الملاحظة",
+    "filter": "تصفية المكالمات",
+    "speedDial": "الاتصال السريع",
+    "voicemail": "البريد الصوتي",
+
+    "status": {
+      "dialing": "جاري الاتصال...",
+      "ringing": "يرن...",
+      "connected": "متصل",
+      "onHold": "قيد الانتظار",
+      "ended": "انتهت"
+    },
+
+    "actions": {
+      "answer": "رد",
+      "decline": "رفض",
+      "endCall": "إنهاء",
+      "mute": "كتم",
+      "unmute": "إلغاء الكتم",
+      "speaker": "مكبر الصوت",
+      "keypad": "لوحة المفاتيح",
+      "addCall": "إضافة مكالمة",
+      "hold": "انتظار",
+      "resume": "استئناف",
+      "transfer": "تحويل",
+      "note": "ملاحظة"
+    },
+
+    "autoRedial": {
+      "title": "إعادة الاتصال التلقائي",
+      "enabled": "مفعّل",
+      "disabled": "معطّل",
+      "interval": "الفاصل الزمني",
+      "attempts": "المحاولات",
+      "onBusy": "عند الانشغال",
+      "onNoAnswer": "عند عدم الرد",
+      "retrying": "جاري إعادة المحاولة...",
+      "attempt": "المحاولة: {{current}}/{{max}}"
+    }
+  },
+  "favorites": {
+    "title": "المفضلة",
+    "noFavorites": "لا توجد مفضلة",
+    "addFavorite": "إضافة مفضلة",
+    "editFavorites": "تعديل المفضلة",
+    "frequentContacts": "الأكثر اتصالاً",
+    "reorder": "اسحب لإعادة الترتيب",
+    "remove": "اضغط X للإزالة",
+    "viewMode": "وضع العرض",
+    "gridView": "شبكة",
+    "listView": "قائمة"
+  },
+  "settings": {
+    "title": "الإعدادات",
+
+    "appearance": {
+      "title": "المظهر",
+      "theme": "السمة",
+      "themeLight": "فاتح",
+      "themeDark": "داكن",
+      "themeSystem": "النظام",
+      "fontSize": "حجم الخط",
+      "language": "اللغة"
+    },
+
+    "contacts": {
+      "title": "جهات الاتصال",
+      "displayContacts": "عرض جهات الاتصال",
+      "nameFormat": "تنسيق الاسم",
+      "sortBy": "ترتيب حسب",
+      "firstNameFirst": "الاسم الأول أولاً",
+      "lastNameFirst": "اسم العائلة أولاً",
+      "formatPhoneNumbers": "تنسيق الأرقام",
+      "longNames": "الأسماء الطويلة",
+      "showAlphabet": "عرض الأبجدية",
+      "showSeparators": "عرض الفواصل",
+      "defaultAccount": "الحساب الافتراضي",
+      "hideWithoutNumber": "إخفاء بدون رقم"
+    },
+
+    "calls": {
+      "title": "المكالمات",
+      "incomingCall": "مكالمة واردة",
+      "outgoingCall": "مكالمة صادرة",
+      "answerStyle": "طريقة الرد",
+      "photoLayout": "تخطيط الصورة",
+      "fullscreen": "ملء الشاشة",
+      "proximityEnabled": "مستشعر القرب",
+      "vibration": "الاهتزاز",
+      "flashOnCall": "وميض عند الاتصال"
+    },
+
+    "notifications": {
+      "title": "الإشعارات",
+      "missedCall": "مكالمة فائتة",
+      "sound": "الصوت",
+      "vibrate": "اهتزاز",
+      "led": "ضوء LED"
+    },
+
+    "privacy": {
+      "title": "الخصوصية",
+      "blockedNumbers": "الأرقام المحظورة",
+      "hideCallerId": "إخفاء هوية المتصل"
+    },
+
+    "backup": {
+      "title": "النسخ الاحتياطي",
+      "autoBackup": "نسخ احتياطي تلقائي",
+      "backupNow": "نسخ احتياطي الآن",
+      "restore": "استعادة",
+      "lastBackup": "آخر نسخة"
+    },
+
+    "about": {
+      "title": "حول",
+      "version": "الإصدار",
+      "rateApp": "تقييم التطبيق",
+      "privacyPolicy": "سياسة الخصوصية",
+      "termsOfService": "شروط الخدمة"
+    }
+  },
+  "calendar": {
+    "title": "التقويم",
+    "today": "اليوم",
+    "month": "الشهر",
+    "week": "الأسبوع",
+    "day": "اليوم",
+    "agenda": "الأجندة",
+    "newEvent": "حدث جديد",
+    "editEvent": "تعديل الحدث",
+    "deleteEvent": "حذف الحدث",
+    "noEvents": "لا توجد أحداث",
+    "allDay": "طوال اليوم",
+    "reminder": "تذكير",
+    "repeat": "تكرار",
+    "location": "الموقع",
+    "description": "الوصف",
+    "googleSync": "مزامنة تقويم جوجل"
+  },
+  "notes": {
+    "title": "الملاحظات",
+    "newNote": "ملاحظة جديدة",
+    "editNote": "تعديل الملاحظة",
+    "deleteNote": "حذف الملاحظة",
+    "noNotes": "لا توجد ملاحظات",
+    "searchNotes": "البحث في الملاحظات",
+    "voiceNote": "ملاحظة صوتية"
+  },
+  "store": {
+    "themes": "متجر السمات",
+    "ringtones": "متجر النغمات",
+    "myPurchases": "مشترياتي",
+    "preview": "معاينة",
+    "buy": "شراء",
+    "free": "مجاني",
+    "purchased": "تم الشراء",
+    "activate": "تفعيل",
+    "download": "تحميل",
+    "downloading": "جاري التحميل..."
+  },
+  "permissions": {
+    "contacts": "إذن جهات الاتصال مطلوب",
+    "phone": "إذن الهاتف مطلوب",
+    "storage": "إذن التخزين مطلوب",
+    "camera": "إذن الكاميرا مطلوب",
+    "microphone": "إذن الميكروفون مطلوب",
+    "calendar": "إذن التقويم مطلوب",
+    "notifications": "إذن الإشعارات مطلوب",
+    "grantPermission": "منح الإذن",
+    "openSettings": "فتح الإعدادات"
+  },
+  "errors": {
+    "generic": "حدث خطأ",
+    "network": "خطأ في الاتصال",
+    "notFound": "غير موجود",
+    "unauthorized": "غير مصرح",
+    "permissionDenied": "تم رفض الإذن",
+    "tryAgain": "يرجى المحاولة مرة أخرى"
+  },
+  "time": {
+    "justNow": "الآن",
+    "minutesAgo": "منذ {{count}} دقائق",
+    "hoursAgo": "منذ {{count}} ساعات",
+    "daysAgo": "منذ {{count}} أيام",
+    "weeksAgo": "منذ {{count}} أسابيع",
+    "monthsAgo": "منذ {{count}} أشهر",
+    "yearsAgo": "منذ {{count}} سنوات"
+  }
+}

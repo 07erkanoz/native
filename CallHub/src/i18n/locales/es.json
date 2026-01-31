@@ -1,0 +1,376 @@
+{
+  "common": {
+    "appName": "LifeCall",
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "add": "Añadir",
+    "search": "Buscar",
+    "searchPlaceholder": "Buscar...",
+    "noResults": "No se encontraron resultados",
+    "confirm": "Confirmar",
+    "yes": "Sí",
+    "no": "No",
+    "ok": "OK",
+    "done": "Hecho",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "close": "Cerrar",
+    "retry": "Reintentar",
+    "refresh": "Actualizar",
+    "settings": "Ajustes",
+    "share": "Compartir",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "select": "Seleccionar",
+    "selectAll": "Seleccionar todo",
+    "deselectAll": "Deseleccionar todo",
+    "apply": "Aplicar",
+    "clear": "Borrar",
+    "today": "Hoy",
+    "yesterday": "Ayer",
+    "tomorrow": "Mañana",
+    "now": "Ahora",
+    "never": "Nunca",
+    "always": "Siempre",
+    "default": "Predeterminado",
+    "custom": "Personalizado",
+    "other": "Otro",
+    "unknown": "Desconocido",
+    "none": "Ninguno",
+    "all": "Todos"
+  },
+  "tabs": {
+    "favorites": "Favoritos",
+    "calls": "Llamadas",
+    "contacts": "Contactos",
+    "calendar": "Calendario",
+    "settings": "Ajustes"
+  },
+  "contacts": {
+    "title": "Contactos",
+    "searchContacts": "Buscar en {{count}} contactos",
+    "newContact": "Nuevo contacto",
+    "editContact": "Editar contacto",
+    "deleteContact": "Eliminar contacto",
+    "deleteConfirm": "¿Está seguro de que desea eliminar este contacto?",
+    "noContacts": "Sin contactos",
+    "addFirstContact": "Añade tu primer contacto",
+    "accounts": "Cuentas",
+    "groups": "Grupos",
+    "favorites": "Favoritos",
+    "allContacts": "Todos los contactos",
+    "recentContacts": "Contactos recientes",
+    "frequentContacts": "Contactos frecuentes",
+
+    "fields": {
+      "name": "Nombre",
+      "firstName": "Nombre",
+      "lastName": "Apellido",
+      "middleName": "Segundo nombre",
+      "prefix": "Prefijo",
+      "suffix": "Sufijo",
+      "nickname": "Apodo",
+      "phoneticName": "Nombre fonético",
+      "phone": "Teléfono",
+      "email": "Correo electrónico",
+      "address": "Dirección",
+      "company": "Empresa",
+      "department": "Departamento",
+      "jobTitle": "Cargo",
+      "birthday": "Cumpleaños",
+      "anniversary": "Aniversario",
+      "website": "Sitio web",
+      "note": "Nota",
+      "ringtone": "Tono de llamada",
+      "photo": "Foto"
+    },
+
+    "phoneLabels": {
+      "mobile": "Móvil",
+      "home": "Casa",
+      "work": "Trabajo",
+      "main": "Principal",
+      "fax_work": "Fax trabajo",
+      "fax_home": "Fax casa",
+      "pager": "Buscapersonas",
+      "other": "Otro",
+      "custom": "Personalizado"
+    },
+
+    "emailLabels": {
+      "personal": "Personal",
+      "work": "Trabajo",
+      "other": "Otro",
+      "custom": "Personalizado"
+    },
+
+    "addressLabels": {
+      "home": "Casa",
+      "work": "Trabajo",
+      "other": "Otro",
+      "custom": "Personalizado"
+    },
+
+    "addressFields": {
+      "street": "Calle",
+      "city": "Ciudad",
+      "state": "Provincia",
+      "postalCode": "Código postal",
+      "country": "País"
+    },
+
+    "relationTypes": {
+      "spouse": "Cónyuge",
+      "child": "Hijo/a",
+      "mother": "Madre",
+      "father": "Padre",
+      "sibling": "Hermano/a",
+      "assistant": "Asistente",
+      "partner": "Pareja",
+      "manager": "Jefe",
+      "other": "Otro",
+      "custom": "Personalizado"
+    },
+
+    "actions": {
+      "call": "Llamar",
+      "sms": "SMS",
+      "video": "Vídeo",
+      "email": "Correo",
+      "whatsappMessage": "Mensaje WhatsApp",
+      "whatsappCall": "Llamada WhatsApp",
+      "addToFavorites": "Añadir a favoritos",
+      "removeFromFavorites": "Quitar de favoritos",
+      "block": "Bloquear",
+      "unblock": "Desbloquear",
+      "share": "Compartir"
+    },
+
+    "photo": {
+      "change": "Cambiar foto",
+      "remove": "Eliminar foto",
+      "takePhoto": "Tomar foto",
+      "chooseFromGallery": "Elegir de la galería",
+      "sources": "Fotos disponibles"
+    },
+
+    "account": {
+      "selectAccount": "Seleccionar cuenta",
+      "google": "Google",
+      "samsung": "Samsung",
+      "phone": "Teléfono",
+      "whatsapp": "WhatsApp",
+      "telegram": "Telegram",
+      "microsoft": "Microsoft"
+    }
+  },
+  "calls": {
+    "title": "Llamadas",
+    "history": "Historial de llamadas",
+    "missed": "Perdida",
+    "incoming": "Entrante",
+    "outgoing": "Saliente",
+    "rejected": "Rechazada",
+    "blocked": "Bloqueada",
+    "all": "Todas",
+    "duration": "Duración",
+    "noCallHistory": "Sin llamadas",
+    "clearHistory": "Borrar historial",
+    "clearHistoryConfirm": "¿Está seguro de que desea borrar todo el historial de llamadas?",
+    "callAgain": "Volver a llamar",
+    "addNote": "Añadir nota",
+    "viewNote": "Ver nota",
+    "filter": "Filtrar llamadas",
+    "speedDial": "Marcación rápida",
+    "voicemail": "Buzón de voz",
+
+    "status": {
+      "dialing": "Marcando...",
+      "ringing": "Llamando...",
+      "connected": "Conectado",
+      "onHold": "En espera",
+      "ended": "Terminada"
+    },
+
+    "actions": {
+      "answer": "Contestar",
+      "decline": "Rechazar",
+      "endCall": "Colgar",
+      "mute": "Silenciar",
+      "unmute": "Activar sonido",
+      "speaker": "Altavoz",
+      "keypad": "Teclado",
+      "addCall": "Añadir llamada",
+      "hold": "Espera",
+      "resume": "Reanudar",
+      "transfer": "Transferir",
+      "note": "Nota"
+    },
+
+    "autoRedial": {
+      "title": "Rellamada automática",
+      "enabled": "Activado",
+      "disabled": "Desactivado",
+      "interval": "Intervalo",
+      "attempts": "Intentos",
+      "onBusy": "Si ocupado",
+      "onNoAnswer": "Si no contesta",
+      "retrying": "Reintentando...",
+      "attempt": "Intento: {{current}}/{{max}}"
+    }
+  },
+  "favorites": {
+    "title": "Favoritos",
+    "noFavorites": "Sin favoritos",
+    "addFavorite": "Añadir favorito",
+    "editFavorites": "Editar favoritos",
+    "frequentContacts": "Contactos frecuentes",
+    "reorder": "Arrastrar para reordenar",
+    "remove": "Toca X para eliminar",
+    "viewMode": "Modo de vista",
+    "gridView": "Cuadrícula",
+    "listView": "Lista"
+  },
+  "settings": {
+    "title": "Ajustes",
+
+    "appearance": {
+      "title": "Apariencia",
+      "theme": "Tema",
+      "themeLight": "Claro",
+      "themeDark": "Oscuro",
+      "themeSystem": "Sistema",
+      "fontSize": "Tamaño de fuente",
+      "language": "Idioma"
+    },
+
+    "contacts": {
+      "title": "Contactos",
+      "displayContacts": "Mostrar contactos",
+      "nameFormat": "Formato del nombre",
+      "sortBy": "Ordenar por",
+      "firstNameFirst": "Nombre primero",
+      "lastNameFirst": "Apellido primero",
+      "formatPhoneNumbers": "Formatear números",
+      "longNames": "Nombres largos",
+      "showAlphabet": "Mostrar alfabeto",
+      "showSeparators": "Mostrar separadores",
+      "defaultAccount": "Cuenta predeterminada",
+      "hideWithoutNumber": "Ocultar contactos sin número"
+    },
+
+    "calls": {
+      "title": "Llamadas",
+      "incomingCall": "Llamada entrante",
+      "outgoingCall": "Llamada saliente",
+      "answerStyle": "Estilo de respuesta",
+      "photoLayout": "Diseño de foto",
+      "fullscreen": "Pantalla completa",
+      "proximityEnabled": "Sensor de proximidad",
+      "vibration": "Vibración",
+      "flashOnCall": "Flash en llamada"
+    },
+
+    "notifications": {
+      "title": "Notificaciones",
+      "missedCall": "Llamada perdida",
+      "sound": "Sonido",
+      "vibrate": "Vibrar",
+      "led": "LED"
+    },
+
+    "privacy": {
+      "title": "Privacidad",
+      "blockedNumbers": "Números bloqueados",
+      "hideCallerId": "Ocultar identificador"
+    },
+
+    "backup": {
+      "title": "Copia de seguridad",
+      "autoBackup": "Copia automática",
+      "backupNow": "Hacer copia ahora",
+      "restore": "Restaurar",
+      "lastBackup": "Última copia"
+    },
+
+    "about": {
+      "title": "Acerca de",
+      "version": "Versión",
+      "rateApp": "Valorar app",
+      "privacyPolicy": "Política de privacidad",
+      "termsOfService": "Términos de servicio"
+    }
+  },
+  "calendar": {
+    "title": "Calendario",
+    "today": "Hoy",
+    "month": "Mes",
+    "week": "Semana",
+    "day": "Día",
+    "agenda": "Agenda",
+    "newEvent": "Nuevo evento",
+    "editEvent": "Editar evento",
+    "deleteEvent": "Eliminar evento",
+    "noEvents": "Sin eventos",
+    "allDay": "Todo el día",
+    "reminder": "Recordatorio",
+    "repeat": "Repetir",
+    "location": "Ubicación",
+    "description": "Descripción",
+    "googleSync": "Sincronizar Google Calendar"
+  },
+  "notes": {
+    "title": "Notas",
+    "newNote": "Nueva nota",
+    "editNote": "Editar nota",
+    "deleteNote": "Eliminar nota",
+    "noNotes": "Sin notas",
+    "searchNotes": "Buscar notas",
+    "voiceNote": "Nota de voz"
+  },
+  "store": {
+    "themes": "Tienda de temas",
+    "ringtones": "Tienda de tonos",
+    "myPurchases": "Mis compras",
+    "preview": "Vista previa",
+    "buy": "Comprar",
+    "free": "Gratis",
+    "purchased": "Comprado",
+    "activate": "Activar",
+    "download": "Descargar",
+    "downloading": "Descargando..."
+  },
+  "permissions": {
+    "contacts": "Permiso de contactos requerido",
+    "phone": "Permiso de teléfono requerido",
+    "storage": "Permiso de almacenamiento requerido",
+    "camera": "Permiso de cámara requerido",
+    "microphone": "Permiso de micrófono requerido",
+    "calendar": "Permiso de calendario requerido",
+    "notifications": "Permiso de notificaciones requerido",
+    "grantPermission": "Conceder permiso",
+    "openSettings": "Abrir ajustes"
+  },
+  "errors": {
+    "generic": "Ha ocurrido un error",
+    "network": "Error de conexión",
+    "notFound": "No encontrado",
+    "unauthorized": "Acceso no autorizado",
+    "permissionDenied": "Permiso denegado",
+    "tryAgain": "Por favor, inténtelo de nuevo"
+  },
+  "time": {
+    "justNow": "Ahora mismo",
+    "minutesAgo": "Hace {{count}} minutos",
+    "hoursAgo": "Hace {{count}} horas",
+    "daysAgo": "Hace {{count}} días",
+    "weeksAgo": "Hace {{count}} semanas",
+    "monthsAgo": "Hace {{count}} meses",
+    "yearsAgo": "Hace {{count}} años"
+  }
+}

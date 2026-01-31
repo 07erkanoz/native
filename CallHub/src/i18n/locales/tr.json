@@ -1,0 +1,376 @@
+{
+  "common": {
+    "appName": "LifeCall",
+    "loading": "Yükleniyor...",
+    "error": "Hata",
+    "success": "Başarılı",
+    "cancel": "İptal",
+    "save": "Kaydet",
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "add": "Ekle",
+    "search": "Ara",
+    "searchPlaceholder": "Ara...",
+    "noResults": "Sonuç bulunamadı",
+    "confirm": "Onayla",
+    "yes": "Evet",
+    "no": "Hayır",
+    "ok": "Tamam",
+    "done": "Bitti",
+    "back": "Geri",
+    "next": "İleri",
+    "close": "Kapat",
+    "retry": "Tekrar Dene",
+    "refresh": "Yenile",
+    "settings": "Ayarlar",
+    "share": "Paylaş",
+    "copy": "Kopyala",
+    "copied": "Kopyalandı",
+    "select": "Seç",
+    "selectAll": "Tümünü Seç",
+    "deselectAll": "Seçimi Kaldır",
+    "apply": "Uygula",
+    "clear": "Temizle",
+    "today": "Bugün",
+    "yesterday": "Dün",
+    "tomorrow": "Yarın",
+    "now": "Şimdi",
+    "never": "Asla",
+    "always": "Her zaman",
+    "default": "Varsayılan",
+    "custom": "Özel",
+    "other": "Diğer",
+    "unknown": "Bilinmeyen",
+    "none": "Hiçbiri",
+    "all": "Tümü"
+  },
+  "tabs": {
+    "favorites": "Favoriler",
+    "calls": "Aramalar",
+    "contacts": "Kişiler",
+    "calendar": "Takvim",
+    "settings": "Ayarlar"
+  },
+  "contacts": {
+    "title": "Kişiler",
+    "searchContacts": "{{count}} kişi içinde ara",
+    "newContact": "Yeni Kişi",
+    "editContact": "Kişiyi Düzenle",
+    "deleteContact": "Kişiyi Sil",
+    "deleteConfirm": "Bu kişiyi silmek istediğinizden emin misiniz?",
+    "noContacts": "Henüz kişi yok",
+    "addFirstContact": "İlk kişinizi ekleyin",
+    "accounts": "Hesaplar",
+    "groups": "Gruplar",
+    "favorites": "Favoriler",
+    "allContacts": "Tüm Kişiler",
+    "recentContacts": "Son Kişiler",
+    "frequentContacts": "Sık Arananlar",
+
+    "fields": {
+      "name": "Ad",
+      "firstName": "Ad",
+      "lastName": "Soyad",
+      "middleName": "İkinci Ad",
+      "prefix": "Ön Ek",
+      "suffix": "Son Ek",
+      "nickname": "Takma Ad",
+      "phoneticName": "Fonetik Ad",
+      "phone": "Telefon",
+      "email": "E-posta",
+      "address": "Adres",
+      "company": "Şirket",
+      "department": "Departman",
+      "jobTitle": "Ünvan",
+      "birthday": "Doğum Günü",
+      "anniversary": "Yıldönümü",
+      "website": "Web Sitesi",
+      "note": "Not",
+      "ringtone": "Zil Sesi",
+      "photo": "Fotoğraf"
+    },
+
+    "phoneLabels": {
+      "mobile": "Mobil",
+      "home": "Ev",
+      "work": "İş",
+      "main": "Ana",
+      "fax_work": "İş Faks",
+      "fax_home": "Ev Faks",
+      "pager": "Çağrı Cihazı",
+      "other": "Diğer",
+      "custom": "Özel"
+    },
+
+    "emailLabels": {
+      "personal": "Kişisel",
+      "work": "İş",
+      "other": "Diğer",
+      "custom": "Özel"
+    },
+
+    "addressLabels": {
+      "home": "Ev",
+      "work": "İş",
+      "other": "Diğer",
+      "custom": "Özel"
+    },
+
+    "addressFields": {
+      "street": "Sokak",
+      "city": "Şehir",
+      "state": "İl",
+      "postalCode": "Posta Kodu",
+      "country": "Ülke"
+    },
+
+    "relationTypes": {
+      "spouse": "Eş",
+      "child": "Çocuk",
+      "mother": "Anne",
+      "father": "Baba",
+      "sibling": "Kardeş",
+      "assistant": "Asistan",
+      "partner": "Partner",
+      "manager": "Yönetici",
+      "other": "Diğer",
+      "custom": "Özel"
+    },
+
+    "actions": {
+      "call": "Ara",
+      "sms": "SMS",
+      "video": "Video",
+      "email": "E-posta",
+      "whatsappMessage": "WhatsApp Mesaj",
+      "whatsappCall": "WhatsApp Arama",
+      "addToFavorites": "Favorilere Ekle",
+      "removeFromFavorites": "Favorilerden Çıkar",
+      "block": "Engelle",
+      "unblock": "Engeli Kaldır",
+      "share": "Paylaş"
+    },
+
+    "photo": {
+      "change": "Fotoğrafı Değiştir",
+      "remove": "Fotoğrafı Kaldır",
+      "takePhoto": "Fotoğraf Çek",
+      "chooseFromGallery": "Galeriden Seç",
+      "sources": "Mevcut Fotoğraflar"
+    },
+
+    "account": {
+      "selectAccount": "Hesap Seçin",
+      "google": "Google",
+      "samsung": "Samsung",
+      "phone": "Telefon",
+      "whatsapp": "WhatsApp",
+      "telegram": "Telegram",
+      "microsoft": "Microsoft"
+    }
+  },
+  "calls": {
+    "title": "Aramalar",
+    "history": "Arama Geçmişi",
+    "missed": "Cevapsız",
+    "incoming": "Gelen",
+    "outgoing": "Giden",
+    "rejected": "Reddedilen",
+    "blocked": "Engellenen",
+    "all": "Tümü",
+    "duration": "Süre",
+    "noCallHistory": "Arama geçmişi yok",
+    "clearHistory": "Geçmişi Temizle",
+    "clearHistoryConfirm": "Tüm arama geçmişini silmek istediğinizden emin misiniz?",
+    "callAgain": "Tekrar Ara",
+    "addNote": "Not Ekle",
+    "viewNote": "Notu Görüntüle",
+    "filter": "Aramaları Filtrele",
+    "speedDial": "Hızlı Arama",
+    "voicemail": "Sesli Mesaj",
+
+    "status": {
+      "dialing": "Aranıyor...",
+      "ringing": "Çalıyor...",
+      "connected": "Bağlandı",
+      "onHold": "Beklemede",
+      "ended": "Sonlandı"
+    },
+
+    "actions": {
+      "answer": "Cevapla",
+      "decline": "Reddet",
+      "endCall": "Aramayı Bitir",
+      "mute": "Sessiz",
+      "unmute": "Sesi Aç",
+      "speaker": "Hoparlör",
+      "keypad": "Tuş Takımı",
+      "addCall": "Çağrı Ekle",
+      "hold": "Beklet",
+      "resume": "Devam Et",
+      "transfer": "Aktar",
+      "note": "Not Al"
+    },
+
+    "autoRedial": {
+      "title": "Otomatik Tekrar Arama",
+      "enabled": "Etkin",
+      "disabled": "Devre Dışı",
+      "interval": "Aralık",
+      "attempts": "Deneme Sayısı",
+      "onBusy": "Meşgulse",
+      "onNoAnswer": "Cevap vermezse",
+      "retrying": "Tekrar deneniyor...",
+      "attempt": "Deneme: {{current}}/{{max}}"
+    }
+  },
+  "favorites": {
+    "title": "Favoriler",
+    "noFavorites": "Henüz favori yok",
+    "addFavorite": "Favori Ekle",
+    "editFavorites": "Favorileri Düzenle",
+    "frequentContacts": "Sık İletişim Kurulanlar",
+    "reorder": "Sıralamayı değiştirmek için sürükle-bırak yapın",
+    "remove": "Kaldırmak için X'e dokunun",
+    "viewMode": "Görüntü Modu",
+    "gridView": "Izgara",
+    "listView": "Liste"
+  },
+  "settings": {
+    "title": "Ayarlar",
+
+    "appearance": {
+      "title": "Görünüm",
+      "theme": "Tema",
+      "themeLight": "Açık",
+      "themeDark": "Koyu",
+      "themeSystem": "Sistem",
+      "fontSize": "Yazı Boyutu",
+      "language": "Dil"
+    },
+
+    "contacts": {
+      "title": "Kişiler",
+      "displayContacts": "Görüntülenecek Kişiler",
+      "nameFormat": "Ad Görüntüleme",
+      "sortBy": "Sıralama",
+      "firstNameFirst": "Önce Ad",
+      "lastNameFirst": "Önce Soyad",
+      "formatPhoneNumbers": "Numaraları Biçimlendir",
+      "longNames": "Uzun İsimler",
+      "showAlphabet": "Alfabe Göster",
+      "showSeparators": "Ayırıcıları Göster",
+      "defaultAccount": "Varsayılan Hesap",
+      "hideWithoutNumber": "Numarasız Kişileri Gizle"
+    },
+
+    "calls": {
+      "title": "Aramalar",
+      "incomingCall": "Gelen Çağrı",
+      "outgoingCall": "Giden Çağrı",
+      "answerStyle": "Cevaplama Şekli",
+      "photoLayout": "Fotoğraf Düzeni",
+      "fullscreen": "Tam Ekran",
+      "proximityEnabled": "Yakınlık Sensörü",
+      "vibration": "Titreşim",
+      "flashOnCall": "Aramada Flaş"
+    },
+
+    "notifications": {
+      "title": "Bildirimler",
+      "missedCall": "Cevapsız Arama",
+      "sound": "Ses",
+      "vibrate": "Titreşim",
+      "led": "LED Işık"
+    },
+
+    "privacy": {
+      "title": "Gizlilik",
+      "blockedNumbers": "Engellenen Numaralar",
+      "hideCallerId": "Arayan Kimliğini Gizle"
+    },
+
+    "backup": {
+      "title": "Yedekleme",
+      "autoBackup": "Otomatik Yedekleme",
+      "backupNow": "Şimdi Yedekle",
+      "restore": "Geri Yükle",
+      "lastBackup": "Son Yedekleme"
+    },
+
+    "about": {
+      "title": "Hakkında",
+      "version": "Versiyon",
+      "rateApp": "Uygulamayı Puanla",
+      "privacyPolicy": "Gizlilik Politikası",
+      "termsOfService": "Kullanım Şartları"
+    }
+  },
+  "calendar": {
+    "title": "Takvim",
+    "today": "Bugün",
+    "month": "Ay",
+    "week": "Hafta",
+    "day": "Gün",
+    "agenda": "Ajanda",
+    "newEvent": "Yeni Etkinlik",
+    "editEvent": "Etkinliği Düzenle",
+    "deleteEvent": "Etkinliği Sil",
+    "noEvents": "Etkinlik yok",
+    "allDay": "Tüm Gün",
+    "reminder": "Hatırlatıcı",
+    "repeat": "Tekrarla",
+    "location": "Konum",
+    "description": "Açıklama",
+    "googleSync": "Google Takvim Senkronizasyonu"
+  },
+  "notes": {
+    "title": "Notlar",
+    "newNote": "Yeni Not",
+    "editNote": "Notu Düzenle",
+    "deleteNote": "Notu Sil",
+    "noNotes": "Henüz not yok",
+    "searchNotes": "Notlarda ara",
+    "voiceNote": "Sesli Not"
+  },
+  "store": {
+    "themes": "Tema Mağazası",
+    "ringtones": "Zil Sesi Mağazası",
+    "myPurchases": "Satın Alınanlar",
+    "preview": "Önizleme",
+    "buy": "Satın Al",
+    "free": "Ücretsiz",
+    "purchased": "Satın Alındı",
+    "activate": "Aktif Et",
+    "download": "İndir",
+    "downloading": "İndiriliyor..."
+  },
+  "permissions": {
+    "contacts": "Kişilere erişim izni gerekli",
+    "phone": "Telefon izni gerekli",
+    "storage": "Depolama izni gerekli",
+    "camera": "Kamera izni gerekli",
+    "microphone": "Mikrofon izni gerekli",
+    "calendar": "Takvim izni gerekli",
+    "notifications": "Bildirim izni gerekli",
+    "grantPermission": "İzin Ver",
+    "openSettings": "Ayarları Aç"
+  },
+  "errors": {
+    "generic": "Bir hata oluştu",
+    "network": "Bağlantı hatası",
+    "notFound": "Bulunamadı",
+    "unauthorized": "Yetkisiz erişim",
+    "permissionDenied": "İzin reddedildi",
+    "tryAgain": "Lütfen tekrar deneyin"
+  },
+  "time": {
+    "justNow": "Az önce",
+    "minutesAgo": "{{count}} dakika önce",
+    "hoursAgo": "{{count}} saat önce",
+    "daysAgo": "{{count}} gün önce",
+    "weeksAgo": "{{count}} hafta önce",
+    "monthsAgo": "{{count}} ay önce",
+    "yearsAgo": "{{count}} yıl önce"
+  }
+}

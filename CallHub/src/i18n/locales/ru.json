@@ -1,0 +1,376 @@
+{
+  "common": {
+    "appName": "LifeCall",
+    "loading": "Загрузка...",
+    "error": "Ошибка",
+    "success": "Успешно",
+    "cancel": "Отмена",
+    "save": "Сохранить",
+    "delete": "Удалить",
+    "edit": "Изменить",
+    "add": "Добавить",
+    "search": "Поиск",
+    "searchPlaceholder": "Поиск...",
+    "noResults": "Ничего не найдено",
+    "confirm": "Подтвердить",
+    "yes": "Да",
+    "no": "Нет",
+    "ok": "ОК",
+    "done": "Готово",
+    "back": "Назад",
+    "next": "Далее",
+    "close": "Закрыть",
+    "retry": "Повторить",
+    "refresh": "Обновить",
+    "settings": "Настройки",
+    "share": "Поделиться",
+    "copy": "Копировать",
+    "copied": "Скопировано",
+    "select": "Выбрать",
+    "selectAll": "Выбрать всё",
+    "deselectAll": "Снять выделение",
+    "apply": "Применить",
+    "clear": "Очистить",
+    "today": "Сегодня",
+    "yesterday": "Вчера",
+    "tomorrow": "Завтра",
+    "now": "Сейчас",
+    "never": "Никогда",
+    "always": "Всегда",
+    "default": "По умолчанию",
+    "custom": "Свой",
+    "other": "Другое",
+    "unknown": "Неизвестно",
+    "none": "Нет",
+    "all": "Все"
+  },
+  "tabs": {
+    "favorites": "Избранное",
+    "calls": "Вызовы",
+    "contacts": "Контакты",
+    "calendar": "Календарь",
+    "settings": "Настройки"
+  },
+  "contacts": {
+    "title": "Контакты",
+    "searchContacts": "Поиск среди {{count}} контактов",
+    "newContact": "Новый контакт",
+    "editContact": "Изменить контакт",
+    "deleteContact": "Удалить контакт",
+    "deleteConfirm": "Вы уверены, что хотите удалить этот контакт?",
+    "noContacts": "Нет контактов",
+    "addFirstContact": "Добавьте первый контакт",
+    "accounts": "Аккаунты",
+    "groups": "Группы",
+    "favorites": "Избранное",
+    "allContacts": "Все контакты",
+    "recentContacts": "Недавние контакты",
+    "frequentContacts": "Частые контакты",
+
+    "fields": {
+      "name": "Имя",
+      "firstName": "Имя",
+      "lastName": "Фамилия",
+      "middleName": "Отчество",
+      "prefix": "Префикс",
+      "suffix": "Суффикс",
+      "nickname": "Псевдоним",
+      "phoneticName": "Произношение",
+      "phone": "Телефон",
+      "email": "Эл. почта",
+      "address": "Адрес",
+      "company": "Компания",
+      "department": "Отдел",
+      "jobTitle": "Должность",
+      "birthday": "День рождения",
+      "anniversary": "Годовщина",
+      "website": "Сайт",
+      "note": "Заметка",
+      "ringtone": "Мелодия",
+      "photo": "Фото"
+    },
+
+    "phoneLabels": {
+      "mobile": "Мобильный",
+      "home": "Домашний",
+      "work": "Рабочий",
+      "main": "Основной",
+      "fax_work": "Рабочий факс",
+      "fax_home": "Домашний факс",
+      "pager": "Пейджер",
+      "other": "Другой",
+      "custom": "Свой"
+    },
+
+    "emailLabels": {
+      "personal": "Личный",
+      "work": "Рабочий",
+      "other": "Другой",
+      "custom": "Свой"
+    },
+
+    "addressLabels": {
+      "home": "Домашний",
+      "work": "Рабочий",
+      "other": "Другой",
+      "custom": "Свой"
+    },
+
+    "addressFields": {
+      "street": "Улица",
+      "city": "Город",
+      "state": "Область",
+      "postalCode": "Индекс",
+      "country": "Страна"
+    },
+
+    "relationTypes": {
+      "spouse": "Супруг(а)",
+      "child": "Ребёнок",
+      "mother": "Мать",
+      "father": "Отец",
+      "sibling": "Брат/Сестра",
+      "assistant": "Ассистент",
+      "partner": "Партнёр",
+      "manager": "Руководитель",
+      "other": "Другое",
+      "custom": "Свой"
+    },
+
+    "actions": {
+      "call": "Позвонить",
+      "sms": "СМС",
+      "video": "Видео",
+      "email": "Письмо",
+      "whatsappMessage": "WhatsApp сообщение",
+      "whatsappCall": "WhatsApp звонок",
+      "addToFavorites": "В избранное",
+      "removeFromFavorites": "Из избранного",
+      "block": "Заблокировать",
+      "unblock": "Разблокировать",
+      "share": "Поделиться"
+    },
+
+    "photo": {
+      "change": "Изменить фото",
+      "remove": "Удалить фото",
+      "takePhoto": "Сделать фото",
+      "chooseFromGallery": "Выбрать из галереи",
+      "sources": "Доступные фото"
+    },
+
+    "account": {
+      "selectAccount": "Выберите аккаунт",
+      "google": "Google",
+      "samsung": "Samsung",
+      "phone": "Телефон",
+      "whatsapp": "WhatsApp",
+      "telegram": "Telegram",
+      "microsoft": "Microsoft"
+    }
+  },
+  "calls": {
+    "title": "Вызовы",
+    "history": "История вызовов",
+    "missed": "Пропущенный",
+    "incoming": "Входящий",
+    "outgoing": "Исходящий",
+    "rejected": "Отклонённый",
+    "blocked": "Заблокированный",
+    "all": "Все",
+    "duration": "Длительность",
+    "noCallHistory": "Нет вызовов",
+    "clearHistory": "Очистить историю",
+    "clearHistoryConfirm": "Вы уверены, что хотите очистить всю историю вызовов?",
+    "callAgain": "Перезвонить",
+    "addNote": "Добавить заметку",
+    "viewNote": "Просмотреть заметку",
+    "filter": "Фильтр вызовов",
+    "speedDial": "Быстрый набор",
+    "voicemail": "Голосовая почта",
+
+    "status": {
+      "dialing": "Набор номера...",
+      "ringing": "Звонок...",
+      "connected": "Соединён",
+      "onHold": "На удержании",
+      "ended": "Завершён"
+    },
+
+    "actions": {
+      "answer": "Ответить",
+      "decline": "Отклонить",
+      "endCall": "Завершить",
+      "mute": "Выкл. микрофон",
+      "unmute": "Вкл. микрофон",
+      "speaker": "Динамик",
+      "keypad": "Клавиатура",
+      "addCall": "Добавить вызов",
+      "hold": "Удержание",
+      "resume": "Продолжить",
+      "transfer": "Перевести",
+      "note": "Заметка"
+    },
+
+    "autoRedial": {
+      "title": "Автодозвон",
+      "enabled": "Включён",
+      "disabled": "Выключен",
+      "interval": "Интервал",
+      "attempts": "Попытки",
+      "onBusy": "Если занято",
+      "onNoAnswer": "Если нет ответа",
+      "retrying": "Повторный набор...",
+      "attempt": "Попытка: {{current}}/{{max}}"
+    }
+  },
+  "favorites": {
+    "title": "Избранное",
+    "noFavorites": "Нет избранных",
+    "addFavorite": "Добавить в избранное",
+    "editFavorites": "Изменить избранное",
+    "frequentContacts": "Частые контакты",
+    "reorder": "Перетащите для сортировки",
+    "remove": "Нажмите X для удаления",
+    "viewMode": "Режим просмотра",
+    "gridView": "Сетка",
+    "listView": "Список"
+  },
+  "settings": {
+    "title": "Настройки",
+
+    "appearance": {
+      "title": "Внешний вид",
+      "theme": "Тема",
+      "themeLight": "Светлая",
+      "themeDark": "Тёмная",
+      "themeSystem": "Системная",
+      "fontSize": "Размер шрифта",
+      "language": "Язык"
+    },
+
+    "contacts": {
+      "title": "Контакты",
+      "displayContacts": "Отображение контактов",
+      "nameFormat": "Формат имени",
+      "sortBy": "Сортировать по",
+      "firstNameFirst": "Сначала имя",
+      "lastNameFirst": "Сначала фамилия",
+      "formatPhoneNumbers": "Форматировать номера",
+      "longNames": "Длинные имена",
+      "showAlphabet": "Показать алфавит",
+      "showSeparators": "Показать разделители",
+      "defaultAccount": "Аккаунт по умолчанию",
+      "hideWithoutNumber": "Скрыть без номера"
+    },
+
+    "calls": {
+      "title": "Вызовы",
+      "incomingCall": "Входящий вызов",
+      "outgoingCall": "Исходящий вызов",
+      "answerStyle": "Стиль ответа",
+      "photoLayout": "Макет фото",
+      "fullscreen": "Полный экран",
+      "proximityEnabled": "Датчик приближения",
+      "vibration": "Вибрация",
+      "flashOnCall": "Вспышка при звонке"
+    },
+
+    "notifications": {
+      "title": "Уведомления",
+      "missedCall": "Пропущенный вызов",
+      "sound": "Звук",
+      "vibrate": "Вибрация",
+      "led": "Светодиод"
+    },
+
+    "privacy": {
+      "title": "Конфиденциальность",
+      "blockedNumbers": "Заблокированные номера",
+      "hideCallerId": "Скрыть номер"
+    },
+
+    "backup": {
+      "title": "Резервное копирование",
+      "autoBackup": "Автокопирование",
+      "backupNow": "Создать копию",
+      "restore": "Восстановить",
+      "lastBackup": "Последняя копия"
+    },
+
+    "about": {
+      "title": "О приложении",
+      "version": "Версия",
+      "rateApp": "Оценить",
+      "privacyPolicy": "Политика конфиденциальности",
+      "termsOfService": "Условия использования"
+    }
+  },
+  "calendar": {
+    "title": "Календарь",
+    "today": "Сегодня",
+    "month": "Месяц",
+    "week": "Неделя",
+    "day": "День",
+    "agenda": "Повестка",
+    "newEvent": "Новое событие",
+    "editEvent": "Изменить событие",
+    "deleteEvent": "Удалить событие",
+    "noEvents": "Нет событий",
+    "allDay": "Весь день",
+    "reminder": "Напоминание",
+    "repeat": "Повтор",
+    "location": "Место",
+    "description": "Описание",
+    "googleSync": "Синхронизация Google"
+  },
+  "notes": {
+    "title": "Заметки",
+    "newNote": "Новая заметка",
+    "editNote": "Изменить заметку",
+    "deleteNote": "Удалить заметку",
+    "noNotes": "Нет заметок",
+    "searchNotes": "Поиск заметок",
+    "voiceNote": "Голосовая заметка"
+  },
+  "store": {
+    "themes": "Магазин тем",
+    "ringtones": "Магазин мелодий",
+    "myPurchases": "Мои покупки",
+    "preview": "Просмотр",
+    "buy": "Купить",
+    "free": "Бесплатно",
+    "purchased": "Куплено",
+    "activate": "Активировать",
+    "download": "Скачать",
+    "downloading": "Загрузка..."
+  },
+  "permissions": {
+    "contacts": "Требуется доступ к контактам",
+    "phone": "Требуется доступ к телефону",
+    "storage": "Требуется доступ к хранилищу",
+    "camera": "Требуется доступ к камере",
+    "microphone": "Требуется доступ к микрофону",
+    "calendar": "Требуется доступ к календарю",
+    "notifications": "Требуется доступ к уведомлениям",
+    "grantPermission": "Предоставить доступ",
+    "openSettings": "Открыть настройки"
+  },
+  "errors": {
+    "generic": "Произошла ошибка",
+    "network": "Ошибка соединения",
+    "notFound": "Не найдено",
+    "unauthorized": "Нет доступа",
+    "permissionDenied": "Доступ запрещён",
+    "tryAgain": "Пожалуйста, попробуйте снова"
+  },
+  "time": {
+    "justNow": "Только что",
+    "minutesAgo": "{{count}} минут назад",
+    "hoursAgo": "{{count}} часов назад",
+    "daysAgo": "{{count}} дней назад",
+    "weeksAgo": "{{count}} недель назад",
+    "monthsAgo": "{{count}} месяцев назад",
+    "yearsAgo": "{{count}} лет назад"
+  }
+}

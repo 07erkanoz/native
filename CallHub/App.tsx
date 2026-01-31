@@ -1,72 +1,101 @@
 /**
- * CallHub - All-in-One Phone, Contacts, Calendar & Notes App
+ * LifeCall - All-in-One Phone, Contacts, Calendar & Notes App
  * @format
  */
 
-import React from 'react';
-import {
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-  useColorScheme,
-} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StatusBar, View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+// Store
+import { store, persistor } from './src/store';
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? '#1a1a1a' : '#ffffff',
-    flex: 1,
-  };
+// Theme
+import { ThemeProvider, useAppTheme } from './src/theme';
+
+// i18n
+import { initI18n } from './src/i18n';
+
+// Navigation
+import { RootNavigator } from './src/navigation';
+
+// Loading bileşeni
+const LoadingScreen: React.FC = () => (
+  <View style={styles.loadingContainer}>
+    <ActivityIndicator size="large" color="#2196F3" />
+    <Text style={styles.loadingText}>LifeCall</Text>
+  </View>
+);
+
+// Ana uygulama içeriği
+const AppContent: React.FC = () => {
+  const { theme, isDarkMode } = useAppTheme();
 
   return (
-    <SafeAreaView style={backgroundStyle}>
+    <>
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
+        backgroundColor={theme.colors.background}
       />
-      <View style={styles.container}>
-        <Text style={[styles.title, {color: isDarkMode ? '#fff' : '#000'}]}>
-          CallHub
-        </Text>
-        <Text style={[styles.subtitle, {color: isDarkMode ? '#aaa' : '#666'}]}>
-          All-in-One Phone App
-        </Text>
-        <View style={styles.statusContainer}>
-          <Text style={styles.statusText}>Setting up project...</Text>
-        </View>
-      </View>
-    </SafeAreaView>
+      <RootNavigator />
+    </>
+  );
+};
+
+// Ana App bileşeni
+function App(): React.JSX.Element {
+  const [isI18nReady, setIsI18nReady] = useState(false);
+
+  // i18n'i başlat
+  useEffect(() => {
+    const init = async () => {
+      await initI18n();
+      setIsI18nReady(true);
+    };
+    init();
+  }, []);
+
+  // i18n hazır olana kadar bekle
+  if (!isI18nReady) {
+    return <LoadingScreen />;
+  }
+
+  return (
+    <GestureHandlerRootView style={styles.root}>
+      <SafeAreaProvider>
+        <Provider store={store}>
+          <PersistGate loading={<LoadingScreen />} persistor={persistor}>
+            <ThemeProvider>
+              <NavigationContainer>
+                <AppContent />
+              </NavigationContainer>
+            </ThemeProvider>
+          </PersistGate>
+        </Provider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  root: {
+    flex: 1,
+  },
+  loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    backgroundColor: '#FFFFFF',
   },
-  title: {
-    fontSize: 32,
+  loadingText: {
+    marginTop: 16,
+    fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 16,
-    marginBottom: 40,
-  },
-  statusContainer: {
-    backgroundColor: '#4CAF50',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 20,
-  },
-  statusText: {
-    color: '#fff',
-    fontSize: 14,
+    color: '#2196F3',
   },
 });
 
