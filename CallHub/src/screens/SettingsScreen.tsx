@@ -75,6 +75,16 @@ const SettingsScreen: React.FC = () => {
           style={[styles.listItem, { backgroundColor: theme.colors.surface }]}
           titleStyle={{ color: theme.colors.onSurface }}
         />
+        <Divider />
+        <List.Item
+          title={t('callThemes.title') || 'Arama Teması'}
+          description={t('callThemes.subtitle') || 'Gelen arama ekranını özelleştir'}
+          left={() => renderIcon('palette-swatch-variant')}
+          onPress={() => navigation.navigate('SettingsCallTheme')}
+          style={[styles.listItem, { backgroundColor: theme.colors.surface }]}
+          titleStyle={{ color: theme.colors.onSurface }}
+          descriptionStyle={{ color: theme.colors.onSurfaceVariant }}
+        />
       </List.Section>
 
       {/* Mağaza */}

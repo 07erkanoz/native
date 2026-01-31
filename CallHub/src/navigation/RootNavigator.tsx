@@ -30,6 +30,7 @@ import SettingsAppearanceScreen from '../screens/settings/SettingsAppearanceScre
 import SettingsLanguageScreen from '../screens/settings/SettingsLanguageScreen';
 import SettingsCalendarScreen from '../screens/settings/SettingsCalendarScreen';
 import SettingsAboutScreen from '../screens/settings/SettingsAboutScreen';
+import SettingsCallThemeScreen from '../screens/settings/SettingsCallThemeScreen';
 import ThemeStoreScreen from '../screens/store/ThemeStoreScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -158,6 +159,14 @@ const RootNavigator: React.FC = () => {
         component={SettingsLanguageScreen}
         options={{
           title: t('settings.appearance.language'),
+        }}
+      />
+
+      <Stack.Screen
+        name="SettingsCallTheme"
+        component={SettingsCallThemeScreen}
+        options={{
+          title: t('callThemes.title') || 'Arama Teması',
         }}
       />
 

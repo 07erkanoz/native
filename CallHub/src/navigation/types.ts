@@ -57,6 +57,7 @@ export type RootStackParamList = {
   SettingsBackup: undefined;
   SettingsAbout: undefined;
   SettingsLanguage: undefined;
+  SettingsCallTheme: undefined;
   BlockedNumbers: undefined;
   SpamReport: { phoneNumber?: string; callerName?: string };
 

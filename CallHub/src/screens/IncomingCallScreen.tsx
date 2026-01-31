@@ -1,46 +1,38 @@
 /**
- * LifeCall - Gelen Arama Ekranı
+ * LifeCall - Gelen Arama Ekranı (Temalı)
  *
  * Gelen aramalar için tam ekran UI
- * - Arayan bilgisi (isim, fotoğraf, numara)
- * - Cevapla / Reddet butonları
- * - Kaydırarak cevaplama/reddetme
- * - SMS ile hızlı yanıt
+ * - Özelleştirilebilir temalar (16 hazır tema + özel temalar)
+ * - Farklı cevaplama stilleri (iOS, Android, Floating, Minimal)
+ * - 15 farklı buton animasyonu
+ * - Video ve gradient arka plan desteği
  */
 
 import React, { useEffect, useState, useCallback, useRef, useMemo } from 'react';
 import {
   View,
   StyleSheet,
-  Dimensions,
   Animated,
-  PanResponder,
   Vibration,
   StatusBar,
-  Platform,
   Linking,
 } from 'react-native';
 import {
   Text,
-  IconButton,
   Portal,
   Modal,
   Button,
 } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { useAppTheme } from '../theme';
-import { Avatar } from '../components';
+import { useAppTheme, useCallTheme, AVATAR_SIZES } from '../theme';
+import { Avatar, CallBackground, AnswerButtons } from '../components';
 import { RootStackScreenProps } from '../navigation/types';
 import { Contact } from '../types';
 import ContactRepository from '../database/repositories/ContactRepository';
 import { defaultAppService } from '../services';
 import VoLTEModule from '../native/VoLTEModule';
 import { getCountryFromPhoneNumber } from '../data/countryCodes';
-
-const { width, height } = Dimensions.get('window');
-const SWIPE_THRESHOLD = 80;
 
 // Hızlı SMS yanıtları
 const QUICK_REPLIES = [
@@ -54,19 +46,9 @@ type Props = RootStackScreenProps<'IncomingCall'>;
 
 const IncomingCallScreen: React.FC<Props> = ({ navigation, route }) => {
   const { t } = useTranslation();
-  const { theme, isDarkMode } = useAppTheme();
+  const { theme } = useAppTheme();
+  const { activeTheme } = useCallTheme();
   const { callId } = route.params;
-
-  // Tema renkleri
-  const callColors = useMemo(() => ({
-    background: theme.colors.callBackground,
-    primary: theme.colors.callPrimary,
-    danger: theme.colors.callDanger,
-    text: theme.colors.onSurface,
-    textMuted: theme.colors.onSurfaceVariant,
-    surface: theme.colors.surface,
-    surfaceVariant: theme.colors.surfaceVariant,
-  }), [theme]);
 
   // State
   const [callerInfo, setCallerInfo] = useState<{
@@ -91,32 +73,78 @@ const IncomingCallScreen: React.FC<Props> = ({ navigation, route }) => {
     return null;
   }, [callerInfo.number]);
 
-  // Animasyonlar
-  const answerButtonScale = useRef(new Animated.Value(1)).current;
-  const declineButtonScale = useRef(new Animated.Value(1)).current;
+  // Avatar animasyonu
   const pulseAnim = useRef(new Animated.Value(1)).current;
-  const swipeX = useRef(new Animated.Value(0)).current;
+  const glowAnim = useRef(new Animated.Value(0)).current;
+  const floatAnim = useRef(new Animated.Value(0)).current;
 
-  // Çalma animasyonu
+  // Avatar animasyonları
   useEffect(() => {
-    const pulseAnimation = Animated.loop(
-      Animated.sequence([
-        Animated.timing(pulseAnim, {
-          toValue: 1.2,
-          duration: 800,
-          useNativeDriver: true,
-        }),
-        Animated.timing(pulseAnim, {
-          toValue: 1,
-          duration: 800,
-          useNativeDriver: true,
-        }),
-      ])
-    );
-    pulseAnimation.start();
+    let animation: Animated.CompositeAnimation | null = null;
 
-    return () => pulseAnimation.stop();
-  }, [pulseAnim]);
+    switch (activeTheme.avatar.ringStyle) {
+      case 'pulse':
+        animation = Animated.loop(
+          Animated.sequence([
+            Animated.timing(pulseAnim, {
+              toValue: 1.08,
+              duration: 800,
+              useNativeDriver: true,
+            }),
+            Animated.timing(pulseAnim, {
+              toValue: 1,
+              duration: 800,
+              useNativeDriver: true,
+            }),
+          ])
+        );
+        break;
+      case 'glow':
+        animation = Animated.loop(
+          Animated.sequence([
+            Animated.timing(glowAnim, {
+              toValue: 1,
+              duration: 1200,
+              useNativeDriver: false,
+            }),
+            Animated.timing(glowAnim, {
+              toValue: 0,
+              duration: 1200,
+              useNativeDriver: false,
+            }),
+          ])
+        );
+        break;
+    }
+
+    // Float animasyonu
+    if (activeTheme.animations?.avatarAnimation === 'float') {
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(floatAnim, {
+            toValue: -8,
+            duration: 1500,
+            useNativeDriver: true,
+          }),
+          Animated.timing(floatAnim, {
+            toValue: 0,
+            duration: 1500,
+            useNativeDriver: true,
+          }),
+        ])
+      ).start();
+    }
+
+    if (animation) {
+      animation.start();
+    }
+
+    return () => {
+      if (animation) {
+        animation.stop();
+      }
+    };
+  }, [activeTheme, pulseAnim, glowAnim, floatAnim]);
 
   // Titreşim
   useEffect(() => {
@@ -147,10 +175,7 @@ const IncomingCallScreen: React.FC<Props> = ({ navigation, route }) => {
   useEffect(() => {
     const fetchCallerInfo = async () => {
       try {
-        // CallId'den telefon numarasını çıkar (gerçek uygulamada CallKeep'ten gelecek)
-        const phoneNumber = callId; // Örnek: +905551234567
-
-        // Kişi veritabanında ara
+        const phoneNumber = callId;
         const contacts = await ContactRepository.searchContacts(phoneNumber);
 
         if (contacts.length > 0) {
@@ -182,7 +207,6 @@ const IncomingCallScreen: React.FC<Props> = ({ navigation, route }) => {
 
     try {
       await defaultAppService.answerCall(callId);
-      // Aktif arama ekranına geç
       navigation.replace('OngoingCall', { callId });
     } catch (error) {
       console.error('Arama cevaplanamadı:', error);
@@ -210,243 +234,150 @@ const IncomingCallScreen: React.FC<Props> = ({ navigation, route }) => {
       setShowQuickReplies(false);
       handleDecline();
 
-      // SMS gönder
       const cleanNumber = callerInfo.number.replace(/[^0-9+]/g, '');
       Linking.openURL(`sms:${cleanNumber}?body=${encodeURIComponent(message)}`);
     },
     [callerInfo.number, handleDecline]
   );
 
-  // Kaydırma gesture
-  const panResponder = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onMoveShouldSetPanResponder: () => true,
-      onPanResponderGrant: () => {
-        Vibration.vibrate(10);
-      },
-      onPanResponderMove: (_, gestureState) => {
-        swipeX.setValue(gestureState.dx);
-      },
-      onPanResponderRelease: (_, gestureState) => {
-        if (gestureState.dx > SWIPE_THRESHOLD) {
-          // Sağa kaydır - Cevapla
-          Animated.spring(swipeX, {
-            toValue: width,
-            useNativeDriver: true,
-          }).start(handleAnswer);
-        } else if (gestureState.dx < -SWIPE_THRESHOLD) {
-          // Sola kaydır - Reddet
-          Animated.spring(swipeX, {
-            toValue: -width,
-            useNativeDriver: true,
-          }).start(handleDecline);
-        } else {
-          // Geri dön
-          Animated.spring(swipeX, {
-            toValue: 0,
-            useNativeDriver: true,
-          }).start();
-        }
-      },
-    })
-  ).current;
+  // Avatar boyutu
+  const avatarSize = AVATAR_SIZES[activeTheme.avatar.size];
+
+  // Avatar border radius
+  const getAvatarBorderRadius = () => {
+    switch (activeTheme.avatar.shape) {
+      case 'square': return avatarSize / 8;
+      case 'rounded': return avatarSize / 4;
+      default: return avatarSize / 2;
+    }
+  };
+
+  // Glow shadow style
+  const glowShadowStyle = useMemo(() => {
+    if (activeTheme.avatar.ringStyle === 'glow') {
+      return {
+        shadowColor: activeTheme.avatar.ringColor || activeTheme.colors.primary,
+        shadowOpacity: glowAnim,
+        shadowRadius: 25,
+        shadowOffset: { width: 0, height: 0 },
+      };
+    }
+    return {};
+  }, [activeTheme, glowAnim]);
 
   return (
-    <View style={[styles.container, { backgroundColor: callColors.background }]}>
+    <CallBackground
+      background={activeTheme.background}
+      animation={activeTheme.animations?.backgroundAnimation}
+      style={styles.container}
+    >
       <StatusBar
         barStyle="light-content"
         backgroundColor="transparent"
         translucent
       />
 
-      {/* Üst Kısım - Arayan Bilgisi */}
+      {/* Arayan Bilgisi Bölümü */}
       <View style={styles.callerSection}>
-        {/* Gelen Arama Etiketi ve HD rozeti */}
-        <View style={styles.callLabelRow}>
-          <Text style={[styles.callLabel, { color: callColors.textMuted }]}>
-            {t('calls.incoming') || 'Gelen Arama'}
-          </Text>
-          {isVolteCall && (
-            <Text style={[styles.hdBadgeSmall, { color: callColors.primary }]}>HD</Text>
-          )}
-        </View>
+        {/* Gelen Arama Etiketi */}
+        {activeTheme.showCallerInfo !== false && (
+          <View style={styles.callLabelRow}>
+            <Text style={[styles.callLabel, { color: activeTheme.colors.textMuted }]}>
+              {t('calls.incoming') || 'Gelen Arama'}
+            </Text>
+            {activeTheme.showHdBadge !== false && isVolteCall && (
+              <Text style={[styles.hdBadge, { color: activeTheme.colors.primary }]}>HD</Text>
+            )}
+          </View>
+        )}
 
         {/* Avatar */}
         <Animated.View
           style={[
             styles.avatarContainer,
             {
-              transform: [{ scale: pulseAnim }],
+              transform: [
+                { scale: activeTheme.avatar.ringStyle === 'pulse' ? pulseAnim : 1 },
+                { translateY: activeTheme.animations?.avatarAnimation === 'float' ? floatAnim : 0 },
+              ],
             },
+            glowShadowStyle,
           ]}
         >
-          <View style={[styles.avatarRing, { borderColor: callColors.primary }]}>
+          <View
+            style={[
+              styles.avatarRing,
+              {
+                borderColor: activeTheme.avatar.ringStyle !== 'none'
+                  ? (activeTheme.avatar.ringColor || activeTheme.colors.primary)
+                  : 'transparent',
+                borderWidth: activeTheme.avatar.ringWidth || 3,
+                borderRadius: getAvatarBorderRadius() + 10,
+                padding: activeTheme.avatar.ringStyle !== 'none' ? 6 : 0,
+              },
+              activeTheme.avatar.ringStyle === 'rainbow' && styles.rainbowRing,
+            ]}
+          >
             <Avatar
               name={callerInfo.name}
               photoUri={callerInfo.photoUri}
-              size={120}
+              size={avatarSize}
+              style={{
+                borderRadius: getAvatarBorderRadius(),
+              }}
             />
           </View>
         </Animated.View>
 
         {/* İsim */}
-        <Text style={[styles.callerName, { color: theme.colors.onSurface }]}>
+        <Text style={[styles.callerName, { color: activeTheme.colors.text }]}>
           {callerInfo.name}
         </Text>
 
         {/* Numara ve Ülke Bayrağı */}
         {callerInfo.name !== callerInfo.number && callerInfo.number && (
           <View style={styles.numberRow}>
-            {countryInfo && (
+            {activeTheme.showCountryFlag !== false && countryInfo && (
               <Text style={styles.countryFlag}>{countryInfo.flag}</Text>
             )}
-            <Text style={[styles.callerNumber, { color: callColors.textMuted }]}>
+            <Text style={[styles.callerNumber, { color: activeTheme.colors.textMuted }]}>
               {callerInfo.number}
             </Text>
           </View>
         )}
 
         {/* Ülke Adı */}
-        {countryInfo && (
-          <Text style={[styles.countryName, { color: callColors.textMuted }]}>
+        {activeTheme.showCountryFlag !== false && countryInfo && (
+          <Text style={[styles.countryName, { color: activeTheme.colors.textMuted }]}>
             {countryInfo.nameTr}
           </Text>
         )}
 
-        {/* Kişi etiketi */}
-        {callerInfo.contact?.company && (
-          <Text style={[styles.callerCompany, { color: callColors.textMuted }]}>
+        {/* Şirket */}
+        {activeTheme.showCompany !== false && callerInfo.contact?.company && (
+          <Text style={[styles.callerCompany, { color: activeTheme.colors.textMuted }]}>
             {callerInfo.contact.company}
           </Text>
         )}
       </View>
 
-      {/* Alt Kısım - Butonlar */}
+      {/* Cevaplama Butonları */}
       <View style={styles.actionsSection}>
-        {/* Kaydırma İpucu */}
-        <Animated.View
-          style={[
-            styles.swipeHint,
-            {
-              transform: [{ translateX: swipeX }],
-            },
-          ]}
-          {...panResponder.panHandlers}
-        >
-          <View style={[styles.swipeTrack, { backgroundColor: theme.colors.surfaceVariant }]}>
-            <View style={[styles.swipeIndicator, { backgroundColor: callColors.danger }]}>
-              <MaterialCommunityIcons name="phone-hangup" size={24} color="white" />
-            </View>
-            <Text style={[styles.swipeText, { color: callColors.textMuted }]}>
-              {t('calls.swipeToAnswer') || 'Kaydırarak cevapla'}
-            </Text>
-            <View style={[styles.swipeIndicator, { backgroundColor: callColors.primary }]}>
-              <MaterialCommunityIcons name="phone" size={24} color="white" />
-            </View>
-          </View>
-        </Animated.View>
-
-        {/* Ana Butonlar */}
-        <View style={styles.mainButtons}>
-          {/* Reddet Butonu */}
-          <View style={styles.buttonWrapper}>
-            <Animated.View style={{ transform: [{ scale: declineButtonScale }] }}>
-              <IconButton
-                icon="phone-hangup"
-                mode="contained"
-                containerColor={callColors.danger}
-                iconColor="white"
-                size={32}
-                onPress={handleDecline}
-                onPressIn={() => {
-                  Animated.spring(declineButtonScale, {
-                    toValue: 0.9,
-                    useNativeDriver: true,
-                  }).start();
-                }}
-                onPressOut={() => {
-                  Animated.spring(declineButtonScale, {
-                    toValue: 1,
-                    useNativeDriver: true,
-                  }).start();
-                }}
-                disabled={isDeclining || isAnswering}
-                style={styles.actionButton}
-              />
-            </Animated.View>
-            <Text style={[styles.buttonLabel, { color: callColors.textMuted }]}>
-              {t('calls.actions.decline') || 'Reddet'}
-            </Text>
-          </View>
-
-          {/* SMS ile Yanıtla */}
-          <View style={styles.buttonWrapper}>
-            <IconButton
-              icon="message-text"
-              mode="contained"
-              containerColor={theme.colors.surfaceVariant}
-              iconColor={callColors.text}
-              size={28}
-              onPress={() => setShowQuickReplies(true)}
-              disabled={isDeclining || isAnswering}
-              style={styles.secondaryButton}
-            />
-            <Text style={[styles.buttonLabel, { color: callColors.textMuted }]}>
-              {t('calls.quickReply') || 'SMS'}
-            </Text>
-          </View>
-
-          {/* Hatırlatıcı */}
-          <View style={styles.buttonWrapper}>
-            <IconButton
-              icon="alarm"
-              mode="contained"
-              containerColor={theme.colors.surfaceVariant}
-              iconColor={callColors.text}
-              size={28}
-              onPress={() => {
-                // TODO: Hatırlatıcı ayarla
-              }}
-              disabled={isDeclining || isAnswering}
-              style={styles.secondaryButton}
-            />
-            <Text style={[styles.buttonLabel, { color: callColors.textMuted }]}>
-              {t('calls.reminder') || 'Hatırlat'}
-            </Text>
-          </View>
-
-          {/* Cevapla Butonu */}
-          <View style={styles.buttonWrapper}>
-            <Animated.View style={{ transform: [{ scale: answerButtonScale }] }}>
-              <IconButton
-                icon="phone"
-                mode="contained"
-                containerColor={callColors.primary}
-                iconColor="white"
-                size={32}
-                onPress={handleAnswer}
-                onPressIn={() => {
-                  Animated.spring(answerButtonScale, {
-                    toValue: 0.9,
-                    useNativeDriver: true,
-                  }).start();
-                }}
-                onPressOut={() => {
-                  Animated.spring(answerButtonScale, {
-                    toValue: 1,
-                    useNativeDriver: true,
-                  }).start();
-                }}
-                disabled={isDeclining || isAnswering}
-                style={styles.actionButton}
-              />
-            </Animated.View>
-            <Text style={[styles.buttonLabel, { color: callColors.textMuted }]}>
-              {t('calls.actions.answer') || 'Cevapla'}
-            </Text>
-          </View>
-        </View>
+        <AnswerButtons
+          answerStyle={activeTheme.answerStyle}
+          colors={activeTheme.colors}
+          onAnswer={handleAnswer}
+          onDecline={handleDecline}
+          onMessage={() => setShowQuickReplies(true)}
+          disabled={isAnswering || isDeclining}
+          labels={{
+            answer: t('calls.actions.answer') || 'Answer',
+            decline: t('calls.actions.decline') || 'Decline',
+            message: t('calls.quickReply') || 'Message',
+            reminder: t('calls.reminder') || 'Remind',
+            swipeToAnswer: t('calls.swipeToAnswer') || 'slide to answer',
+          }}
+        />
       </View>
 
       {/* Hızlı SMS Yanıtları Modal */}
@@ -487,7 +418,7 @@ const IncomingCallScreen: React.FC<Props> = ({ navigation, route }) => {
           </Button>
         </Modal>
       </Portal>
-    </View>
+    </CallBackground>
   );
 };
 
@@ -499,36 +430,39 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: 60,
+    paddingTop: 80,
+    paddingHorizontal: 20,
   },
   callLabelRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
-    marginBottom: 24,
+    gap: 8,
+    marginBottom: 32,
   },
   callLabel: {
     fontSize: 14,
-    fontWeight: '500',
-    textTransform: 'uppercase',
-    letterSpacing: 2,
-  },
-  hdBadgeSmall: {
-    fontSize: 11,
     fontWeight: '600',
-    letterSpacing: 0.5,
-    opacity: 0.9,
+    textTransform: 'uppercase',
+    letterSpacing: 3,
+  },
+  hdBadge: {
+    fontSize: 12,
+    fontWeight: '700',
+    letterSpacing: 1,
   },
   avatarContainer: {
-    marginBottom: 24,
+    marginBottom: 28,
   },
   avatarRing: {
-    padding: 8,
-    borderRadius: 80,
-    borderWidth: 3,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  rainbowRing: {
+    borderWidth: 4,
+    // Rainbow border olacak - gradient border RN'de zor, solid kullanıyoruz
   },
   callerName: {
-    fontSize: 32,
+    fontSize: 34,
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 8,
@@ -536,14 +470,15 @@ const styles = StyleSheet.create({
   numberRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
+    gap: 8,
     marginBottom: 4,
   },
   countryFlag: {
-    fontSize: 20,
+    fontSize: 22,
   },
   callerNumber: {
     fontSize: 18,
+    fontWeight: '500',
   },
   countryName: {
     fontSize: 14,
@@ -552,52 +487,12 @@ const styles = StyleSheet.create({
   callerCompany: {
     fontSize: 14,
     marginTop: 4,
+    fontStyle: 'italic',
   },
   actionsSection: {
-    paddingHorizontal: 24,
+    paddingHorizontal: 20,
     paddingBottom: 60,
-  },
-  swipeHint: {
-    marginBottom: 40,
-  },
-  swipeTrack: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    borderRadius: 40,
-    padding: 8,
-  },
-  swipeIndicator: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  swipeText: {
-    fontSize: 14,
-  },
-  mainButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'flex-start',
-  },
-  buttonWrapper: {
-    alignItems: 'center',
-  },
-  actionButton: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-  },
-  secondaryButton: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-  },
-  buttonLabel: {
-    fontSize: 12,
-    marginTop: 8,
+    paddingTop: 20,
   },
   modal: {
     margin: 20,
