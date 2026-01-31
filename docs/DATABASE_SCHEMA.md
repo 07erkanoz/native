@@ -222,22 +222,128 @@ CREATE INDEX idx_phone_numbers_contact ON phone_numbers(contact_id);
 CREATE INDEX idx_phone_numbers_number ON phone_numbers(number);
 ```
 
-### 3.3 blocked_numbers
+### 3.3 blocked_numbers (Engelli Numaralar)
 
 ```sql
 CREATE TABLE blocked_numbers (
     id TEXT PRIMARY KEY,
     phone_number TEXT NOT NULL UNIQUE,
+    normalized_number TEXT NOT NULL,             -- E.164 format (+905551234567)
     contact_id TEXT,
-    contact_name TEXT,
-    reason TEXT,
+    display_name TEXT,                           -- Varsa kişi adı
+
+    -- Engelleme Detayları
+    reason TEXT NOT NULL DEFAULT 'user_blocked', -- user_blocked, spam_reported, scam_reported, telemarketing, robocall, unknown_caller, private_number, imported
+    custom_reason TEXT,                          -- Özel neden açıklaması
     block_calls INTEGER DEFAULT 1,
+    block_sms INTEGER DEFAULT 1,
+
+    -- İstatistikler
+    call_attempts INTEGER DEFAULT 0,             -- Engellendiğinden beri arama sayısı
+    last_call_attempt TEXT,                      -- Son arama denemesi
+
+    -- Sistem Entegrasyonu
+    is_system_blocked INTEGER DEFAULT 0,         -- Android BlockedNumberContract'a ekli mi
+
+    -- Kaynak
+    source TEXT DEFAULT 'local',                 -- local, cloud, imported
+
+    -- Meta
     blocked_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (contact_id) REFERENCES contacts(id) ON DELETE SET NULL
 );
+
+CREATE INDEX idx_blocked_numbers_phone ON blocked_numbers(phone_number);
+CREATE INDEX idx_blocked_numbers_normalized ON blocked_numbers(normalized_number);
+CREATE INDEX idx_blocked_numbers_reason ON blocked_numbers(reason);
 ```
 
-### 3.4 speed_dial
+### 3.4 muted_contacts (Sessize Alınan Kişiler)
+
+```sql
+-- Aramalar gelir ama sessiz/titreşimsiz
+CREATE TABLE muted_contacts (
+    id TEXT PRIMARY KEY,
+    contact_id TEXT,
+    phone_number TEXT NOT NULL,
+    normalized_number TEXT NOT NULL,
+    display_name TEXT,
+
+    -- Süre
+    muted_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    mute_until TEXT,                             -- NULL = süresiz
+    is_permanent INTEGER DEFAULT 1,
+
+    -- Ayarlar
+    mute_calls INTEGER DEFAULT 1,
+    mute_sms INTEGER DEFAULT 0,
+    reason TEXT,
+
+    FOREIGN KEY (contact_id) REFERENCES contacts(id) ON DELETE CASCADE
+);
+
+CREATE INDEX idx_muted_contacts_phone ON muted_contacts(phone_number);
+CREATE INDEX idx_muted_contacts_until ON muted_contacts(mute_until);
+```
+
+### 3.5 spam_cache (Yerel Spam Önbelleği)
+
+```sql
+-- Buluttan indirilen spam verilerinin önbelleği
+CREATE TABLE spam_cache (
+    id TEXT PRIMARY KEY,
+    phone_number TEXT NOT NULL UNIQUE,
+    normalized_number TEXT NOT NULL,
+
+    -- Spam Bilgileri
+    category TEXT,                               -- spam, scam, telemarketing, robocall, survey, debt_collector, political, charity, other
+    spam_score INTEGER DEFAULT 0,                -- 0-100 arası
+    report_count INTEGER DEFAULT 0,
+    is_verified INTEGER DEFAULT 0,               -- Admin tarafından doğrulandı mı
+
+    -- Caller ID
+    caller_names TEXT,                           -- JSON array - Bildirilen isimler
+    country TEXT,                                -- Ülke kodu (TR, US, vb.)
+
+    -- Meta
+    first_reported_at TEXT,
+    last_reported_at TEXT,
+    cached_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    expires_at TEXT                              -- Önbellek süresi
+);
+
+CREATE INDEX idx_spam_cache_phone ON spam_cache(phone_number);
+CREATE INDEX idx_spam_cache_score ON spam_cache(spam_score DESC);
+CREATE INDEX idx_spam_cache_expires ON spam_cache(expires_at);
+```
+
+### 3.6 pending_spam_reports (Bekleyen Spam Raporları)
+
+```sql
+-- Gönderilmemiş spam raporları (offline destek)
+CREATE TABLE pending_spam_reports (
+    id TEXT PRIMARY KEY,
+    phone_number TEXT NOT NULL,
+    normalized_number TEXT NOT NULL,
+
+    -- Rapor Detayları
+    category TEXT NOT NULL,
+    description TEXT,
+    caller_name TEXT,
+    call_duration INTEGER,
+
+    -- Meta
+    reported_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    sync_status TEXT DEFAULT 'pending',          -- pending, synced, failed
+    sync_error TEXT,
+    retry_count INTEGER DEFAULT 0
+);
+
+CREATE INDEX idx_pending_reports_status ON pending_spam_reports(sync_status);
+```
+
+### 3.7 speed_dial
 
 ```sql
 CREATE TABLE speed_dial (
@@ -249,7 +355,7 @@ CREATE TABLE speed_dial (
 );
 ```
 
-### 3.5 contact_groups
+### 3.8 contact_groups
 
 ```sql
 CREATE TABLE contact_groups (
@@ -270,7 +376,7 @@ CREATE TABLE contact_group_members (
 );
 ```
 
-### 3.6 themes (İndirilen)
+### 3.9 themes (İndirilen)
 
 ```sql
 CREATE TABLE themes (
@@ -290,7 +396,7 @@ CREATE INDEX idx_themes_type ON themes(type);
 CREATE INDEX idx_themes_active ON themes(is_active);
 ```
 
-### 3.7 ringtones (İndirilen)
+### 3.10 ringtones (İndirilen)
 
 ```sql
 CREATE TABLE ringtones (
@@ -310,7 +416,7 @@ CREATE TABLE ringtones (
 );
 ```
 
-### 3.8 google_accounts
+### 3.11 google_accounts
 
 ```sql
 CREATE TABLE google_accounts (
@@ -1050,7 +1156,207 @@ CREATE POLICY "Users can manage own reviews"
 
 ---
 
-## 7. Storage Buckets
+## 7. Spam Veritabanı Tabloları (Supabase)
+
+Topluluğa dayalı spam veritabanı için bulut tabloları.
+
+### 7.1 spam_numbers (Spam Numaraları)
+
+```sql
+CREATE TABLE public.spam_numbers (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    phone_number TEXT NOT NULL,
+    normalized_number TEXT NOT NULL UNIQUE,      -- E.164 format
+
+    -- Kategori ve Skor
+    category TEXT NOT NULL,                      -- spam, scam, telemarketing, robocall, survey, debt_collector, political, charity, other
+    spam_score INTEGER DEFAULT 0 CHECK (spam_score >= 0 AND spam_score <= 100),
+
+    -- İstatistikler
+    report_count INTEGER DEFAULT 1,
+    verified_count INTEGER DEFAULT 0,            -- Doğrulanmış rapor sayısı
+
+    -- Caller ID
+    caller_names TEXT[] DEFAULT '{}',            -- Bildirilen isimler
+    country TEXT,                                -- Ülke kodu (TR, US, vb.)
+    carrier TEXT,                                -- Operatör (opsiyonel)
+
+    -- Doğrulama
+    is_verified BOOLEAN DEFAULT false,           -- Admin tarafından doğrulandı mı
+    verified_by UUID REFERENCES auth.users(id),
+    verified_at TIMESTAMPTZ,
+
+    -- Meta
+    first_reported_at TIMESTAMPTZ DEFAULT NOW(),
+    last_reported_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_spam_numbers_phone ON public.spam_numbers(normalized_number);
+CREATE INDEX idx_spam_numbers_score ON public.spam_numbers(spam_score DESC);
+CREATE INDEX idx_spam_numbers_category ON public.spam_numbers(category);
+CREATE INDEX idx_spam_numbers_country ON public.spam_numbers(country);
+
+-- Herkes spam numaralarını sorgulayabilir
+ALTER TABLE public.spam_numbers ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Anyone can view spam numbers"
+    ON public.spam_numbers FOR SELECT
+    USING (true);
+```
+
+### 7.2 spam_reports (Spam Raporları)
+
+```sql
+CREATE TABLE public.spam_reports (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+
+    -- Raporlayan (anonim)
+    reporter_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE SET NULL,
+    reporter_device_hash TEXT,                   -- Cihaz parmak izi (spam önleme)
+
+    -- Numara
+    phone_number TEXT NOT NULL,
+    normalized_number TEXT NOT NULL,
+    spam_number_id UUID REFERENCES public.spam_numbers(id),
+
+    -- Rapor Detayları
+    category TEXT NOT NULL,
+    description TEXT,
+    caller_name TEXT,                            -- Arayan kendini nasıl tanıttı
+    call_duration INTEGER,                       -- Saniye
+
+    -- Durum
+    status TEXT DEFAULT 'pending',               -- pending, verified, rejected, under_review
+    reviewed_by UUID REFERENCES auth.users(id),
+    reviewed_at TIMESTAMPTZ,
+    review_notes TEXT,
+
+    -- Meta
+    reported_at TIMESTAMPTZ DEFAULT NOW(),
+    ip_country TEXT,                             -- Raporlayanın ülkesi
+
+    -- Spam kontrolü
+    is_duplicate BOOLEAN DEFAULT false,          -- Aynı kullanıcıdan tekrar rapor
+    trust_score DECIMAL(3,2) DEFAULT 1.0         -- Raporlayanın güvenilirlik skoru
+);
+
+CREATE INDEX idx_spam_reports_phone ON public.spam_reports(normalized_number);
+CREATE INDEX idx_spam_reports_status ON public.spam_reports(status);
+CREATE INDEX idx_spam_reports_reporter ON public.spam_reports(reporter_id);
+
+ALTER TABLE public.spam_reports ENABLE ROW LEVEL SECURITY;
+
+-- Kullanıcılar kendi raporlarını görebilir
+CREATE POLICY "Users can view own reports"
+    ON public.spam_reports FOR SELECT
+    USING (auth.uid() = reporter_id);
+
+-- Kullanıcılar rapor oluşturabilir
+CREATE POLICY "Users can create reports"
+    ON public.spam_reports FOR INSERT
+    WITH CHECK (auth.uid() = reporter_id);
+```
+
+### 7.3 spam_report_trigger (Otomatik Skor Güncelleme)
+
+```sql
+-- Yeni rapor geldiğinde spam_numbers tablosunu güncelle
+CREATE OR REPLACE FUNCTION update_spam_number_on_report()
+RETURNS TRIGGER AS $$
+DECLARE
+    existing_id UUID;
+    new_score INTEGER;
+    current_count INTEGER;
+BEGIN
+    -- Mevcut kayıt var mı kontrol et
+    SELECT id, report_count INTO existing_id, current_count
+    FROM public.spam_numbers
+    WHERE normalized_number = NEW.normalized_number;
+
+    IF existing_id IS NOT NULL THEN
+        -- Mevcut kaydı güncelle
+        UPDATE public.spam_numbers
+        SET
+            report_count = report_count + 1,
+            spam_score = LEAST(100, spam_score + 5),  -- Her rapor +5 puan (max 100)
+            caller_names = CASE
+                WHEN NEW.caller_name IS NOT NULL AND NOT (NEW.caller_name = ANY(caller_names))
+                THEN array_append(caller_names, NEW.caller_name)
+                ELSE caller_names
+            END,
+            last_reported_at = NOW(),
+            updated_at = NOW()
+        WHERE id = existing_id;
+
+        NEW.spam_number_id = existing_id;
+    ELSE
+        -- Yeni kayıt oluştur
+        INSERT INTO public.spam_numbers (
+            phone_number,
+            normalized_number,
+            category,
+            spam_score,
+            caller_names,
+            country
+        ) VALUES (
+            NEW.phone_number,
+            NEW.normalized_number,
+            NEW.category,
+            30,  -- İlk rapor için başlangıç skoru
+            CASE WHEN NEW.caller_name IS NOT NULL THEN ARRAY[NEW.caller_name] ELSE '{}' END,
+            NEW.ip_country
+        )
+        RETURNING id INTO NEW.spam_number_id;
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+CREATE TRIGGER on_spam_report_created
+    BEFORE INSERT ON public.spam_reports
+    FOR EACH ROW
+    EXECUTE FUNCTION update_spam_number_on_report();
+```
+
+### 7.4 user_spam_contributions (Kullanıcı Katkı İstatistikleri)
+
+```sql
+-- Kullanıcıların spam raporlama katkıları
+CREATE TABLE public.user_spam_contributions (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+
+    -- İstatistikler
+    total_reports INTEGER DEFAULT 0,
+    verified_reports INTEGER DEFAULT 0,
+    rejected_reports INTEGER DEFAULT 0,
+
+    -- Güvenilirlik
+    trust_score DECIMAL(3,2) DEFAULT 1.0,        -- 0.0-1.0 arası
+    reputation_level TEXT DEFAULT 'beginner',    -- beginner, contributor, trusted, expert
+
+    -- Rozetler
+    badges TEXT[] DEFAULT '{}',
+
+    -- Meta
+    first_report_at TIMESTAMPTZ,
+    last_report_at TIMESTAMPTZ,
+    updated_at TIMESTAMPTZ DEFAULT NOW(),
+
+    UNIQUE(user_id)
+);
+
+ALTER TABLE public.user_spam_contributions ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can view own contributions"
+    ON public.user_spam_contributions FOR SELECT
+    USING (auth.uid() = user_id);
+```
+
+---
+
+## 8. Storage Buckets
 
 ```sql
 -- Tema görselleri
@@ -1070,7 +1376,7 @@ CREATE POLICY "Users can manage own backups"
 
 ---
 
-## 8. Yedekleme Servisi
+## 9. Yedekleme Servisi
 
 ```typescript
 // src/services/backupService.ts
@@ -1106,14 +1412,15 @@ interface BackupResult {
 
 ---
 
-## 9. Özet
+## 10. Özet
 
 | Kategori | Tablo Sayısı | Açıklama |
 |----------|--------------|----------|
-| Sadece Yerel | 8 | contacts, phone_numbers, blocked_numbers, speed_dial, contact_groups, themes, ringtones, google_accounts |
+| Sadece Yerel | 11 | contacts, phone_numbers, blocked_numbers, muted_contacts, spam_cache, pending_spam_reports, speed_dial, contact_groups, themes, ringtones, google_accounts |
 | Günlük Yedekleme | 6 | notes, call_logs, call_notes, events, calendars, reminders |
 | Anlık Sync | 3 | profiles, purchases, user_settings |
 | Mağaza | 5 | theme_categories, store_themes, ringtone_categories, store_ringtones, reviews |
+| Spam Veritabanı | 4 | spam_numbers, spam_reports, user_spam_contributions (+ trigger) |
 
 ---
 

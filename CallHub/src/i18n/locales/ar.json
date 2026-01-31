@@ -635,5 +635,148 @@
     "weeksAgo": "منذ {{count}} أسابيع",
     "monthsAgo": "منذ {{count}} أشهر",
     "yearsAgo": "منذ {{count}} سنوات"
+  },
+  "blocking": {
+    "title": "الأرقام المحظورة",
+    "blockedNumbers": "الأرقام المحظورة",
+    "mutedContacts": "جهات الاتصال المكتومة",
+    "settings": "الإعدادات",
+    "noBlockedNumbers": "لا توجد أرقام محظورة",
+    "noBlockedNumbersDesc": "ستظهر الأرقام التي تحظرها هنا",
+    "noMutedContacts": "لا توجد جهات اتصال مكتومة",
+    "noMutedContactsDesc": "ستظهر جهات الاتصال التي تكتمها هنا",
+    "addBlockedNumber": "حظر رقم",
+    "enterPhoneNumber": "أدخل رقم الهاتف",
+    "phoneNumberPlaceholder": "مثال: +966 50 123 4567",
+    "selectReason": "اختر السبب",
+    "customReason": "سبب مخصص (اختياري)",
+    "customReasonPlaceholder": "صف السبب...",
+    "block": "حظر",
+    "unblock": "إلغاء الحظر",
+    "unblockConfirm": "هل أنت متأكد من إلغاء حظر {{number}}؟",
+    "mute": "كتم",
+    "unmute": "إلغاء الكتم",
+    "unmuteConfirm": "هل أنت متأكد من إلغاء كتم {{name}}؟",
+    "blocked": "محظور",
+    "muted": "مكتوم",
+    "callAttempts": "{{count}} محاولات اتصال",
+    "lastAttempt": "آخر محاولة: {{date}}",
+    "blockedSince": "محظور منذ {{date}}",
+    "mutedSince": "مكتوم منذ {{date}}",
+    "mutedUntil": "مكتوم حتى {{date}}",
+    "permanent": "دائم",
+
+    "reasons": {
+      "userBlocked": "محظور يدوياً",
+      "spamReported": "تم الإبلاغ عنه كمزعج",
+      "scamReported": "تم الإبلاغ عنه كاحتيال",
+      "telemarketing": "تسويق هاتفي",
+      "robocall": "مكالمة آلية",
+      "unknownCaller": "متصل غير معروف",
+      "privateNumber": "رقم خاص",
+      "imported": "مستورد"
+    },
+
+    "spamProtection": {
+      "title": "الحماية من المزعج",
+      "enabled": "حماية المزعج مفعّلة",
+      "enabledDesc": "اكتشاف المكالمات المشبوهة تلقائياً",
+      "autoBlock": "الحظر التلقائي",
+      "autoBlockDesc": "حظر الأرقام ذات درجة المزعج العالية تلقائياً",
+      "threshold": "عتبة الحظر",
+      "thresholdDesc": "درجة المزعج التي يتم عندها الحظر التلقائي",
+      "showWarning": "إظهار تحذير",
+      "showWarningDesc": "إظهار تحذير للمكالمات المشبوهة"
+    },
+
+    "generalSettings": {
+      "title": "الإعدادات العامة",
+      "blockUnknown": "حظر غير المعروفين",
+      "blockUnknownDesc": "حظر المكالمات من أرقام غير موجودة في جهات الاتصال",
+      "blockPrivate": "حظر الأرقام الخاصة",
+      "blockPrivateDesc": "حظر المكالمات من الأرقام المخفية",
+      "blockInternational": "حظر المكالمات الدولية",
+      "blockInternationalDesc": "حظر جميع المكالمات من الخارج",
+      "notifyBlocked": "إشعار بالمكالمات المحظورة",
+      "notifyBlockedDesc": "إظهار إشعار للمكالمات المحظورة",
+      "logBlocked": "تسجيل المكالمات المحظورة",
+      "logBlockedDesc": "إظهار المكالمات المحظورة في السجل"
+    },
+
+    "cloudSync": {
+      "title": "المزامنة السحابية",
+      "syncEnabled": "المزامنة مفعّلة",
+      "syncEnabledDesc": "مزامنة قائمة الحظر مع السحابة",
+      "contribute": "المساهمة في قاعدة البيانات",
+      "contributeDesc": "مشاركة بلاغات المزعج بشكل مجهول لمساعدة الآخرين"
+    },
+
+    "apiWarning": {
+      "title": "واجهة النظام غير متاحة",
+      "message": "يتطلب حظر النظام تعيين LifeCall كتطبيق الهاتف الافتراضي.",
+      "openSettings": "فتح الإعدادات",
+      "continueAnyway": "المتابعة على أي حال"
+    },
+
+    "stats": {
+      "totalBlocked": "إجمالي المحظور",
+      "blockedToday": "محظور اليوم",
+      "spamDetected": "المزعج المكتشف",
+      "reportsSubmitted": "البلاغات المرسلة"
+    }
+  },
+  "spam": {
+    "reportTitle": "الإبلاغ عن مزعج",
+    "unknownNumber": "رقم غير معروف",
+    "selectCategory": "اختر الفئة",
+    "callerName": "اسم المتصل",
+    "callerNameDesc": "كيف قدّم المتصل نفسه؟",
+    "callerNamePlaceholder": "مثال: وكيل تأمين",
+    "description": "الوصف",
+    "descriptionDesc": "تفاصيل إضافية حول المكالمة",
+    "descriptionPlaceholder": "ماذا حدث في هذه المكالمة؟",
+    "blockAfterReport": "الحظر بعد الإبلاغ",
+    "blockAfterReportDesc": "إضافة هذا الرقم أيضاً إلى قائمة الحظر",
+    "privacyNote": "سيتم مشاركة بلاغك بشكل مجهول لمساعدة المستخدمين الآخرين.",
+    "submit": "إرسال البلاغ",
+    "success": "نجاح",
+    "reportSubmitted": "تم إرسال بلاغ المزعج بنجاح.",
+    "error": "خطأ",
+    "noNumber": "لم يتم تقديم رقم هاتف",
+    "submitFailed": "فشل في إرسال البلاغ",
+
+    "categories": {
+      "spam": "مزعج",
+      "scam": "احتيال",
+      "telemarketing": "تسويق هاتفي",
+      "robocall": "مكالمة آلية",
+      "survey": "استطلاع",
+      "debtCollector": "تحصيل ديون",
+      "political": "سياسي",
+      "charity": "خيري",
+      "other": "أخرى"
+    },
+
+    "categoryDesc": {
+      "spam": "مكالمات غير مرغوبة عامة",
+      "scam": "محاولة احتيال أو خداع",
+      "telemarketing": "ترويج منتج أو خدمة",
+      "robocall": "رسالة آلية مسجلة",
+      "survey": "استطلاع أو بحث سوقي",
+      "debtCollector": "شركة تحصيل ديون",
+      "political": "حملة سياسية أو حزب",
+      "charity": "طلب تبرع خيري",
+      "other": "مكالمات غير مرغوبة أخرى"
+    },
+
+    "score": {
+      "low": "خطر منخفض",
+      "medium": "خطر متوسط",
+      "high": "خطر مرتفع",
+      "veryHigh": "خطر مرتفع جداً"
+    },
+
+    "warning": "اشتباه مزعج",
+    "warningMessage": "تم الإبلاغ عن هذا الرقم {{count}} مرات كمزعج"
   }
 }

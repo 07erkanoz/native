@@ -635,5 +635,148 @@
     "weeksAgo": "Vor {{count}} Wochen",
     "monthsAgo": "Vor {{count}} Monaten",
     "yearsAgo": "Vor {{count}} Jahren"
+  },
+  "blocking": {
+    "title": "Blockierte Nummern",
+    "blockedNumbers": "Blockierte Nummern",
+    "mutedContacts": "Stummgeschaltete Kontakte",
+    "settings": "Einstellungen",
+    "noBlockedNumbers": "Keine blockierten Nummern",
+    "noBlockedNumbersDesc": "Nummern, die Sie blockieren, werden hier angezeigt",
+    "noMutedContacts": "Keine stummgeschalteten Kontakte",
+    "noMutedContactsDesc": "Kontakte, die Sie stummschalten, werden hier angezeigt",
+    "addBlockedNumber": "Nummer blockieren",
+    "enterPhoneNumber": "Telefonnummer eingeben",
+    "phoneNumberPlaceholder": "z.B. +49 30 12345678",
+    "selectReason": "Grund auswählen",
+    "customReason": "Eigener Grund (optional)",
+    "customReasonPlaceholder": "Beschreiben Sie den Grund...",
+    "block": "Blockieren",
+    "unblock": "Entsperren",
+    "unblockConfirm": "Möchten Sie {{number}} wirklich entsperren?",
+    "mute": "Stummschalten",
+    "unmute": "Stummschaltung aufheben",
+    "unmuteConfirm": "Möchten Sie {{name}} wirklich stumm schalten?",
+    "blocked": "Blockiert",
+    "muted": "Stummgeschaltet",
+    "callAttempts": "{{count}} Anrufversuche",
+    "lastAttempt": "Letzter Versuch: {{date}}",
+    "blockedSince": "Blockiert seit {{date}}",
+    "mutedSince": "Stummgeschaltet seit {{date}}",
+    "mutedUntil": "Stumm bis {{date}}",
+    "permanent": "Dauerhaft",
+
+    "reasons": {
+      "userBlocked": "Manuell blockiert",
+      "spamReported": "Als Spam gemeldet",
+      "scamReported": "Als Betrug gemeldet",
+      "telemarketing": "Telemarketing",
+      "robocall": "Automatischer Anruf",
+      "unknownCaller": "Unbekannter Anrufer",
+      "privateNumber": "Private Nummer",
+      "imported": "Importiert"
+    },
+
+    "spamProtection": {
+      "title": "Spam-Schutz",
+      "enabled": "Spam-Schutz aktiviert",
+      "enabledDesc": "Verdächtige Anrufe automatisch erkennen",
+      "autoBlock": "Automatisch blockieren",
+      "autoBlockDesc": "Nummern mit hohem Spam-Wert automatisch blockieren",
+      "threshold": "Blockierungsschwelle",
+      "thresholdDesc": "Spam-Wert, ab dem automatisch blockiert wird",
+      "showWarning": "Warnung anzeigen",
+      "showWarningDesc": "Warnung bei verdächtigen Anrufen anzeigen"
+    },
+
+    "generalSettings": {
+      "title": "Allgemeine Einstellungen",
+      "blockUnknown": "Unbekannte blockieren",
+      "blockUnknownDesc": "Anrufe von Nummern blockieren, die nicht in Kontakten sind",
+      "blockPrivate": "Private Nummern blockieren",
+      "blockPrivateDesc": "Anrufe von versteckten Nummern blockieren",
+      "blockInternational": "Internationale Anrufe blockieren",
+      "blockInternationalDesc": "Alle Anrufe aus dem Ausland blockieren",
+      "notifyBlocked": "Über blockierte Anrufe benachrichtigen",
+      "notifyBlockedDesc": "Benachrichtigung bei blockierten Anrufen anzeigen",
+      "logBlocked": "Blockierte Anrufe protokollieren",
+      "logBlockedDesc": "Blockierte Anrufe im Verlauf anzeigen"
+    },
+
+    "cloudSync": {
+      "title": "Cloud-Synchronisierung",
+      "syncEnabled": "Synchronisierung aktiviert",
+      "syncEnabledDesc": "Sperrliste mit Cloud synchronisieren",
+      "contribute": "Zur Datenbank beitragen",
+      "contributeDesc": "Spam-Meldungen anonym teilen, um anderen zu helfen"
+    },
+
+    "apiWarning": {
+      "title": "System-API nicht verfügbar",
+      "message": "Systemblockierung erfordert, dass LifeCall als Standard-Telefon-App festgelegt ist.",
+      "openSettings": "Einstellungen öffnen",
+      "continueAnyway": "Trotzdem fortfahren"
+    },
+
+    "stats": {
+      "totalBlocked": "Gesamt blockiert",
+      "blockedToday": "Heute blockiert",
+      "spamDetected": "Spam erkannt",
+      "reportsSubmitted": "Meldungen gesendet"
+    }
+  },
+  "spam": {
+    "reportTitle": "Spam melden",
+    "unknownNumber": "Unbekannte Nummer",
+    "selectCategory": "Kategorie auswählen",
+    "callerName": "Name des Anrufers",
+    "callerNameDesc": "Wie hat sich der Anrufer vorgestellt?",
+    "callerNamePlaceholder": "z.B. Versicherungsvertreter",
+    "description": "Beschreibung",
+    "descriptionDesc": "Zusätzliche Details über den Anruf",
+    "descriptionPlaceholder": "Was ist bei diesem Anruf passiert?",
+    "blockAfterReport": "Nach Meldung blockieren",
+    "blockAfterReportDesc": "Diese Nummer auch zur Sperrliste hinzufügen",
+    "privacyNote": "Ihre Meldung wird anonym geteilt, um anderen Nutzern zu helfen.",
+    "submit": "Meldung senden",
+    "success": "Erfolgreich",
+    "reportSubmitted": "Ihre Spam-Meldung wurde erfolgreich gesendet.",
+    "error": "Fehler",
+    "noNumber": "Keine Telefonnummer angegeben",
+    "submitFailed": "Meldung konnte nicht gesendet werden",
+
+    "categories": {
+      "spam": "Spam",
+      "scam": "Betrug",
+      "telemarketing": "Telemarketing",
+      "robocall": "Automatischer Anruf",
+      "survey": "Umfrage",
+      "debtCollector": "Inkasso",
+      "political": "Politisch",
+      "charity": "Wohltätigkeit",
+      "other": "Sonstige"
+    },
+
+    "categoryDesc": {
+      "spam": "Allgemeine unerwünschte Anrufe",
+      "scam": "Betrugsversuch oder Täuschung",
+      "telemarketing": "Produkt- oder Servicewerbung",
+      "robocall": "Aufgezeichnete automatische Nachricht",
+      "survey": "Umfrage oder Meinungsforschung",
+      "debtCollector": "Inkassounternehmen",
+      "political": "Politische Kampagne oder Partei",
+      "charity": "Spendenanfrage für Wohltätigkeit",
+      "other": "Andere unerwünschte Anrufe"
+    },
+
+    "score": {
+      "low": "Niedriges Risiko",
+      "medium": "Mittleres Risiko",
+      "high": "Hohes Risiko",
+      "veryHigh": "Sehr hohes Risiko"
+    },
+
+    "warning": "Spam-Verdacht",
+    "warningMessage": "Diese Nummer wurde {{count}} Mal als Spam gemeldet"
   }
 }

@@ -51,6 +51,13 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 | `store_ringtones` | Zil sesi mağazası |
 | `reviews` | Kullanıcı değerlendirmeleri |
 
+### Spam Veritabanı Tabloları
+| Tablo | Açıklama |
+|-------|----------|
+| `spam_numbers` | Topluluk tarafından raporlanan spam numaraları |
+| `spam_reports` | Kullanıcıların gönderdiği spam raporları |
+| `user_spam_contributions` | Kullanıcı katkı istatistikleri ve güvenilirlik |
+
 ---
 
 ## 3. Authentication Ayarları

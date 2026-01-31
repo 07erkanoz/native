@@ -635,5 +635,148 @@
     "weeksAgo": "Il y a {{count}} semaines",
     "monthsAgo": "Il y a {{count}} mois",
     "yearsAgo": "Il y a {{count}} ans"
+  },
+  "blocking": {
+    "title": "Numéros bloqués",
+    "blockedNumbers": "Numéros bloqués",
+    "mutedContacts": "Contacts en sourdine",
+    "settings": "Paramètres",
+    "noBlockedNumbers": "Aucun numéro bloqué",
+    "noBlockedNumbersDesc": "Les numéros que vous bloquez apparaîtront ici",
+    "noMutedContacts": "Aucun contact en sourdine",
+    "noMutedContactsDesc": "Les contacts que vous mettez en sourdine apparaîtront ici",
+    "addBlockedNumber": "Bloquer un numéro",
+    "enterPhoneNumber": "Entrer le numéro de téléphone",
+    "phoneNumberPlaceholder": "ex: +33 1 23 45 67 89",
+    "selectReason": "Sélectionner la raison",
+    "customReason": "Raison personnalisée (optionnel)",
+    "customReasonPlaceholder": "Décrivez la raison...",
+    "block": "Bloquer",
+    "unblock": "Débloquer",
+    "unblockConfirm": "Voulez-vous vraiment débloquer {{number}} ?",
+    "mute": "Mettre en sourdine",
+    "unmute": "Désactiver la sourdine",
+    "unmuteConfirm": "Voulez-vous vraiment désactiver la sourdine pour {{name}} ?",
+    "blocked": "Bloqué",
+    "muted": "En sourdine",
+    "callAttempts": "{{count}} tentatives d'appel",
+    "lastAttempt": "Dernière tentative : {{date}}",
+    "blockedSince": "Bloqué depuis {{date}}",
+    "mutedSince": "En sourdine depuis {{date}}",
+    "mutedUntil": "En sourdine jusqu'au {{date}}",
+    "permanent": "Permanent",
+
+    "reasons": {
+      "userBlocked": "Bloqué manuellement",
+      "spamReported": "Signalé comme spam",
+      "scamReported": "Signalé comme arnaque",
+      "telemarketing": "Télémarketing",
+      "robocall": "Appel automatisé",
+      "unknownCaller": "Appelant inconnu",
+      "privateNumber": "Numéro privé",
+      "imported": "Importé"
+    },
+
+    "spamProtection": {
+      "title": "Protection anti-spam",
+      "enabled": "Protection anti-spam activée",
+      "enabledDesc": "Détecter automatiquement les appels suspects",
+      "autoBlock": "Blocage automatique",
+      "autoBlockDesc": "Bloquer automatiquement les numéros avec un score de spam élevé",
+      "threshold": "Seuil de blocage",
+      "thresholdDesc": "Score de spam à partir duquel bloquer automatiquement",
+      "showWarning": "Afficher un avertissement",
+      "showWarningDesc": "Afficher un avertissement pour les appels suspects"
+    },
+
+    "generalSettings": {
+      "title": "Paramètres généraux",
+      "blockUnknown": "Bloquer les inconnus",
+      "blockUnknownDesc": "Bloquer les appels de numéros non enregistrés",
+      "blockPrivate": "Bloquer les numéros privés",
+      "blockPrivateDesc": "Bloquer les appels de numéros masqués",
+      "blockInternational": "Bloquer les appels internationaux",
+      "blockInternationalDesc": "Bloquer tous les appels de l'étranger",
+      "notifyBlocked": "Notifier les appels bloqués",
+      "notifyBlockedDesc": "Afficher une notification pour les appels bloqués",
+      "logBlocked": "Enregistrer les appels bloqués",
+      "logBlockedDesc": "Afficher les appels bloqués dans l'historique"
+    },
+
+    "cloudSync": {
+      "title": "Synchronisation cloud",
+      "syncEnabled": "Synchronisation activée",
+      "syncEnabledDesc": "Synchroniser la liste de blocage avec le cloud",
+      "contribute": "Contribuer à la base de données",
+      "contributeDesc": "Partager anonymement les signalements de spam pour aider les autres"
+    },
+
+    "apiWarning": {
+      "title": "API système non disponible",
+      "message": "Le blocage système nécessite que LifeCall soit défini comme application téléphone par défaut.",
+      "openSettings": "Ouvrir les paramètres",
+      "continueAnyway": "Continuer quand même"
+    },
+
+    "stats": {
+      "totalBlocked": "Total bloqué",
+      "blockedToday": "Bloqué aujourd'hui",
+      "spamDetected": "Spam détecté",
+      "reportsSubmitted": "Signalements envoyés"
+    }
+  },
+  "spam": {
+    "reportTitle": "Signaler un spam",
+    "unknownNumber": "Numéro inconnu",
+    "selectCategory": "Sélectionner la catégorie",
+    "callerName": "Nom de l'appelant",
+    "callerNameDesc": "Comment l'appelant s'est-il présenté ?",
+    "callerNamePlaceholder": "ex: Agent d'assurance",
+    "description": "Description",
+    "descriptionDesc": "Détails supplémentaires sur l'appel",
+    "descriptionPlaceholder": "Que s'est-il passé pendant cet appel ?",
+    "blockAfterReport": "Bloquer après signalement",
+    "blockAfterReportDesc": "Ajouter également ce numéro à la liste de blocage",
+    "privacyNote": "Votre signalement sera partagé anonymement pour aider les autres utilisateurs.",
+    "submit": "Envoyer le signalement",
+    "success": "Succès",
+    "reportSubmitted": "Votre signalement de spam a été envoyé avec succès.",
+    "error": "Erreur",
+    "noNumber": "Aucun numéro de téléphone fourni",
+    "submitFailed": "Échec de l'envoi du signalement",
+
+    "categories": {
+      "spam": "Spam",
+      "scam": "Arnaque",
+      "telemarketing": "Télémarketing",
+      "robocall": "Appel automatisé",
+      "survey": "Sondage",
+      "debtCollector": "Recouvrement",
+      "political": "Politique",
+      "charity": "Association caritative",
+      "other": "Autre"
+    },
+
+    "categoryDesc": {
+      "spam": "Appels indésirables généraux",
+      "scam": "Tentative de fraude ou d'escroquerie",
+      "telemarketing": "Promotion de produit ou service",
+      "robocall": "Message automatisé préenregistré",
+      "survey": "Sondage ou étude de marché",
+      "debtCollector": "Société de recouvrement",
+      "political": "Campagne politique ou parti",
+      "charity": "Demande de don pour association",
+      "other": "Autres appels indésirables"
+    },
+
+    "score": {
+      "low": "Risque faible",
+      "medium": "Risque moyen",
+      "high": "Risque élevé",
+      "veryHigh": "Risque très élevé"
+    },
+
+    "warning": "Suspicion de spam",
+    "warningMessage": "Ce numéro a été signalé {{count}} fois comme spam"
   }
 }
