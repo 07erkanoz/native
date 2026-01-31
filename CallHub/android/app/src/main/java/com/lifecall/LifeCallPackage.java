@@ -32,6 +32,12 @@ public class LifeCallPackage implements ReactPackage {
         // Çağrı modülü
         modules.add(new CallModule(reactContext));
 
+        // VoLTE/HD Voice modülü
+        modules.add(new VoLTEModule(reactContext));
+
+        // Engelleme modülü
+        modules.add(new BlockingModule(reactContext));
+
         return modules;
     }
 

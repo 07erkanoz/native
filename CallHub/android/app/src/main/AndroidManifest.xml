@@ -180,6 +180,22 @@
             android:exported="false"
             android:foregroundServiceType="phoneCall" />
 
+        <!-- InCallService - HD Voice tespiti ve çağrı yönetimi -->
+        <service
+            android:name=".services.LifeCallInCallService"
+            android:permission="android.permission.BIND_INCALL_SERVICE"
+            android:exported="true">
+            <meta-data
+                android:name="android.telecom.IN_CALL_SERVICE_UI"
+                android:value="true" />
+            <meta-data
+                android:name="android.telecom.IN_CALL_SERVICE_RINGING"
+                android:value="true" />
+            <intent-filter>
+                <action android:name="android.telecom.InCallService" />
+            </intent-filter>
+        </service>
+
         <!-- Boot Receiver - Uygulamayı başlangıçta kaydet -->
         <receiver
             android:name=".receivers.BootReceiver"
