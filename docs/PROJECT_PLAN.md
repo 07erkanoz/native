@@ -682,24 +682,94 @@ interface Ringtone {
 
 ## 3. Veritabanı Şeması
 
-### 3.1 SQLite (Yerel Veritabanı)
+> **Detaylı şema için:** [`DATABASE_SCHEMA.md`](./DATABASE_SCHEMA.md) dosyasına bakın.
+> Bu dosya SQLite ve Supabase şemalarının birleştirilmiş ve senkronize edilmiş halini içerir.
+
+### 3.1 Şema Özeti
+
+#### Senkronizasyon Stratejisi
+
+| Kategori | Tablolar | SQLite | Supabase | Sync |
+|----------|----------|--------|----------|------|
+| **Sadece Yerel** | call_logs, blocked_numbers, speed_dial | ✅ | ❌ | - |
+| **Sadece Bulut** | store_themes, store_ringtones, purchases, reviews | ❌ | ✅ | - |
+| **İki Yönlü Sync** | contacts, notes, events, reminders, call_notes | ✅ | ✅ | ◄──► |
+
+#### Sync Alanları (Tüm Sync Edilebilir Tablolarda)
 
 ```sql
--- =============================================
--- KİŞİLER TABLOSU
--- =============================================
-CREATE TABLE contacts (
-    id TEXT PRIMARY KEY,
-    device_contact_id TEXT,
-    display_name TEXT NOT NULL,
-    first_name TEXT,
-    last_name TEXT,
-    nickname TEXT,
-    company TEXT,
-    job_title TEXT,
+user_id TEXT,                           -- Supabase user ID
+sync_status TEXT DEFAULT 'pending',     -- pending, synced, modified, deleted, conflict
+sync_version INTEGER DEFAULT 1,         -- Çakışma çözümü için
+last_synced_at TEXT,                    -- Son sync zamanı
+device_id TEXT,                         -- Hangi cihazdan değiştirildi
+is_deleted INTEGER DEFAULT 0,           -- Soft delete (sync için)
+server_id TEXT                          -- Supabase'deki karşılık ID
+```
 
-    -- Fotoğraf
-    photo_uri TEXT,                         -- Cihaz fotoğrafı
+### 3.2 Tablo Listesi
+
+#### SQLite (Yerel)
+| Tablo | Açıklama |
+|-------|----------|
+| `contacts` | Kişiler (sync edilir) |
+| `phone_numbers` | Telefon numaraları |
+| `email_addresses` | E-posta adresleri |
+| `addresses` | Adresler |
+| `call_logs` | Arama geçmişi (sadece yerel) |
+| `call_notes` | Arama notları (sync edilir) |
+| `blocked_numbers` | Engelli numaralar (sadece yerel) |
+| `events` | Takvim etkinlikleri (sync edilir) |
+| `calendars` | Takvimler |
+| `notes` | Notlar (sync edilir) |
+| `note_categories` | Not kategorileri |
+| `reminders` | Hatırlatıcılar (sync edilir) |
+| `themes` | İndirilen temalar |
+| `ringtones` | İndirilen zil sesleri |
+| `contact_groups` | Kişi grupları |
+| `contact_group_members` | Grup üyeleri |
+| `speed_dial` | Hızlı arama (sadece yerel) |
+| `google_accounts` | Google hesapları |
+| `user_settings` | Kullanıcı ayarları (sync edilir) |
+
+#### Supabase (Bulut)
+| Tablo | Açıklama |
+|-------|----------|
+| `profiles` | Kullanıcı profilleri |
+| `contacts` | Kişiler (sync) |
+| `phone_numbers` | Telefon numaraları |
+| `email_addresses` | E-posta adresleri |
+| `addresses` | Adresler |
+| `notes` | Notlar (sync) |
+| `note_categories` | Not kategorileri |
+| `events` | Etkinlikler (sync) |
+| `calendars` | Takvimler |
+| `reminders` | Hatırlatıcılar (sync) |
+| `call_notes` | Arama notları (sync) |
+| `contact_groups` | Kişi grupları |
+| `user_settings` | Kullanıcı ayarları |
+| `theme_categories` | Tema kategorileri |
+| `store_themes` | Tema mağazası |
+| `ringtone_categories` | Zil sesi kategorileri |
+| `store_ringtones` | Zil sesi mağazası |
+| `purchases` | Satın almalar |
+| `reviews` | Değerlendirmeler |
+
+> **Detaylı SQL şemaları için:**
+> - [`DATABASE_SCHEMA.md`](./DATABASE_SCHEMA.md) - Birleştirilmiş şema (SQLite + Supabase)
+> - [`SUPABASE_SCHEMA.md`](./SUPABASE_SCHEMA.md) - Sadece bulut tabloları (mağaza, satın alma, RLS)
+
+### 3.3 Veri Tipi Eşleştirmeleri
+
+| SQLite | PostgreSQL | TypeScript |
+|--------|------------|------------|
+| TEXT | TEXT | string |
+| TEXT (UUID) | UUID | string |
+| INTEGER | INTEGER | number |
+| REAL | DECIMAL | number |
+| TEXT (ISO 8601) | TIMESTAMPTZ | Date |
+| TEXT (JSON) | JSONB | object |
+| INTEGER (0/1) | BOOLEAN | boolean |
     custom_photo_uri TEXT,                  -- Uygulama içi özel fotoğraf
     photo_thumbnail TEXT,                   -- Base64 thumbnail
     use_device_photo INTEGER DEFAULT 1,
