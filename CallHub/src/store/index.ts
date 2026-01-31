@@ -22,6 +22,7 @@ import contactsReducer from './slices/contactsSlice';
 import callsReducer from './slices/callsSlice';
 import favoritesReducer from './slices/favoritesSlice';
 import settingsReducer from './slices/settingsSlice';
+import calendarReducer from './slices/calendarSlice';
 
 // Root reducer
 const rootReducer = combineReducers({
@@ -29,6 +30,7 @@ const rootReducer = combineReducers({
   calls: callsReducer,
   favorites: favoritesReducer,
   settings: settingsReducer,
+  calendar: calendarReducer,
 });
 
 // Persist config
@@ -36,7 +38,7 @@ const persistConfig = {
   key: 'root',
   version: 1,
   storage: AsyncStorage,
-  whitelist: ['favorites', 'settings'], // Sadece bunlar persist edilsin
+  whitelist: ['favorites', 'settings', 'calendar'], // Sadece bunlar persist edilsin
   blacklist: ['contacts', 'calls'], // Bunlar cihazdan çekilecek
 };
 

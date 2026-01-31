@@ -32,7 +32,8 @@ export type RootStackParamList = {
 
   // Takvim ekranları
   EventDetail: { eventId: string };
-  EventEdit: { eventId?: string };
+  EventEdit: { eventId?: string; date?: string; contactId?: string; isCallReminder?: boolean };
+  SettingsCalendar: undefined;
 
   // Notlar
   NoteDetail: { noteId: string };

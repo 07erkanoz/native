@@ -318,6 +318,32 @@
       "rateApp": "Uygulamayı Puanla",
       "privacyPolicy": "Gizlilik Politikası",
       "termsOfService": "Kullanım Şartları"
+    },
+
+    "calendar": {
+      "title": "Takvim Ayarları",
+      "sync": "Senkronizasyon",
+      "googleSync": "Google Takvim Senkronizasyonu",
+      "googleSyncDesc": "Google Takvim ile senkronize et",
+      "autoSync": "Otomatik Senkronizasyon",
+      "autoSyncDesc": "Değişiklikler otomatik senkronize edilsin",
+      "syncInterval": "Senkronizasyon Aralığı",
+      "lastSync": "Son Senkronizasyon",
+      "neverSynced": "Henüz senkronize edilmedi",
+      "syncNow": "Şimdi Senkronize Et",
+      "importExport": "İçe/Dışa Aktarma",
+      "importCalendar": "Takvim İçe Aktar",
+      "exportCalendar": "Takvim Dışa Aktar",
+      "defaultReminder": "Varsayılan Hatırlatıcı",
+      "defaultReminderDesc": "Yeni etkinlikler için varsayılan hatırlatıcı",
+      "weekStartsOn": "Hafta Başlangıcı",
+      "defaultView": "Varsayılan Görünüm",
+      "showWeekNumbers": "Hafta Numaralarını Göster",
+      "showDeclinedEvents": "Reddedilen Etkinlikleri Göster",
+      "defaultCalendar": "Varsayılan Takvim",
+      "ringtone": "Hatırlatıcı Zil Sesi",
+      "vibration": "Titreşim",
+      "notificationSound": "Bildirim Sesi"
     }
   },
   "calendar": {
@@ -327,16 +353,152 @@
     "week": "Hafta",
     "day": "Gün",
     "agenda": "Ajanda",
+    "monthView": "Ay Görünümü",
+    "weekView": "Hafta Görünümü",
+    "dayView": "Gün Görünümü",
     "newEvent": "Yeni Etkinlik",
     "editEvent": "Etkinliği Düzenle",
     "deleteEvent": "Etkinliği Sil",
+    "deleteConfirm": "Bu etkinliği silmek istediğinizden emin misiniz?",
     "noEvents": "Etkinlik yok",
+    "noEventsForDay": "Bu gün için etkinlik yok",
+    "tapToAdd": "Etkinlik eklemek için dokunun",
+    "events": "Etkinlikler",
+    "event": "Etkinlik",
+    "eventTitle": "Etkinlik Başlığı",
     "allDay": "Tüm Gün",
+    "startDate": "Başlangıç Tarihi",
+    "endDate": "Bitiş Tarihi",
+    "startTime": "Başlangıç Saati",
+    "endTime": "Bitiş Saati",
     "reminder": "Hatırlatıcı",
+    "reminders": "Hatırlatıcılar",
+    "addReminder": "Hatırlatıcı Ekle",
     "repeat": "Tekrarla",
+    "recurrence": "Tekrarlama",
     "location": "Konum",
+    "selectLocation": "Konum Seç",
+    "openInMaps": "Haritada Aç",
     "description": "Açıklama",
-    "googleSync": "Google Takvim Senkronizasyonu"
+    "notes": "Notlar",
+    "attachNote": "Not Ekle",
+    "color": "Renk",
+    "calendar": "Takvim",
+    "selectCalendar": "Takvim Seç",
+    "participants": "Katılımcılar",
+    "addParticipant": "Katılımcı Ekle",
+    "organizer": "Düzenleyen",
+    "status": "Durum",
+    "busy": "Meşgul",
+    "free": "Müsait",
+    "tentative": "Belirsiz",
+    "callReminder": "Arama Hatırlatıcısı",
+    "callReminderDesc": "Bu kişiyi aramanız için hatırlatıcı",
+    "share": "Paylaş",
+    "shareEvent": "Etkinliği Paylaş",
+    "exportEvent": "Etkinliği Dışa Aktar",
+
+    "reminderOptions": {
+      "none": "Yok",
+      "atTime": "Etkinlik zamanında",
+      "5min": "5 dakika önce",
+      "10min": "10 dakika önce",
+      "15min": "15 dakika önce",
+      "30min": "30 dakika önce",
+      "1hour": "1 saat önce",
+      "2hours": "2 saat önce",
+      "1day": "1 gün önce",
+      "2days": "2 gün önce",
+      "1week": "1 hafta önce"
+    },
+
+    "recurrenceOptions": {
+      "none": "Tekrarlamaz",
+      "daily": "Her gün",
+      "weekly": "Her hafta",
+      "biweekly": "İki haftada bir",
+      "monthly": "Her ay",
+      "yearly": "Her yıl",
+      "custom": "Özel"
+    },
+
+    "sync": {
+      "googleSync": "Google Takvim Senkronizasyonu",
+      "syncEnabled": "Senkronizasyon Açık",
+      "syncDisabled": "Senkronizasyon Kapalı",
+      "lastSync": "Son Senkronizasyon",
+      "syncNow": "Şimdi Senkronize Et",
+      "syncing": "Senkronize ediliyor...",
+      "syncSuccess": "Senkronizasyon başarılı",
+      "syncError": "Senkronizasyon hatası",
+      "connectGoogle": "Google Hesabı Bağla",
+      "disconnectGoogle": "Google Hesabını Kaldır",
+      "googleConnected": "Google hesabı bağlı",
+      "googleNotConnected": "Google hesabı bağlı değil"
+    },
+
+    "import": {
+      "title": "İçe Aktar",
+      "importICS": "ICS Dosyasından İçe Aktar",
+      "importExcel": "Excel Dosyasından İçe Aktar",
+      "importing": "İçe aktarılıyor...",
+      "importSuccess": "{{count}} etkinlik içe aktarıldı",
+      "importError": "İçe aktarma hatası",
+      "selectFile": "Dosya Seç"
+    },
+
+    "export": {
+      "title": "Dışa Aktar",
+      "exportICS": "ICS Olarak Dışa Aktar",
+      "exportExcel": "Excel Olarak Dışa Aktar",
+      "exportAll": "Tüm Etkinlikleri Dışa Aktar",
+      "exportRange": "Tarih Aralığını Dışa Aktar",
+      "exporting": "Dışa aktarılıyor...",
+      "exportSuccess": "Dışa aktarma başarılı",
+      "exportError": "Dışa aktarma hatası"
+    },
+
+    "weekDays": {
+      "sun": "Paz",
+      "mon": "Pzt",
+      "tue": "Sal",
+      "wed": "Çar",
+      "thu": "Per",
+      "fri": "Cum",
+      "sat": "Cmt"
+    },
+
+    "weekDaysFull": {
+      "sunday": "Pazar",
+      "monday": "Pazartesi",
+      "tuesday": "Salı",
+      "wednesday": "Çarşamba",
+      "thursday": "Perşembe",
+      "friday": "Cuma",
+      "saturday": "Cumartesi"
+    },
+
+    "months": {
+      "january": "Ocak",
+      "february": "Şubat",
+      "march": "Mart",
+      "april": "Nisan",
+      "may": "Mayıs",
+      "june": "Haziran",
+      "july": "Temmuz",
+      "august": "Ağustos",
+      "september": "Eylül",
+      "october": "Ekim",
+      "november": "Kasım",
+      "december": "Aralık"
+    },
+
+    "notifications": {
+      "eventReminder": "Etkinlik Hatırlatıcısı",
+      "upcomingEvent": "Yaklaşan etkinlik: {{title}}",
+      "callReminder": "Arama Hatırlatıcısı",
+      "timeToCall": "{{name}} kişisini aramanın zamanı geldi"
+    }
   },
   "notes": {
     "title": "Notlar",

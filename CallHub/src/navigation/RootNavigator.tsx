@@ -22,8 +22,11 @@ import OngoingCallScreen from '../screens/OngoingCallScreen';
 import SearchScreen from '../screens/SearchScreen';
 import DialerScreen from '../screens/DialerScreen';
 import SetupWizardScreen from '../screens/SetupWizardScreen';
+import EventEditScreen from '../screens/EventEditScreen';
+import EventDetailScreen from '../screens/EventDetailScreen';
 import SettingsAppearanceScreen from '../screens/settings/SettingsAppearanceScreen';
 import SettingsLanguageScreen from '../screens/settings/SettingsLanguageScreen';
+import SettingsCalendarScreen from '../screens/settings/SettingsCalendarScreen';
 import ThemeStoreScreen from '../screens/store/ThemeStoreScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -152,6 +155,35 @@ const RootNavigator: React.FC = () => {
         component={SettingsLanguageScreen}
         options={{
           title: t('settings.appearance.language'),
+        }}
+      />
+
+      {/* Takvim Ekranları */}
+      <Stack.Screen
+        name="EventEdit"
+        component={EventEditScreen}
+        options={{
+          headerShown: false,
+          presentation: 'modal',
+          animation: 'slide_from_bottom',
+        }}
+      />
+
+      <Stack.Screen
+        name="EventDetail"
+        component={EventDetailScreen}
+        options={{
+          title: '',
+          headerTransparent: true,
+        }}
+      />
+
+      {/* Takvim Ayarları */}
+      <Stack.Screen
+        name="SettingsCalendar"
+        component={SettingsCalendarScreen}
+        options={{
+          title: t('settings.calendar.title'),
         }}
       />
 
