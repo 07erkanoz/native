@@ -38,6 +38,12 @@ public class LifeCallPackage implements ReactPackage {
         // Engelleme modülü
         modules.add(new BlockingModule(reactContext));
 
+        // Takvim bildirim modülü
+        modules.add(new CalendarNotificationModule(reactContext));
+
+        // Widget modülü
+        modules.add(new WidgetModule(reactContext));
+
         return modules;
     }
 

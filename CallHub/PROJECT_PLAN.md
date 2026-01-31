@@ -746,23 +746,46 @@ CallHub/
     - Yerel SQLite'da saklama (Supabase'e yüklenmez)
     - 7 dilde çeviri
 
+11. **Takvim Bildirim Servisi**
+    - CalendarNotificationModule (Java + TypeScript)
+    - Native AlarmManager entegrasyonu
+    - CalendarReminderReceiver (hatırlatıcı alıcı)
+    - CalendarSnoozeReceiver (erteleme desteği)
+    - Arama hatırlatıcısı desteği
+12. **Google Calendar Senkronizasyonu**
+    - GoogleCalendarService (TypeScript)
+    - OAuth 2.0 token yönetimi
+    - Takvim listesi çekme
+    - Etkinlik CRUD işlemleri
+    - Çift yönlü senkronizasyon
+13. **ICS Import/Export Servisi**
+    - ICSService (TypeScript)
+    - ICS dosyası okuma/yazma
+    - RRULE ve VALARM desteği
+    - Dosya paylaşımı
+14. **Notlar Resim Ekleme**
+    - ImageAttachmentService (TypeScript)
+    - Kamera ve galeri desteği
+    - Çoklu resim seçimi
+    - Resim yönetimi (silme, temizleme)
+15. **Android Widget'lar**
+    - CalendarWidgetProvider (bugünün etkinlikleri)
+    - CallsWidgetProvider (son aramalar + favoriler)
+    - WidgetModule (React Native bridge)
+    - Widget layout'ları ve drawable'lar
+    - Otomatik güncelleme desteği
+
 **Aktif Geliştirme:**
-- Faz 6: Takvim Modülü (temel ekranlar tamamlandı, servisler devam ediyor)
-- Faz 7: Notlar Modülü (temel ekranlar tamamlandı, gelişmiş özellikler beklemede)
+- Faz 6: Takvim Modülü ✅ BÜYÜK ÖLÇÜDE TAMAMLANDI
+- Faz 7: Notlar Modülü ✅ BÜYÜK ÖLÇÜDE TAMAMLANDI
+- Faz 9: Widget'lar ✅ TAMAMLANDI
 
 **Sonraki Adımlar:**
-1. Takvim modülü servislerini tamamla:
-   - Native bildirim servisi (CalendarNotificationService)
-   - Google Calendar API entegrasyonu
-   - ICS/Excel parser servisleri
-   - Konum seçici (harita entegrasyonu)
-2. Notlar modülü gelişmiş özellikler:
-   - Sesli not kaydetme/oynatma
-   - Resim ekleme
-   - Dosya ekleme
-3. Arama engelleme/kara liste sistemi
-4. Spam filtresi
-5. Widget'lar (Faz 9)
+1. Konum seçici (harita entegrasyonu)
+2. Excel import/export
+3. Not şablonları
+4. Arama kaydı özelliği
+5. Yedekleme sistemi
 
 ---
 
@@ -801,10 +824,12 @@ npm install date-fns
 | 2 | CalendarScreen (temel) | Yüksek | 1 | ✅ Tamamlandı |
 | 3 | EventEditScreen | Yüksek | 1, 2 | ✅ Tamamlandı |
 | 4 | EventDetailScreen | Yüksek | 1, 2 | ✅ Tamamlandı |
-| 5 | Native bildirim servisi | Yüksek | 1 | 🔄 Sırada |
+| 5 | Native bildirim servisi | Yüksek | 1 | ✅ Tamamlandı |
 | 6 | SettingsCalendarScreen | Orta | 1 | ✅ Tamamlandı |
-| 7 | Google Calendar sync | Orta | 1, 6 | 📝 Beklemede |
-| 8 | ICS import/export | Orta | 1 | 📝 Beklemede |
+| 7 | Google Calendar sync | Orta | 1, 6 | ✅ Tamamlandı |
+| 8 | ICS import/export | Orta | 1 | ✅ Tamamlandı |
 | 9 | Excel import/export | Düşük | 1, 8 | 📝 Beklemede |
 | 10 | Konum/harita entegrasyonu | Düşük | 3, 4 | 📝 Beklemede |
 | 11 | Native paylaşım | Düşük | 4 | ✅ Tamamlandı |
+| 12 | Android Widget'lar | Orta | - | ✅ Tamamlandı |
+| 13 | Notlar Resim Ekleme | Orta | - | ✅ Tamamlandı |

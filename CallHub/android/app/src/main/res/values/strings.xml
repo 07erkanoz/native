@@ -51,4 +51,10 @@
     <string name="no">No</string>
     <string name="error">Error</string>
     <string name="success">Success</string>
+
+    <!-- Widgets -->
+    <string name="widget_calendar_name">LifeCall Takvim</string>
+    <string name="widget_calendar_description">Bugünün etkinliklerini gösterir</string>
+    <string name="widget_calls_name">LifeCall Aramalar</string>
+    <string name="widget_calls_description">Favoriler ve son aramaları gösterir</string>
 </resources>

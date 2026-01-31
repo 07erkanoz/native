@@ -85,6 +85,14 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <!-- ========================================== -->
+    <!-- ALARM İZİNLERİ - Alarm Permissions         -->
+    <!-- ========================================== -->
+
+    <!-- Exact alarm izni (Android 12+) -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+
+    <!-- ========================================== -->
     <!-- KAMERA & MİKROFON - Camera & Microphone    -->
     <!-- ========================================== -->
 
@@ -213,6 +221,62 @@
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
+        </receiver>
+
+        <!-- Calendar Reminder Receiver - Takvim hatırlatıcıları -->
+        <receiver
+            android:name=".receivers.CalendarReminderReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.lifecall.CALENDAR_REMINDER" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Calendar Snooze Receiver - Hatırlatıcı erteleme -->
+        <receiver
+            android:name=".receivers.CalendarSnoozeReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.lifecall.SNOOZE_REMINDER" />
+            </intent-filter>
+        </receiver>
+
+        <!-- ========================================== -->
+        <!-- WIDGET'LAR - App Widgets                   -->
+        <!-- ========================================== -->
+
+        <!-- Takvim Widget -->
+        <receiver
+            android:name=".widgets.CalendarWidgetProvider"
+            android:exported="true"
+            android:label="@string/widget_calendar_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.lifecall.widget.CALENDAR_REFRESH" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/calendar_widget_info" />
+        </receiver>
+
+        <!-- Takvim Widget Servis -->
+        <service
+            android:name=".widgets.CalendarWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"
+            android:exported="false" />
+
+        <!-- Aramalar Widget -->
+        <receiver
+            android:name=".widgets.CallsWidgetProvider"
+            android:exported="true"
+            android:label="@string/widget_calls_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.lifecall.widget.CALLS_REFRESH" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/calls_widget_info" />
         </receiver>
 
     </application>
