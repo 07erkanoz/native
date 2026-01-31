@@ -6,6 +6,7 @@
 
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { Contact, DeviceAccount } from '../../types';
+import contactsService from '../../services/contactsService';
 
 // State tipi
 interface ContactsState {
@@ -29,14 +30,15 @@ const initialState: ContactsState = {
   lastSyncTime: null,
 };
 
-// Async thunks - Placeholder, gerçek implementasyon daha sonra
+// Async thunks - Cihazdan kişileri oku
 export const fetchContacts = createAsyncThunk(
   'contacts/fetchContacts',
   async (_, { rejectWithValue }) => {
     try {
-      // TODO: Implement native module integration
-      return [] as Contact[];
+      const contacts = await contactsService.getAllContacts();
+      return contacts;
     } catch (error) {
+      console.error('Kişiler yüklenemedi:', error);
       return rejectWithValue('Kişiler yüklenemedi');
     }
   }
@@ -46,9 +48,10 @@ export const fetchAccounts = createAsyncThunk(
   'contacts/fetchAccounts',
   async (_, { rejectWithValue }) => {
     try {
-      // TODO: Implement native module integration
-      return [] as DeviceAccount[];
+      const accounts = await contactsService.getDeviceAccounts();
+      return accounts;
     } catch (error) {
+      console.error('Hesaplar yüklenemedi:', error);
       return rejectWithValue('Hesaplar yüklenemedi');
     }
   }
