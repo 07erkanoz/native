@@ -537,6 +537,10 @@
     "startRecording": "Начать запись",
     "stopRecording": "Остановить запись",
     "playRecording": "Воспроизвести запись",
+    "recording": "Запись...",
+    "recordAgain": "Записать снова",
+    "deleteVoiceNote": "Удалить голосовую заметку",
+    "deleteVoiceNoteConfirm": "Вы уверены, что хотите удалить эту голосовую заметку?",
 
     "linkContact": "Связать с контактом",
     "unlinkContact": "Отвязать контакт",

@@ -551,6 +551,10 @@
     "startRecording": "Kayda Başla",
     "stopRecording": "Kaydı Durdur",
     "playRecording": "Kaydı Oynat",
+    "recording": "Kaydediliyor...",
+    "recordAgain": "Yeniden Kaydet",
+    "deleteVoiceNote": "Sesli Notu Sil",
+    "deleteVoiceNoteConfirm": "Bu sesli notu silmek istediğinizden emin misiniz?",
 
     "linkContact": "Kişi Bağla",
     "unlinkContact": "Kişi Bağlantısını Kaldır",

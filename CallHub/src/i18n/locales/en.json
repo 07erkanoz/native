@@ -551,6 +551,10 @@
     "startRecording": "Start Recording",
     "stopRecording": "Stop Recording",
     "playRecording": "Play Recording",
+    "recording": "Recording...",
+    "recordAgain": "Record Again",
+    "deleteVoiceNote": "Delete Voice Note",
+    "deleteVoiceNoteConfirm": "Are you sure you want to delete this voice note?",
 
     "linkContact": "Link Contact",
     "unlinkContact": "Unlink Contact",

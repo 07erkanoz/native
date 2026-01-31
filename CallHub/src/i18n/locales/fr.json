@@ -537,6 +537,10 @@
     "startRecording": "Démarrer l'enregistrement",
     "stopRecording": "Arrêter l'enregistrement",
     "playRecording": "Lire l'enregistrement",
+    "recording": "Enregistrement en cours...",
+    "recordAgain": "Réenregistrer",
+    "deleteVoiceNote": "Supprimer la note vocale",
+    "deleteVoiceNoteConfirm": "Êtes-vous sûr de vouloir supprimer cette note vocale ?",
 
     "linkContact": "Lier un contact",
     "unlinkContact": "Délier le contact",

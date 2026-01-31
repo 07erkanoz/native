@@ -11,7 +11,7 @@
  * - Paylaşma
  */
 
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState, useEffect } from 'react';
 import {
   View,
   StyleSheet,
@@ -59,6 +59,7 @@ import {
   PRIORITY_OPTIONS,
 } from '../types/notes';
 import { RootStackParamList } from '../navigation/types';
+import voiceNoteService, { PlaybackState } from '../services/VoiceNoteService';
 
 type NoteDetailRouteProp = RouteProp<RootStackParamList, 'NoteDetail'>;
 
@@ -93,6 +94,11 @@ const NoteDetailScreen: React.FC = () => {
   // Local state
   const [menuVisible, setMenuVisible] = useState(false);
   const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
+
+  // Voice playback state
+  const [playbackState, setPlaybackState] = useState<PlaybackState>('idle');
+  const [playbackPosition, setPlaybackPosition] = useState(0);
+  const [playbackDuration, setPlaybackDuration] = useState(0);
 
   // Locale
   const locale = LOCALES[i18n.language] || enUS;
@@ -235,6 +241,30 @@ const NoteDetailScreen: React.FC = () => {
       Linking.openURL(url);
     }
   }, [note?.location]);
+
+  // Handle voice playback
+  const handleVoicePlayPause = useCallback(async () => {
+    if (!note?.voiceRecordingUri) return;
+
+    if (playbackState === 'playing') {
+      voiceNoteService.pause();
+    } else if (playbackState === 'paused') {
+      voiceNoteService.resume();
+    } else {
+      await voiceNoteService.play(note.voiceRecordingUri, (state, position, duration) => {
+        setPlaybackState(state);
+        setPlaybackPosition(position);
+        setPlaybackDuration(duration);
+      });
+    }
+  }, [note?.voiceRecordingUri, playbackState]);
+
+  // Cleanup voice service on unmount
+  useEffect(() => {
+    return () => {
+      voiceNoteService.stop();
+    };
+  }, []);
 
   if (!note) {
     return (
@@ -425,21 +455,43 @@ const NoteDetailScreen: React.FC = () => {
         {/* Voice note */}
         {note.type === 'voice' && note.voiceRecordingUri && (
           <View style={styles.voiceContainer}>
-            <TouchableOpacity style={styles.voicePlayer}>
-              <IconButton
-                icon="play-circle"
-                size={48}
-                iconColor={theme.colors.primary}
-              />
+            <View style={[styles.voicePlayer, { backgroundColor: theme.colors.surfaceVariant }]}>
+              <TouchableOpacity
+                style={[styles.voicePlayButton, { backgroundColor: theme.colors.primary }]}
+                onPress={handleVoicePlayPause}
+              >
+                <MaterialCommunityIcons
+                  name={playbackState === 'playing' ? 'pause' : 'play'}
+                  size={28}
+                  color="white"
+                />
+              </TouchableOpacity>
               <View style={styles.voiceInfo}>
-                <Text variant="bodyLarge" style={{ color: theme.colors.onSurface }}>
-                  {t('notes.voiceNote')}
-                </Text>
-                <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
-                  {note.voiceDuration ? `${Math.floor(note.voiceDuration / 60)}:${(note.voiceDuration % 60).toString().padStart(2, '0')}` : '--:--'}
-                </Text>
+                {/* Progress bar */}
+                <View style={[styles.voiceProgressBar, { backgroundColor: theme.colors.outline }]}>
+                  <View
+                    style={[
+                      styles.voiceProgressFill,
+                      {
+                        backgroundColor: theme.colors.primary,
+                        width: (playbackDuration || note.voiceDuration || 0) > 0
+                          ? `${(playbackPosition / (playbackDuration || note.voiceDuration || 1)) * 100}%`
+                          : '0%',
+                      },
+                    ]}
+                  />
+                </View>
+                {/* Duration */}
+                <View style={styles.voiceTimes}>
+                  <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
+                    {voiceNoteService.formatDuration(playbackPosition)}
+                  </Text>
+                  <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
+                    {voiceNoteService.formatDuration(note.voiceDuration || playbackDuration || 0)}
+                  </Text>
+                </View>
               </View>
-            </TouchableOpacity>
+            </View>
           </View>
         )}
 
@@ -738,13 +790,33 @@ const styles = StyleSheet.create({
   voicePlayer: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 12,
-    borderRadius: 12,
-    backgroundColor: 'rgba(0,0,0,0.05)',
+    padding: 16,
+    borderRadius: 16,
+    gap: 12,
+  },
+  voicePlayButton: {
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   voiceInfo: {
     flex: 1,
-    marginLeft: 8,
+  },
+  voiceProgressBar: {
+    height: 4,
+    borderRadius: 2,
+    overflow: 'hidden',
+  },
+  voiceProgressFill: {
+    height: '100%',
+    borderRadius: 2,
+  },
+  voiceTimes: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 6,
   },
   // Linked sections
   linkedSection: {

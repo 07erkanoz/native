@@ -537,6 +537,10 @@
     "startRecording": "بدء التسجيل",
     "stopRecording": "إيقاف التسجيل",
     "playRecording": "تشغيل التسجيل",
+    "recording": "جاري التسجيل...",
+    "recordAgain": "التسجيل مجدداً",
+    "deleteVoiceNote": "حذف الملاحظة الصوتية",
+    "deleteVoiceNoteConfirm": "هل أنت متأكد من حذف هذه الملاحظة الصوتية؟",
 
     "linkContact": "ربط جهة اتصال",
     "unlinkContact": "إلغاء ربط جهة الاتصال",

@@ -537,6 +537,10 @@
     "startRecording": "Aufnahme starten",
     "stopRecording": "Aufnahme beenden",
     "playRecording": "Aufnahme abspielen",
+    "recording": "Aufnahme läuft...",
+    "recordAgain": "Erneut aufnehmen",
+    "deleteVoiceNote": "Sprachnotiz löschen",
+    "deleteVoiceNoteConfirm": "Möchten Sie diese Sprachnotiz wirklich löschen?",
 
     "linkContact": "Kontakt verknüpfen",
     "unlinkContact": "Kontakt trennen",

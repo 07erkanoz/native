@@ -537,6 +537,10 @@
     "startRecording": "Iniciar grabación",
     "stopRecording": "Detener grabación",
     "playRecording": "Reproducir grabación",
+    "recording": "Grabando...",
+    "recordAgain": "Grabar de nuevo",
+    "deleteVoiceNote": "Eliminar nota de voz",
+    "deleteVoiceNoteConfirm": "¿Estás seguro de que quieres eliminar esta nota de voz?",
 
     "linkContact": "Vincular contacto",
     "unlinkContact": "Desvincular contacto",

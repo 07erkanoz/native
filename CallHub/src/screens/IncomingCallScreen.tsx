@@ -262,16 +262,14 @@ const IncomingCallScreen: React.FC<Props> = ({ navigation, route }) => {
 
       {/* Üst Kısım - Arayan Bilgisi */}
       <View style={styles.callerSection}>
-        {/* VoLTE ve Gelen Arama Etiketi */}
+        {/* Gelen Arama Etiketi ve HD rozeti */}
         <View style={styles.callLabelRow}>
-          {isVolteCall && (
-            <View style={[styles.volteBadge, { backgroundColor: 'rgba(255,255,255,0.15)' }]}>
-              <Text style={[styles.volteText, { color: callColors.text }]}>VoLTE</Text>
-            </View>
-          )}
           <Text style={[styles.callLabel, { color: callColors.textMuted }]}>
             {t('calls.incoming') || 'Gelen Arama'}
           </Text>
+          {isVolteCall && (
+            <Text style={[styles.hdBadgeSmall, { color: callColors.primary }]}>HD</Text>
+          )}
         </View>
 
         {/* Avatar */}
@@ -506,24 +504,20 @@ const styles = StyleSheet.create({
   callLabelRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: 6,
     marginBottom: 24,
-  },
-  volteBadge: {
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 4,
-  },
-  volteText: {
-    fontSize: 12,
-    fontWeight: '600',
-    letterSpacing: 0.5,
   },
   callLabel: {
     fontSize: 14,
     fontWeight: '500',
     textTransform: 'uppercase',
     letterSpacing: 2,
+  },
+  hdBadgeSmall: {
+    fontSize: 11,
+    fontWeight: '600',
+    letterSpacing: 0.5,
+    opacity: 0.9,
   },
   avatarContainer: {
     marginBottom: 24,

@@ -48,8 +48,20 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { format, parseISO, addHours } from 'date-fns';
 import { tr, enUS, de, fr, es, ru, ar } from 'date-fns/locale';
 import uuid from 'react-native-uuid';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withRepeat,
+  withTiming,
+  withSequence,
+  cancelAnimation,
+} from 'react-native-reanimated';
 
 import { useAppTheme } from '../theme';
+import voiceNoteService, {
+  RecordingState,
+  PlaybackState,
+} from '../services/VoiceNoteService';
 import { RootState, AppDispatch } from '../store';
 import {
   createNote,
@@ -161,6 +173,24 @@ const NoteEditScreen: React.FC = () => {
   const [reminderDate, setReminderDate] = useState(addHours(new Date(), 1));
   const [showReminderDatePicker, setShowReminderDatePicker] = useState(false);
   const [showReminderTimePicker, setShowReminderTimePicker] = useState(false);
+
+  // Voice note state
+  const [voiceRecordingUri, setVoiceRecordingUri] = useState<string | undefined>(
+    existingNote?.voiceRecordingUri
+  );
+  const [voiceDuration, setVoiceDuration] = useState<number>(existingNote?.voiceDuration || 0);
+  const [recordingState, setRecordingState] = useState<RecordingState>('idle');
+  const [recordingDuration, setRecordingDuration] = useState(0);
+  const [playbackState, setPlaybackState] = useState<PlaybackState>('idle');
+  const [playbackPosition, setPlaybackPosition] = useState(0);
+  const [playbackDuration, setPlaybackDuration] = useState(0);
+
+  // Voice recording animation
+  const recordingPulse = useSharedValue(1);
+  const recordingPulseStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: recordingPulse.value }],
+    opacity: recordingPulse.value === 1 ? 1 : 0.7,
+  }));
 
   // Color options
   const colorOptions: { value: NoteColor; color: string }[] = [
@@ -275,6 +305,8 @@ const NoteEditScreen: React.FC = () => {
           priority,
           isPinned,
           checklistItems: noteType === 'checklist' ? checklistItems : undefined,
+          voiceRecordingUri: noteType === 'voice' ? voiceRecordingUri : undefined,
+          voiceDuration: noteType === 'voice' ? voiceDuration : undefined,
           linkedContactIds: linkedContactIds.length > 0 ? linkedContactIds : undefined,
           linkedEventIds: linkedEventIds.length > 0 ? linkedEventIds : undefined,
           reminders: reminders.length > 0 ? reminders : undefined,
@@ -429,6 +461,100 @@ const NoteEditScreen: React.FC = () => {
     },
     [selectedTags]
   );
+
+  // Voice note - Start recording
+  const handleStartRecording = useCallback(async () => {
+    const started = await voiceNoteService.startRecording((state, duration) => {
+      setRecordingState(state);
+      setRecordingDuration(duration);
+    });
+
+    if (started) {
+      // Start pulse animation
+      recordingPulse.value = withRepeat(
+        withSequence(
+          withTiming(1.2, { duration: 500 }),
+          withTiming(1, { duration: 500 })
+        ),
+        -1,
+        true
+      );
+    }
+  }, [recordingPulse]);
+
+  // Voice note - Stop recording
+  const handleStopRecording = useCallback(async () => {
+    // Stop animation
+    cancelAnimation(recordingPulse);
+    recordingPulse.value = 1;
+
+    const result = await voiceNoteService.stopRecording();
+    if (result) {
+      setVoiceRecordingUri(result.uri);
+      setVoiceDuration(result.duration);
+      setPlaybackDuration(result.duration);
+    }
+    setRecordingState('idle');
+    setRecordingDuration(0);
+  }, [recordingPulse]);
+
+  // Voice note - Cancel recording
+  const handleCancelRecording = useCallback(() => {
+    cancelAnimation(recordingPulse);
+    recordingPulse.value = 1;
+    voiceNoteService.cancelRecording();
+    setRecordingState('idle');
+    setRecordingDuration(0);
+  }, [recordingPulse]);
+
+  // Voice note - Play/Pause
+  const handlePlayPause = useCallback(async () => {
+    if (!voiceRecordingUri) return;
+
+    if (playbackState === 'playing') {
+      voiceNoteService.pause();
+    } else if (playbackState === 'paused') {
+      voiceNoteService.resume();
+    } else {
+      await voiceNoteService.play(voiceRecordingUri, (state, position, duration) => {
+        setPlaybackState(state);
+        setPlaybackPosition(position);
+        setPlaybackDuration(duration);
+      });
+    }
+  }, [voiceRecordingUri, playbackState]);
+
+  // Voice note - Delete recording
+  const handleDeleteRecording = useCallback(() => {
+    Alert.alert(
+      t('notes.deleteVoiceNote'),
+      t('notes.deleteVoiceNoteConfirm'),
+      [
+        { text: t('common.cancel'), style: 'cancel' },
+        {
+          text: t('common.delete'),
+          style: 'destructive',
+          onPress: async () => {
+            voiceNoteService.stop();
+            if (voiceRecordingUri) {
+              await voiceNoteService.deleteRecording(voiceRecordingUri);
+            }
+            setVoiceRecordingUri(undefined);
+            setVoiceDuration(0);
+            setPlaybackState('idle');
+            setPlaybackPosition(0);
+          },
+        },
+      ]
+    );
+  }, [voiceRecordingUri, t]);
+
+  // Cleanup voice service on unmount
+  useEffect(() => {
+    return () => {
+      voiceNoteService.cleanup();
+    };
+  }, []);
 
   // Get linked contacts
   const linkedContacts = useMemo(() => {
@@ -744,24 +870,135 @@ const NoteEditScreen: React.FC = () => {
 
           {noteType === 'voice' && (
             <View style={styles.voiceContainer}>
-              <MaterialCommunityIcons
-                name="microphone"
-                size={64}
-                color={theme.colors.primary}
-              />
-              <Text variant="bodyLarge" style={{ color: theme.colors.onSurfaceVariant, marginTop: 16 }}>
-                {t('notes.voiceRecordingPlaceholder')}
-              </Text>
-              <Button
-                mode="contained"
-                icon="record"
-                onPress={() => {
-                  // TODO: Start recording
-                }}
-                style={styles.recordButton}
-              >
-                {t('notes.startRecording')}
-              </Button>
+              {/* Kayıt yoksa ve kayıt yapılmıyorsa */}
+              {!voiceRecordingUri && recordingState === 'idle' && (
+                <>
+                  <MaterialCommunityIcons
+                    name="microphone"
+                    size={64}
+                    color={theme.colors.primary}
+                  />
+                  <Text variant="bodyLarge" style={[styles.voiceText, { color: theme.colors.onSurfaceVariant }]}>
+                    {t('notes.voiceRecordingPlaceholder')}
+                  </Text>
+                  <Button
+                    mode="contained"
+                    icon="record"
+                    onPress={handleStartRecording}
+                    style={styles.recordButton}
+                    buttonColor={theme.colors.error}
+                  >
+                    {t('notes.startRecording')}
+                  </Button>
+                </>
+              )}
+
+              {/* Kayıt yapılıyor */}
+              {recordingState === 'recording' && (
+                <>
+                  <Animated.View style={[styles.recordingIndicator, recordingPulseStyle]}>
+                    <MaterialCommunityIcons
+                      name="microphone"
+                      size={64}
+                      color={theme.colors.error}
+                    />
+                  </Animated.View>
+                  <View style={styles.recordingInfo}>
+                    <View style={[styles.recordingDot, { backgroundColor: theme.colors.error }]} />
+                    <Text variant="headlineMedium" style={[styles.recordingTime, { color: theme.colors.error }]}>
+                      {voiceNoteService.formatDuration(recordingDuration)}
+                    </Text>
+                  </View>
+                  <Text variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant, marginTop: 8 }}>
+                    {t('notes.recording')}
+                  </Text>
+                  <View style={styles.recordingActions}>
+                    <Button
+                      mode="outlined"
+                      icon="close"
+                      onPress={handleCancelRecording}
+                      style={styles.recordingActionButton}
+                    >
+                      {t('common.cancel')}
+                    </Button>
+                    <Button
+                      mode="contained"
+                      icon="stop"
+                      onPress={handleStopRecording}
+                      style={styles.recordingActionButton}
+                    >
+                      {t('notes.stopRecording')}
+                    </Button>
+                  </View>
+                </>
+              )}
+
+              {/* Kayıt tamamlandı - Oynatma */}
+              {voiceRecordingUri && recordingState === 'idle' && (
+                <>
+                  <View style={[styles.playbackContainer, { backgroundColor: theme.colors.surfaceVariant }]}>
+                    <TouchableOpacity
+                      style={[styles.playButton, { backgroundColor: theme.colors.primary }]}
+                      onPress={handlePlayPause}
+                    >
+                      <MaterialCommunityIcons
+                        name={playbackState === 'playing' ? 'pause' : 'play'}
+                        size={32}
+                        color="white"
+                      />
+                    </TouchableOpacity>
+
+                    <View style={styles.playbackInfo}>
+                      {/* Progress bar */}
+                      <View style={[styles.progressBar, { backgroundColor: theme.colors.outline }]}>
+                        <View
+                          style={[
+                            styles.progressFill,
+                            {
+                              backgroundColor: theme.colors.primary,
+                              width: playbackDuration > 0
+                                ? `${(playbackPosition / playbackDuration) * 100}%`
+                                : '0%',
+                            },
+                          ]}
+                        />
+                      </View>
+                      {/* Duration */}
+                      <View style={styles.playbackTimes}>
+                        <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
+                          {voiceNoteService.formatDuration(playbackPosition)}
+                        </Text>
+                        <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
+                          {voiceNoteService.formatDuration(voiceDuration || playbackDuration)}
+                        </Text>
+                      </View>
+                    </View>
+
+                    <TouchableOpacity
+                      style={styles.deleteButton}
+                      onPress={handleDeleteRecording}
+                    >
+                      <MaterialCommunityIcons
+                        name="delete-outline"
+                        size={24}
+                        color={theme.colors.error}
+                      />
+                    </TouchableOpacity>
+                  </View>
+
+                  {/* Yeniden kaydet */}
+                  <Button
+                    mode="text"
+                    icon="microphone"
+                    onPress={() => {
+                      handleDeleteRecording();
+                    }}
+                    style={{ marginTop: 16 }}
+                  >
+                    {t('notes.recordAgain')}
+                  </Button>
+                </>
+              )}
             </View>
           )}
 
@@ -1122,10 +1359,75 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    minHeight: 200,
+    minHeight: 250,
+    paddingVertical: 24,
+  },
+  voiceText: {
+    marginTop: 16,
+    textAlign: 'center',
   },
   recordButton: {
     marginTop: 24,
+  },
+  recordingIndicator: {
+    marginBottom: 16,
+  },
+  recordingInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  recordingDot: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+  },
+  recordingTime: {
+    fontVariant: ['tabular-nums'],
+    fontWeight: '600',
+  },
+  recordingActions: {
+    flexDirection: 'row',
+    gap: 12,
+    marginTop: 24,
+  },
+  recordingActionButton: {
+    minWidth: 120,
+  },
+  playbackContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 12,
+    borderRadius: 16,
+    gap: 12,
+    width: '100%',
+  },
+  playButton: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  playbackInfo: {
+    flex: 1,
+  },
+  progressBar: {
+    height: 4,
+    borderRadius: 2,
+    overflow: 'hidden',
+  },
+  progressFill: {
+    height: '100%',
+    borderRadius: 2,
+  },
+  playbackTimes: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 4,
+  },
+  deleteButton: {
+    padding: 8,
   },
   // Linked sections
   linkedSection: {

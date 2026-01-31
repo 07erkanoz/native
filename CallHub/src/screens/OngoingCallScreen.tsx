@@ -350,22 +350,17 @@ const OngoingCallScreen: React.FC<Props> = ({ navigation, route }) => {
 
       {/* Orta Kısım - Arayan Bilgisi */}
       <View style={styles.callerSection}>
-        {/* VoLTE/HD ve Durum Satırı - Üstte */}
-        <View style={styles.callQualityRow}>
-          {/* VoLTE/HD Rozeti */}
-          {isHdCall && (
-            <View style={[styles.volteBadge, { backgroundColor: 'rgba(255,255,255,0.15)' }]}>
-              <Text style={[styles.volteText, { color: callColors.text }]}>
-                {audioQuality === 'hd_wifi' ? 'HD WiFi' : audioQuality === 'wifi' ? 'WiFi' : 'VoLTE'}
-              </Text>
-            </View>
-          )}
-          {/* Arama Durumu */}
+        {/* Arama Durumu Satırı - HD ile birlikte */}
+        <View style={styles.callStatusRow}>
           <Text style={[styles.callStatusText, { color: callColors.textMuted }]}>
             {callInfo.state === 'connected'
               ? formatDuration(duration)
               : callStatus}
           </Text>
+          {/* HD Rozeti - Küçük ve kibar */}
+          {isHdCall && (
+            <Text style={[styles.hdBadgeSmall, { color: callColors.primary }]}>HD</Text>
+          )}
         </View>
 
         <Animated.View
@@ -426,20 +421,6 @@ const OngoingCallScreen: React.FC<Props> = ({ navigation, route }) => {
           <Text style={[styles.countryName, { color: callColors.textMuted }]}>
             {countryInfo.nameTr}
           </Text>
-        )}
-
-        {/* HD Kalite İndikatörü - Alt kısım */}
-        {isHdCall && (
-          <View style={[styles.qualityIndicator, { backgroundColor: callColors.surfaceVariant }]}>
-            <MaterialCommunityIcons
-              name={audioQuality === 'hd_wifi' || audioQuality === 'wifi' ? 'wifi' : 'signal-cellular-3'}
-              size={16}
-              color={callColors.primary}
-            />
-            <Text style={[styles.qualityText, { color: callColors.primary }]}>
-              {audioQuality === 'hd_wifi' ? 'HD+' : audioQuality === 'wifi' ? 'WiFi' : 'HD'}
-            </Text>
-          </View>
         )}
       </View>
 
@@ -592,25 +573,21 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 20,
   },
-  callQualityRow: {
+  callStatusRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 16,
-    gap: 8,
-  },
-  volteBadge: {
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 4,
-  },
-  volteText: {
-    fontSize: 12,
-    fontWeight: '600',
-    letterSpacing: 0.5,
+    gap: 6,
   },
   callStatusText: {
     fontSize: 14,
+  },
+  hdBadgeSmall: {
+    fontSize: 11,
+    fontWeight: '600',
+    letterSpacing: 0.5,
+    opacity: 0.9,
   },
   avatarContainer: {
     position: 'relative',
@@ -657,19 +634,6 @@ const styles = StyleSheet.create({
   },
   statusText: {
     fontSize: 16,
-  },
-  qualityIndicator: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 8,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 12,
-    gap: 4,
-  },
-  qualityText: {
-    fontSize: 12,
-    fontWeight: 'bold',
   },
   controlsSection: {
     flex: 1,
