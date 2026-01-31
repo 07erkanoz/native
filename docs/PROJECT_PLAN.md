@@ -2953,38 +2953,42 @@ src/
 
 ## 8. Geliştirme Fazları
 
-### Faz 1: Temel Altyapı (2-3 hafta)
-- [ ] React Native + TypeScript proje kurulumu
-- [ ] Klasör yapısı oluşturma
-- [ ] React Navigation kurulumu
-- [ ] Redux Toolkit + RTK Query kurulumu
-- [ ] SQLite veritabanı ve şema
+### Faz 1: Temel Altyapı (2-3 hafta) ✅ TAMAMLANDI
+- [x] React Native + TypeScript proje kurulumu
+- [x] Klasör yapısı oluşturma
+- [x] React Navigation kurulumu
+- [x] Redux Toolkit + RTK Query kurulumu
+- [x] SQLite veritabanı ve şema (DATABASE_SCHEMA.md ile uyumlu)
 - [ ] Supabase client kurulumu
-- [ ] Temel UI bileşenleri (Paper + Elements)
-- [ ] Tema Provider altyapısı
-- [ ] İzin yönetim sistemi
+- [x] Temel UI bileşenleri (Paper + Elements)
+- [x] Tema Provider altyapısı
+- [x] İzin yönetim sistemi
+- [x] Çoklu dil sistemi (i18n) - 7 dil destekleniyor (TR, EN, DE, FR, ES, AR, RU)
+- [x] Android native modülleri (izin ve varsayılan uygulama)
 
-### Faz 2: Rehber Modülü (2-3 hafta)
-- [ ] Kişi listesi ekranı (alfabetik kaydırma)
-- [ ] Kişi detay ekranı
+### Faz 2: Rehber Modülü (2-3 hafta) 🟡 DEVAM EDİYOR
+- [x] Kişi listesi ekranı (alfabetik kaydırma + Türkçe alfabe)
+- [x] Kişi detay ekranı
 - [ ] Kişi ekleme/düzenleme
 - [ ] Favoriler ekranı (grid görünüm)
-- [ ] Cihaz rehberi senkronizasyonu
+- [x] Cihaz rehberi senkronizasyonu
 - [ ] Profil resmi sync
 - [ ] Kişiye özel zil sesi
-- [ ] Arama ve filtreleme
+- [x] Arama ve filtreleme
 
-### Faz 3: Çağrı Modülü (3-4 hafta)
+### Faz 3: Çağrı Modülü (3-4 hafta) 🟡 DEVAM EDİYOR
 - [ ] Detaylı çağrı geçmişi ekranı
 - [ ] Çağrı istatistikleri
 - [ ] Tuş takımı ekranı
-- [ ] Gelen arama ekranı (sesli)
+- [ ] Gelen arama ekranı (sesli) - Native altyapı hazır
 - [ ] Giden arama ekranı (sesli)
 - [ ] Arama sırasında ekran
 - [ ] Video arama UI altyapısı
 - [ ] Floating call widget
 - [ ] CallKeep entegrasyonu
-- [ ] Varsayılan uygulama kaydı
+- [x] Varsayılan uygulama kaydı (RoleManager + TelecomManager)
+- [x] Full-screen caller izinleri (SYSTEM_ALERT_WINDOW, USE_FULL_SCREEN_INTENT)
+- [x] Diğer uygulamalardan gelen arama intent'lerini yakalama
 
 ### Faz 4: Takvim ve Hatırlatıcılar (2-3 hafta)
 - [ ] Takvim ekranı (ay/hafta/gün)

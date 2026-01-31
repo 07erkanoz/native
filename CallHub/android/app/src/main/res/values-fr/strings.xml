@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Nom de l'application -->
+    <string name="app_name">LifeCall</string>
+    <string name="phone_account_name">LifeCall</string>
+    <string name="phone_account_description">Compte téléphonique LifeCall</string>
+
+    <!-- Canaux de notification -->
+    <string name="notification_channel_calls">Appels</string>
+    <string name="notification_channel_calls_desc">Appels entrants et sortants</string>
+    <string name="notification_channel_missed">Appels manqués</string>
+    <string name="notification_channel_missed_desc">Notifications d\'appels manqués</string>
+
+    <!-- Écran d'appel entrant -->
+    <string name="incoming_call">Appel entrant</string>
+    <string name="outgoing_call">Appel en cours</string>
+    <string name="answer">Répondre</string>
+    <string name="decline">Refuser</string>
+    <string name="end_call">Terminer l\'appel</string>
+    <string name="unknown_caller">Appelant inconnu</string>
+    <string name="private_number">Numéro privé</string>
+
+    <!-- Actions d'appel -->
+    <string name="mute">Muet</string>
+    <string name="speaker">Haut-parleur</string>
+    <string name="keypad">Clavier</string>
+    <string name="hold">Attente</string>
+    <string name="add_call">Ajouter un appel</string>
+
+    <!-- Messages de permission -->
+    <string name="permission_phone_title">Autorisation téléphone</string>
+    <string name="permission_phone_message">L\'autorisation téléphone est requise pour passer des appels.</string>
+    <string name="permission_contacts_title">Autorisation contacts</string>
+    <string name="permission_contacts_message">L\'autorisation contacts est requise pour afficher vos contacts.</string>
+    <string name="permission_overlay_title">Afficher par-dessus les autres applications</string>
+    <string name="permission_overlay_message">Cette autorisation est requise pour l\'affichage plein écran des appels entrants.</string>
+    <string name="permission_required">Autorisation requise</string>
+    <string name="permission_go_to_settings">Aller aux paramètres</string>
+    <string name="permission_cancel">Annuler</string>
+
+    <!-- Messages d'application par défaut -->
+    <string name="default_dialer_title">Définir comme application téléphone par défaut</string>
+    <string name="default_dialer_message">Définissez LifeCall comme application téléphone par défaut pour gérer tous les appels.</string>
+    <string name="default_dialer_set">Définir par défaut</string>
+    <string name="default_dialer_later">Plus tard</string>
+
+    <!-- Général -->
+    <string name="ok">OK</string>
+    <string name="cancel">Annuler</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+    <string name="error">Erreur</string>
+    <string name="success">Succès</string>
+</resources>

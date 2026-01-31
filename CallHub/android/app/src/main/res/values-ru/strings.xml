@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Название приложения -->
+    <string name="app_name">LifeCall</string>
+    <string name="phone_account_name">LifeCall</string>
+    <string name="phone_account_description">Телефонный аккаунт LifeCall</string>
+
+    <!-- Каналы уведомлений -->
+    <string name="notification_channel_calls">Звонки</string>
+    <string name="notification_channel_calls_desc">Входящие и исходящие звонки</string>
+    <string name="notification_channel_missed">Пропущенные звонки</string>
+    <string name="notification_channel_missed_desc">Уведомления о пропущенных звонках</string>
+
+    <!-- Экран входящего звонка -->
+    <string name="incoming_call">Входящий звонок</string>
+    <string name="outgoing_call">Вызов</string>
+    <string name="answer">Ответить</string>
+    <string name="decline">Отклонить</string>
+    <string name="end_call">Завершить звонок</string>
+    <string name="unknown_caller">Неизвестный абонент</string>
+    <string name="private_number">Скрытый номер</string>
+
+    <!-- Действия со звонком -->
+    <string name="mute">Без звука</string>
+    <string name="speaker">Динамик</string>
+    <string name="keypad">Клавиатура</string>
+    <string name="hold">Удержание</string>
+    <string name="add_call">Добавить звонок</string>
+
+    <!-- Сообщения о разрешениях -->
+    <string name="permission_phone_title">Разрешение телефона</string>
+    <string name="permission_phone_message">Разрешение телефона необходимо для совершения звонков.</string>
+    <string name="permission_contacts_title">Разрешение контактов</string>
+    <string name="permission_contacts_message">Разрешение контактов необходимо для просмотра ваших контактов.</string>
+    <string name="permission_overlay_title">Отображать поверх других приложений</string>
+    <string name="permission_overlay_message">Это разрешение необходимо для полноэкранного отображения входящих звонков.</string>
+    <string name="permission_required">Требуется разрешение</string>
+    <string name="permission_go_to_settings">Перейти в настройки</string>
+    <string name="permission_cancel">Отмена</string>
+
+    <!-- Сообщения о приложении по умолчанию -->
+    <string name="default_dialer_title">Установить как приложение телефона по умолчанию</string>
+    <string name="default_dialer_message">Установите LifeCall как приложение телефона по умолчанию для управления всеми звонками.</string>
+    <string name="default_dialer_set">Установить по умолчанию</string>
+    <string name="default_dialer_later">Позже</string>
+
+    <!-- Общие -->
+    <string name="ok">OK</string>
+    <string name="cancel">Отмена</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="error">Ошибка</string>
+    <string name="success">Успешно</string>
+</resources>

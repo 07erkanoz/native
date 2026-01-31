@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Uygulama Adı -->
+    <string name="app_name">LifeCall</string>
+    <string name="phone_account_name">LifeCall</string>
+    <string name="phone_account_description">LifeCall Telefon Hesabı</string>
+
+    <!-- Bildirim Kanalları -->
+    <string name="notification_channel_calls">Aramalar</string>
+    <string name="notification_channel_calls_desc">Gelen ve giden aramalar</string>
+    <string name="notification_channel_missed">Cevapsız Aramalar</string>
+    <string name="notification_channel_missed_desc">Cevapsız arama bildirimleri</string>
+
+    <!-- Gelen Arama Ekranı -->
+    <string name="incoming_call">Gelen Arama</string>
+    <string name="outgoing_call">Aranıyor</string>
+    <string name="answer">Yanıtla</string>
+    <string name="decline">Reddet</string>
+    <string name="end_call">Aramayı Sonlandır</string>
+    <string name="unknown_caller">Bilinmeyen Arayan</string>
+    <string name="private_number">Gizli Numara</string>
+
+    <!-- Arama İşlemleri -->
+    <string name="mute">Sessiz</string>
+    <string name="speaker">Hoparlör</string>
+    <string name="keypad">Tuş Takımı</string>
+    <string name="hold">Beklet</string>
+    <string name="add_call">Arama Ekle</string>
+
+    <!-- İzin Mesajları -->
+    <string name="permission_phone_title">Telefon İzni</string>
+    <string name="permission_phone_message">Arama yapabilmek için telefon iznine ihtiyacımız var.</string>
+    <string name="permission_contacts_title">Kişiler İzni</string>
+    <string name="permission_contacts_message">Kişilerinizi görüntüleyebilmek için kişiler iznine ihtiyacımız var.</string>
+    <string name="permission_overlay_title">Üstte Göster İzni</string>
+    <string name="permission_overlay_message">Gelen aramalarda tam ekran gösterim için bu izin gereklidir.</string>
+    <string name="permission_required">İzin Gerekli</string>
+    <string name="permission_go_to_settings">Ayarlara Git</string>
+    <string name="permission_cancel">İptal</string>
+
+    <!-- Varsayılan Uygulama Mesajları -->
+    <string name="default_dialer_title">Varsayılan Telefon Uygulaması Olarak Ayarla</string>
+    <string name="default_dialer_message">Tüm aramaları yönetmek için LifeCall\'ı varsayılan telefon uygulaması olarak ayarlayın.</string>
+    <string name="default_dialer_set">Varsayılan Olarak Ayarla</string>
+    <string name="default_dialer_later">Daha Sonra</string>
+
+    <!-- Genel -->
+    <string name="ok">Tamam</string>
+    <string name="cancel">İptal</string>
+    <string name="yes">Evet</string>
+    <string name="no">Hayır</string>
+    <string name="error">Hata</string>
+    <string name="success">Başarılı</string>
+</resources>

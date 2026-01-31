@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Nombre de la aplicación -->
+    <string name="app_name">LifeCall</string>
+    <string name="phone_account_name">LifeCall</string>
+    <string name="phone_account_description">Cuenta telefónica LifeCall</string>
+
+    <!-- Canales de notificación -->
+    <string name="notification_channel_calls">Llamadas</string>
+    <string name="notification_channel_calls_desc">Llamadas entrantes y salientes</string>
+    <string name="notification_channel_missed">Llamadas perdidas</string>
+    <string name="notification_channel_missed_desc">Notificaciones de llamadas perdidas</string>
+
+    <!-- Pantalla de llamada entrante -->
+    <string name="incoming_call">Llamada entrante</string>
+    <string name="outgoing_call">Llamando</string>
+    <string name="answer">Contestar</string>
+    <string name="decline">Rechazar</string>
+    <string name="end_call">Terminar llamada</string>
+    <string name="unknown_caller">Llamante desconocido</string>
+    <string name="private_number">Número privado</string>
+
+    <!-- Acciones de llamada -->
+    <string name="mute">Silenciar</string>
+    <string name="speaker">Altavoz</string>
+    <string name="keypad">Teclado</string>
+    <string name="hold">Espera</string>
+    <string name="add_call">Añadir llamada</string>
+
+    <!-- Mensajes de permisos -->
+    <string name="permission_phone_title">Permiso de teléfono</string>
+    <string name="permission_phone_message">Se requiere permiso de teléfono para realizar llamadas.</string>
+    <string name="permission_contacts_title">Permiso de contactos</string>
+    <string name="permission_contacts_message">Se requiere permiso de contactos para ver sus contactos.</string>
+    <string name="permission_overlay_title">Mostrar sobre otras aplicaciones</string>
+    <string name="permission_overlay_message">Este permiso es necesario para mostrar llamadas entrantes en pantalla completa.</string>
+    <string name="permission_required">Permiso requerido</string>
+    <string name="permission_go_to_settings">Ir a configuración</string>
+    <string name="permission_cancel">Cancelar</string>
+
+    <!-- Mensajes de aplicación predeterminada -->
+    <string name="default_dialer_title">Establecer como aplicación de teléfono predeterminada</string>
+    <string name="default_dialer_message">Establezca LifeCall como aplicación de teléfono predeterminada para gestionar todas las llamadas.</string>
+    <string name="default_dialer_set">Establecer como predeterminada</string>
+    <string name="default_dialer_later">Más tarde</string>
+
+    <!-- General -->
+    <string name="ok">Aceptar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="yes">Sí</string>
+    <string name="no">No</string>
+    <string name="error">Error</string>
+    <string name="success">Éxito</string>
+</resources>

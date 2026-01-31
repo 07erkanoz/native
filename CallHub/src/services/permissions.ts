@@ -32,7 +32,9 @@ export type PermissionType =
   | 'microphone'
   | 'calendar'
   | 'storage'
-  | 'notifications';
+  | 'notifications'
+  | 'overlay'
+  | 'fullScreenIntent';
 
 // İzin durumu
 export interface PermissionState {
@@ -307,6 +309,113 @@ export const ensurePermission = async (
   return state.granted;
 };
 
+/**
+ * Overlay (SYSTEM_ALERT_WINDOW) izni kontrolü
+ * Bu özel izin için Native Module kullanılır
+ */
+export const checkOverlayPermission = async (): Promise<boolean> => {
+  if (Platform.OS !== 'android') return true;
+
+  try {
+    const { NativeModules } = require('react-native');
+    const { PermissionsModule } = NativeModules;
+    if (PermissionsModule?.canDrawOverlays) {
+      return await PermissionsModule.canDrawOverlays();
+    }
+    return false;
+  } catch (error) {
+    console.error('Overlay izni kontrolü hatası:', error);
+    return false;
+  }
+};
+
+/**
+ * Overlay izni iste (Ayarlara yönlendir)
+ */
+export const requestOverlayPermission = async (): Promise<boolean> => {
+  if (Platform.OS !== 'android') return true;
+
+  try {
+    const { NativeModules } = require('react-native');
+    const { PermissionsModule } = NativeModules;
+    if (PermissionsModule?.requestOverlayPermission) {
+      return await PermissionsModule.requestOverlayPermission();
+    }
+    // Fallback: Ayarlara yönlendir
+    await Linking.openSettings();
+    return false;
+  } catch (error) {
+    console.error('Overlay izni isteme hatası:', error);
+    return false;
+  }
+};
+
+/**
+ * Full-screen intent izni kontrolü
+ */
+export const checkFullScreenIntentPermission = async (): Promise<boolean> => {
+  if (Platform.OS !== 'android') return true;
+
+  try {
+    const { NativeModules } = require('react-native');
+    const { PermissionsModule } = NativeModules;
+    if (PermissionsModule?.canUseFullScreenIntent) {
+      return await PermissionsModule.canUseFullScreenIntent();
+    }
+    // Android 11+ için gerekli, daha düşük sürümlerde otomatik verilir
+    return true;
+  } catch (error) {
+    console.error('Full-screen intent izni kontrolü hatası:', error);
+    return true;
+  }
+};
+
+/**
+ * Full-screen intent izni iste
+ */
+export const requestFullScreenIntentPermission = async (): Promise<boolean> => {
+  if (Platform.OS !== 'android') return true;
+
+  try {
+    const { NativeModules } = require('react-native');
+    const { PermissionsModule } = NativeModules;
+    if (PermissionsModule?.requestFullScreenIntentPermission) {
+      return await PermissionsModule.requestFullScreenIntentPermission();
+    }
+    return true;
+  } catch (error) {
+    console.error('Full-screen intent izni isteme hatası:', error);
+    return true;
+  }
+};
+
+/**
+ * Tüm telefon uygulaması izinlerini kontrol et
+ */
+export const checkPhoneAppPermissions = async (): Promise<{
+  phone: boolean;
+  callLog: boolean;
+  contacts: boolean;
+  overlay: boolean;
+  fullScreenIntent: boolean;
+}> => {
+  const [phone, callLog, contacts, overlay, fullScreenIntent] = await Promise.all([
+    checkPermission('phone'),
+    checkPermission('callLog'),
+    checkPermission('contacts'),
+    checkOverlayPermission(),
+    checkFullScreenIntentPermission(),
+  ]);
+
+  return {
+    phone: phone.granted,
+    callLog: callLog.granted,
+    contacts: contacts.granted,
+    overlay,
+    fullScreenIntent,
+  };
+};
+
 export default {
   checkPermission,
   requestPermission,
@@ -314,4 +423,9 @@ export default {
   openAppSettings,
   showPermissionDeniedAlert,
   ensurePermission,
+  checkOverlayPermission,
+  requestOverlayPermission,
+  checkFullScreenIntentPermission,
+  requestFullScreenIntentPermission,
+  checkPhoneAppPermissions,
 };
