@@ -1,220 +1,498 @@
-# Telefon Rehberi ve Arama Uygulaması - Proje Planı
+# CallHub - All-in-One PIM Uygulaması
 
 ## Proje Özeti
 
-React Native ile gelişmiş bir telefon rehberi ve arama yönetimi uygulaması. Tema mağazası, özelleştirilebilir UI, ve bulut senkronizasyonu özellikleri içerecek.
+React Native ile geliştirilecek kapsamlı bir **Kişisel Bilgi Yönetimi (PIM)** uygulaması. Tek bir uygulama içinde:
+- **Rehber** (Kişi Yönetimi)
+- **Telefon** (Arama Yönetimi)
+- **Ajanda** (Notlar)
+- **Takvim** (Etkinlikler + Google Sync)
+- **Hatırlatıcılar**
+- **Tema Mağazası**
+- **Zil Sesi Mağazası**
 
 ---
 
-## 1. Temel Özellikler
+## 1. Ana Modüller ve Ekranlar
 
-### 1.1 Ana Ekranlar
+### 1.1 Tab Bar Yapısı
 
-| Ekran | Açıklama |
-|-------|----------|
-| **Favoriler** | Grid görünümde sık kullanılan kişiler |
-| **Son Aramalar** | Çağrı geçmişi (gelen, giden, cevapsız) |
-| **Rehber** | Alfabetik sıralı kişi listesi |
-| **Tuş Takımı** | Numara çevirme ekranı |
-| **Tema Mağazası** | Tema satın alma ve indirme |
-| **Ayarlar** | Gelişmiş ayar yönetimi |
+```
+┌─────────────────────────────────────────────────────┐
+│  [⭐]    [🕐]    [👥]    [📅]    [⚙️]              │
+│  Fav     Arama   Rehber  Takvim  Ayarlar           │
+└─────────────────────────────────────────────────────┘
+```
 
-### 1.2 Çağrı Yönetimi
+### 1.2 Tüm Ekranlar
 
-- Gelen arama ekranı (özelleştirilebilir UI)
-- Cevaplama ekranı (özelleştirilebilir UI)
-- Arama sırasında ekran (tuş takımı, bekletme, hoparlör vb.)
-- Çoklu arama desteği
-- Arama kaydı (opsiyonel)
-
-### 1.3 Tema Sistemi
-
-- Uygulama genel teması (koyu/açık mod + özel temalar)
-- Gelen arama UI teması
-- Cevaplama UI teması
-- Arama sırasında UI teması
-- Tema mağazası (ücretsiz + premium temalar)
+| Modül | Ekran | Açıklama |
+|-------|-------|----------|
+| **Favoriler** | FavoritesScreen | Grid görünümde favori kişiler |
+| **Aramalar** | CallHistoryScreen | Detaylı çağrı geçmişi |
+| | DialerScreen | Tuş takımı |
+| | IncomingCallScreen | Gelen sesli arama UI |
+| | IncomingVideoCallScreen | Gelen görüntülü arama UI |
+| | OutgoingCallScreen | Giden sesli arama UI |
+| | OutgoingVideoCallScreen | Giden görüntülü arama UI |
+| | InCallScreen | Arama sırasında UI |
+| | InVideoCallScreen | Görüntülü arama sırasında UI |
+| | FloatingCallScreen | Floating/PiP arama UI |
+| **Rehber** | ContactListScreen | Alfabetik kişi listesi |
+| | ContactDetailScreen | Kişi detayı |
+| | ContactEditScreen | Kişi ekleme/düzenleme |
+| | ContactGroupsScreen | Kişi grupları |
+| **Takvim** | CalendarScreen | Aylık/haftalık takvim |
+| | EventDetailScreen | Etkinlik detayı |
+| | EventEditScreen | Etkinlik ekleme/düzenleme |
+| | AgendaScreen | Günlük ajanda görünümü |
+| **Notlar** | NotesListScreen | Not listesi |
+| | NoteDetailScreen | Not detayı/düzenleme |
+| | NoteEditorScreen | Zengin metin editörü |
+| **Hatırlatıcılar** | RemindersScreen | Hatırlatıcı listesi |
+| | ReminderEditScreen | Hatırlatıcı ekleme/düzenleme |
+| **Mağaza** | ThemeStoreScreen | Tema mağazası |
+| | ThemeDetailScreen | Tema önizleme/satın alma |
+| | RingtoneStoreScreen | Zil sesi mağazası |
+| | RingtoneDetailScreen | Zil sesi önizleme |
+| | MyPurchasesScreen | Satın alınanlar |
+| **Ayarlar** | SettingsScreen | Ana ayarlar |
+| | AppearanceSettingsScreen | Görünüm ayarları |
+| | CallSettingsScreen | Arama ayarları |
+| | ContactSettingsScreen | Rehber ayarları |
+| | CalendarSettingsScreen | Takvim ayarları |
+| | NotificationSettingsScreen | Bildirim ayarları |
+| | SyncSettingsScreen | Senkronizasyon ayarları |
+| | PrivacySettingsScreen | Gizlilik ayarları |
+| | BackupSettingsScreen | Yedekleme ayarları |
+| **Kimlik** | LoginScreen | Giriş |
+| | RegisterScreen | Kayıt |
+| | ProfileScreen | Profil yönetimi |
 
 ---
 
-## 2. Teknik Mimari
+## 2. Özellik Detayları
 
-### 2.1 Teknoloji Yığını
+### 2.1 Çağrı Yönetimi (Call Management)
+
+#### Detaylı Call Log
+```typescript
+interface CallLogEntry {
+  id: string;
+  contactId?: string;
+  phoneNumber: string;
+  formattedNumber: string;
+  contactName?: string;
+  contactPhoto?: string;
+
+  // Çağrı Detayları
+  callType: 'incoming' | 'outgoing' | 'missed' | 'rejected' | 'blocked';
+  callCategory: 'voice' | 'video';
+  duration: number;              // Saniye
+  callDate: string;              // ISO 8601
+  callTime: string;              // HH:mm:ss
+
+  // Ek Bilgiler
+  isRead: boolean;
+  isNew: boolean;
+  simSlot?: number;              // Dual SIM
+  geocodedLocation?: string;     // Şehir/Ülke
+  networkType?: string;          // WiFi, 4G, 5G
+
+  // Arama Kaydı
+  hasRecording: boolean;
+  recordingPath?: string;
+  recordingDuration?: number;
+}
+```
+
+#### Çağrı İstatistikleri
+- Günlük/Haftalık/Aylık arama sayısı
+- En çok aranan kişiler
+- Ortalama arama süresi
+- Cevapsız arama oranı
+
+### 2.2 Görüntülü Arama UI Altyapısı
+
+#### Gelen Görüntülü Arama Ekranı
+```
+┌─────────────────────────────────────┐
+│         ┌─────────────┐             │
+│         │             │             │
+│         │   📹 Video  │   ← Arayan  │
+│         │   Preview   │     Video   │
+│         │             │             │
+│         └─────────────┘             │
+│                                     │
+│         Senem Daşkıran              │
+│       Görüntülü Arama...            │
+│                                     │
+│    ┌─────────┐    ┌─────────┐      │
+│    │   🎥    │    │   📞    │      │
+│    │ Video   │    │ Sesli   │      │
+│    │ Cevapla │    │ Cevapla │      │
+│    └─────────┘    └─────────┘      │
+│                                     │
+│           ┌─────────┐               │
+│           │   ❌    │               │
+│           │ Reddet  │               │
+│           └─────────┘               │
+└─────────────────────────────────────┘
+```
+
+#### Görüntülü Arama Sırasında Ekran
+```
+┌─────────────────────────────────────┐
+│ ┌─────────────────────────────────┐ │
+│ │                                 │ │
+│ │      Karşı Taraf Video          │ │
+│ │         (Tam Ekran)             │ │
+│ │                                 │ │
+│ │                    ┌───────┐    │ │
+│ │                    │ Kendi │    │ │
+│ │                    │ Video │    │ │
+│ │                    └───────┘    │ │
+│ └─────────────────────────────────┘ │
+│                                     │
+│  Senem Daşkıran        02:45       │
+│                                     │
+│  ┌────┐ ┌────┐ ┌────┐ ┌────┐      │
+│  │ 🔇 │ │ 📷 │ │ 🔄 │ │ 🔊 │      │
+│  │Mute│ │Cam │ │Flip│ │Spkr│      │
+│  └────┘ └────┘ └────┘ └────┘      │
+│                                     │
+│         ┌───────────────┐           │
+│         │      📞       │           │
+│         │   Bitir       │           │
+│         └───────────────┘           │
+└─────────────────────────────────────┘
+```
+
+### 2.3 Floating/PiP Arama UI
+
+Başka uygulama açıkken görünen floating UI:
 
 ```
-Frontend:
-├── React Native (0.73+)
-├── TypeScript
-├── React Navigation 6.x
-├── Redux Toolkit + RTK Query
-├── React Native Paper (UI Kit)
-└── React Native Reanimated (Animasyonlar)
-
-Backend/Database:
-├── SQLite (Yerel veri)
-├── Supabase (Bulut - kullanıcı yönetimi, tema mağazası)
-└── AsyncStorage (Tercihler)
-
-Native Modüller:
-├── react-native-callkeep (Çağrı yönetimi)
-├── react-native-contacts (Rehber erişimi)
-├── react-native-call-log (Çağrı geçmişi)
-├── react-native-incall-manager (Arama sırasında yönetim)
-└── react-native-permissions (İzin yönetimi)
+┌──────────────────────────────────────────┐
+│                                          │
+│         [Diğer Uygulama İçeriği]         │
+│                                          │
+│                                          │
+│     ┌─────────────────────────────┐      │
+│     │ 👤 Senem D.     02:45  [X] │      │
+│     │ [🔇] [⌨️] [🔊]    [📞 Bitir]│      │
+│     └─────────────────────────────┘      │
+│         ↑ Floating Call Widget           │
+└──────────────────────────────────────────┘
 ```
 
-### 2.2 Proje Klasör Yapısı
-
+#### Video Call Floating (PiP)
 ```
-src/
-├── app/                          # Uygulama giriş noktası
-│   ├── App.tsx
-│   ├── store.ts                  # Redux store
-│   └── navigation/
-│       ├── RootNavigator.tsx
-│       ├── TabNavigator.tsx
-│       └── types.ts
-│
-├── features/                     # Özellik bazlı modüller
-│   ├── auth/                     # Kimlik doğrulama
-│   │   ├── screens/
-│   │   │   ├── LoginScreen.tsx
-│   │   │   ├── RegisterScreen.tsx
-│   │   │   └── ProfileScreen.tsx
-│   │   ├── components/
-│   │   ├── hooks/
-│   │   ├── services/
-│   │   └── authSlice.ts
-│   │
-│   ├── contacts/                 # Rehber yönetimi
-│   │   ├── screens/
-│   │   │   ├── ContactListScreen.tsx
-│   │   │   ├── ContactDetailScreen.tsx
-│   │   │   ├── ContactEditScreen.tsx
-│   │   │   └── FavoritesScreen.tsx
-│   │   ├── components/
-│   │   │   ├── ContactCard.tsx
-│   │   │   ├── ContactAvatar.tsx
-│   │   │   ├── AlphabetScroller.tsx
-│   │   │   └── SearchBar.tsx
-│   │   ├── hooks/
-│   │   │   ├── useContacts.ts
-│   │   │   └── useFavorites.ts
-│   │   ├── services/
-│   │   │   └── contactsService.ts
-│   │   └── contactsSlice.ts
-│   │
-│   ├── calls/                    # Çağrı yönetimi
-│   │   ├── screens/
-│   │   │   ├── CallHistoryScreen.tsx
-│   │   │   ├── DialerScreen.tsx
-│   │   │   ├── IncomingCallScreen.tsx
-│   │   │   ├── OutgoingCallScreen.tsx
-│   │   │   └── InCallScreen.tsx
-│   │   ├── components/
-│   │   │   ├── CallLogItem.tsx
-│   │   │   ├── Dialpad.tsx
-│   │   │   ├── CallActionButton.tsx
-│   │   │   └── CallTimer.tsx
-│   │   ├── hooks/
-│   │   │   ├── useCallManager.ts
-│   │   │   └── useCallHistory.ts
-│   │   ├── services/
-│   │   │   └── callService.ts
-│   │   └── callsSlice.ts
-│   │
-│   ├── themes/                   # Tema yönetimi
-│   │   ├── screens/
-│   │   │   ├── ThemeStoreScreen.tsx
-│   │   │   ├── ThemeDetailScreen.tsx
-│   │   │   ├── ThemeCustomizeScreen.tsx
-│   │   │   └── MyThemesScreen.tsx
-│   │   ├── components/
-│   │   │   ├── ThemeCard.tsx
-│   │   │   ├── ThemePreview.tsx
-│   │   │   └── ColorPicker.tsx
-│   │   ├── hooks/
-│   │   │   └── useTheme.ts
-│   │   ├── services/
-│   │   │   └── themeService.ts
-│   │   ├── presets/              # Varsayılan temalar
-│   │   │   ├── defaultLight.ts
-│   │   │   ├── defaultDark.ts
-│   │   │   ├── neonTheme.ts
-│   │   │   └── retroTheme.ts
-│   │   └── themesSlice.ts
-│   │
-│   └── settings/                 # Ayarlar
-│       ├── screens/
-│       │   ├── SettingsScreen.tsx
-│       │   ├── AppearanceSettings.tsx
-│       │   ├── CallSettings.tsx
-│       │   ├── NotificationSettings.tsx
-│       │   ├── PrivacySettings.tsx
-│       │   ├── BlockedNumbersScreen.tsx
-│       │   └── AboutScreen.tsx
-│       ├── components/
-│       │   ├── SettingItem.tsx
-│       │   └── SettingSection.tsx
-│       └── settingsSlice.ts
-│
-├── shared/                       # Paylaşılan bileşenler
-│   ├── components/
-│   │   ├── Button.tsx
-│   │   ├── Input.tsx
-│   │   ├── Avatar.tsx
-│   │   ├── Modal.tsx
-│   │   ├── BottomSheet.tsx
-│   │   ├── LoadingSpinner.tsx
-│   │   └── EmptyState.tsx
-│   ├── hooks/
-│   │   ├── useDatabase.ts
-│   │   ├── usePermissions.ts
-│   │   └── useDebounce.ts
-│   └── utils/
-│       ├── formatters.ts
-│       ├── validators.ts
-│       └── helpers.ts
-│
-├── database/                     # Veritabanı katmanı
-│   ├── sqlite/
-│   │   ├── database.ts           # SQLite bağlantısı
-│   │   ├── migrations/           # Şema migrasyonları
-│   │   ├── repositories/
-│   │   │   ├── contactsRepository.ts
-│   │   │   ├── callLogsRepository.ts
-│   │   │   ├── themesRepository.ts
-│   │   │   └── settingsRepository.ts
-│   │   └── models/
-│   │       ├── Contact.ts
-│   │       ├── CallLog.ts
-│   │       ├── Theme.ts
-│   │       └── Settings.ts
-│   └── supabase/
-│       ├── client.ts             # Supabase client
-│       ├── auth.ts               # Kimlik doğrulama
-│       └── sync.ts               # Senkronizasyon
-│
-├── services/                     # Servis katmanı
-│   ├── native/
-│   │   ├── CallManager.ts        # Native çağrı yönetimi
-│   │   ├── ContactsManager.ts    # Native rehber
-│   │   └── PermissionsManager.ts
-│   └── api/
-│       └── themeStoreApi.ts
-│
-├── constants/                    # Sabitler
-│   ├── colors.ts
-│   ├── typography.ts
-│   ├── spacing.ts
-│   └── config.ts
-│
-└── types/                        # TypeScript tipleri
-    ├── contact.ts
-    ├── call.ts
-    ├── theme.ts
-    ├── settings.ts
-    └── navigation.ts
+┌──────────────────────────────────────────┐
+│                                          │
+│         [Diğer Uygulama İçeriği]         │
+│                                          │
+│            ┌───────────────┐             │
+│            │   📹 Video    │             │
+│            │   Preview     │             │
+│            │  ┌────┐       │             │
+│            │  │You │ 02:45 │             │
+│            │  └────┘       │             │
+│            │ [🔇][📷][📞] │             │
+│            └───────────────┘             │
+│                                          │
+└──────────────────────────────────────────┘
+```
+
+### 2.4 Takvim ve Hatırlatıcılar
+
+#### Takvim Özellikleri
+- Aylık/Haftalık/Günlük görünüm
+- Google Takvim senkronizasyonu (çift yönlü)
+- Etkinlik renk kodlaması
+- Tekrarlayan etkinlikler
+- Konum ekleme
+- Katılımcı ekleme
+- Bildirim zamanlaması
+
+#### Google Calendar Sync
+```typescript
+interface CalendarSyncConfig {
+  enabled: boolean;
+  googleAccountEmail: string;
+  syncDirection: 'both' | 'from_google' | 'to_google';
+  calendarsToSync: string[];        // Calendar IDs
+  syncFrequency: number;            // Dakika
+  syncRange: {
+    pastDays: number;
+    futureDays: number;
+  };
+  conflictResolution: 'google_wins' | 'local_wins' | 'newest_wins';
+}
+```
+
+#### Takvim Ekranı
+```
+┌─────────────────────────────────────┐
+│  ◀  Ocak 2026  ▶           [+] [📅]│
+├─────────────────────────────────────┤
+│  Pzt Sal Çar Per Cum Cmt Paz       │
+│                   1   2   3   4    │
+│   5   6   7   8   9  10  11       │
+│  12  13  14  15  16  17  18       │
+│  19  20  21 •22• 23  24  25       │
+│  26  27  28  29  30  31           │
+├─────────────────────────────────────┤
+│  22 Ocak 2026, Perşembe            │
+│  ─────────────────────────────────  │
+│  🔵 09:00 Toplantı - Ofis          │
+│  🟢 12:00 Öğle Yemeği - Ali ile    │
+│  🔴 15:00 Doktor Randevusu         │
+│  🟡 18:00 Spor Salonu              │
+├─────────────────────────────────────┤
+│ [⭐] [🕐] [👥] [📅] [⚙️]            │
+└─────────────────────────────────────┘
+```
+
+### 2.5 Notlar Modülü
+
+#### Not Özellikleri
+- Zengin metin desteği (bold, italic, liste)
+- Kategoriler ve etiketler
+- Renk kodlaması
+- Kişiye bağlı notlar
+- Arama ve filtreleme
+- Sabitleme (pin)
+
+#### Not Yapısı
+```typescript
+interface Note {
+  id: string;
+  title: string;
+  content: string;                   // HTML veya Markdown
+  plainTextContent: string;          // Arama için
+
+  // Organizasyon
+  color: string;
+  categoryId?: string;
+  tags: string[];
+  isPinned: boolean;
+
+  // İlişkiler
+  linkedContactId?: string;
+  linkedEventId?: string;
+
+  // Meta
+  createdAt: string;
+  updatedAt: string;
+  reminderAt?: string;
+}
+```
+
+### 2.6 Hatırlatıcılar
+
+```typescript
+interface Reminder {
+  id: string;
+  title: string;
+  description?: string;
+
+  // Zamanlama
+  dueDate: string;
+  dueTime?: string;
+  isAllDay: boolean;
+
+  // Tekrar
+  repeatType: 'none' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'custom';
+  repeatConfig?: RepeatConfig;
+
+  // Bildirim
+  notifyBefore: number[];           // Dakika: [0, 15, 60, 1440]
+
+  // Durum
+  isCompleted: boolean;
+  completedAt?: string;
+
+  // İlişkiler
+  linkedContactId?: string;
+  linkedEventId?: string;
+
+  // Meta
+  priority: 'low' | 'medium' | 'high';
+  createdAt: string;
+}
+```
+
+### 2.7 Kişi Özelleştirme
+
+#### Kişiye Özel Zil Sesi
+```typescript
+interface ContactCustomization {
+  contactId: string;
+
+  // Zil Sesi
+  ringtoneType: 'default' | 'custom' | 'store';
+  ringtoneUri?: string;
+  ringtoneName?: string;
+
+  // Bildirim Sesi
+  notificationToneUri?: string;
+
+  // Titreşim
+  vibrationPattern: 'default' | 'short' | 'long' | 'custom' | 'none';
+  customVibrationPattern?: number[];
+
+  // LED
+  ledColor?: string;
+
+  // Özel Profil Resmi
+  customPhotoUri?: string;          // Uygulama içi özel fotoğraf
+  useDevicePhoto: boolean;          // Cihaz rehberinden fotoğraf
+}
+```
+
+#### Profil Resmi Senkronizasyonu
+- Cihaz rehberindeki fotoğrafları otomatik çekme
+- Uygulama içi özel fotoğraf ekleme
+- Fotoğraf öncelik sıralaması (özel > cihaz > varsayılan avatar)
+- Fotoğraf kalitesi ayarı
+- Thumbnail oluşturma
+
+### 2.8 Tema Mağazası
+
+#### Tema Türleri
+| Tür | Açıklama |
+|-----|----------|
+| **app** | Uygulama genel teması |
+| **incoming_voice** | Gelen sesli arama UI |
+| **incoming_video** | Gelen görüntülü arama UI |
+| **outgoing_voice** | Giden sesli arama UI |
+| **outgoing_video** | Giden görüntülü arama UI |
+| **in_call** | Arama sırasında UI |
+| **in_video_call** | Görüntülü arama sırasında UI |
+| **floating_call** | Floating arama widget |
+| **dialer** | Tuş takımı teması |
+
+#### Varsayılan Tema Çeşitleri
+```typescript
+const defaultThemes = [
+  // Temel
+  { id: 'light', name: 'Aydınlık', type: 'light' },
+  { id: 'dark', name: 'Karanlık', type: 'dark' },
+
+  // Mavi Tonları
+  { id: 'ocean-blue', name: 'Okyanus Mavisi', primary: '#0066CC' },
+  { id: 'navy-blue', name: 'Lacivert', primary: '#001F5C' },
+  { id: 'sky-blue', name: 'Gök Mavisi', primary: '#00BFFF' },
+  { id: 'midnight-blue', name: 'Gece Mavisi', primary: '#191970' },
+
+  // Yeşil Tonları
+  { id: 'emerald', name: 'Zümrüt', primary: '#50C878' },
+  { id: 'forest', name: 'Orman', primary: '#228B22' },
+  { id: 'mint', name: 'Nane', primary: '#98FF98' },
+
+  // Mor Tonları
+  { id: 'purple', name: 'Mor', primary: '#800080' },
+  { id: 'lavender', name: 'Lavanta', primary: '#E6E6FA' },
+  { id: 'violet', name: 'Menekşe', primary: '#8F00FF' },
+
+  // Diğer
+  { id: 'rose', name: 'Gül', primary: '#FF007F' },
+  { id: 'coral', name: 'Mercan', primary: '#FF7F50' },
+  { id: 'gold', name: 'Altın', primary: '#FFD700' },
+  { id: 'graphite', name: 'Grafit', primary: '#383838' },
+
+  // Özel Temalar
+  { id: 'neon', name: 'Neon', special: true },
+  { id: 'retro', name: 'Retro', special: true },
+  { id: 'minimal', name: 'Minimal', special: true },
+  { id: 'nature', name: 'Doğa', special: true },
+];
+```
+
+#### Tema Özelleştirme Seçenekleri
+```typescript
+interface ThemeCustomization {
+  baseThemeId: string;
+
+  // Renk Özelleştirme
+  colors: {
+    primary?: string;
+    secondary?: string;
+    accent?: string;
+    background?: string;
+    surface?: string;
+    text?: string;
+  };
+
+  // Yazı Tipi
+  fontFamily?: string;
+  fontSize?: 'small' | 'medium' | 'large';
+
+  // Köşe Yuvarlaklığı
+  borderRadius?: 'sharp' | 'rounded' | 'pill';
+
+  // Animasyonlar
+  animationsEnabled?: boolean;
+  animationSpeed?: 'slow' | 'normal' | 'fast';
+}
+```
+
+### 2.9 Zil Sesi Mağazası
+
+#### Zil Sesi Yapısı
+```typescript
+interface Ringtone {
+  id: string;
+  name: string;
+  artistName?: string;
+
+  // Dosya
+  previewUrl: string;               // Önizleme için
+  downloadUrl: string;              // İndirme için
+  duration: number;                 // Saniye
+  fileSize: number;                 // Byte
+  format: 'mp3' | 'ogg' | 'm4a';
+
+  // Kategori
+  category: 'classic' | 'modern' | 'nature' | 'music' | 'funny' | 'minimal';
+  tags: string[];
+
+  // Fiyat
+  isPremium: boolean;
+  price: number;
+
+  // İstatistik
+  downloadCount: number;
+  rating: number;
+
+  // Meta
+  createdAt: string;
+}
+```
+
+#### Zil Sesi Mağazası Ekranı
+```
+┌─────────────────────────────────────┐
+│  🔍 Zil sesi ara...                 │
+├─────────────────────────────────────┤
+│  Kategoriler                        │
+│  [Klasik] [Modern] [Doğa] [Müzik]  │
+├─────────────────────────────────────┤
+│  🔥 Popüler                         │
+│  ┌────────────────────────────────┐ │
+│  │ 🎵 Ocean Waves          ▶ FREE│ │
+│  │ 🎵 Digital Beep         ▶ $0.99│ │
+│  │ 🎵 Classic Ring         ▶ FREE│ │
+│  │ 🎵 Morning Bird         ▶ $0.99│ │
+│  └────────────────────────────────┘ │
+│                                     │
+│  ⭐ Premium                         │
+│  ┌────────────────────────────────┐ │
+│  │ 🎵 Symphony             ▶ $1.99│ │
+│  │ 🎵 Zen Garden           ▶ $1.99│ │
+│  └────────────────────────────────┘ │
+└─────────────────────────────────────┘
 ```
 
 ---
@@ -228,24 +506,44 @@ src/
 -- KİŞİLER TABLOSU
 -- =============================================
 CREATE TABLE contacts (
-    id TEXT PRIMARY KEY,                    -- UUID
-    device_contact_id TEXT,                 -- Cihaz kişi ID'si
+    id TEXT PRIMARY KEY,
+    device_contact_id TEXT,
     display_name TEXT NOT NULL,
     first_name TEXT,
     last_name TEXT,
     nickname TEXT,
     company TEXT,
     job_title TEXT,
-    photo_uri TEXT,                         -- Yerel fotoğraf yolu
-    photo_thumbnail TEXT,                   -- Küçük resim (base64)
+
+    -- Fotoğraf
+    photo_uri TEXT,                         -- Cihaz fotoğrafı
+    custom_photo_uri TEXT,                  -- Uygulama içi özel fotoğraf
+    photo_thumbnail TEXT,                   -- Base64 thumbnail
+    use_device_photo INTEGER DEFAULT 1,
+
+    -- Özelleştirme
+    custom_ringtone_uri TEXT,
+    custom_ringtone_name TEXT,
+    custom_notification_uri TEXT,
+    vibration_pattern TEXT,
+    led_color TEXT,
+
+    -- Durum
     is_favorite INTEGER DEFAULT 0,
-    favorite_order INTEGER,                 -- Favori sıralama
+    favorite_order INTEGER,
     is_blocked INTEGER DEFAULT 0,
+
+    -- Diğer
     notes TEXT,
-    birthday TEXT,                          -- ISO 8601 format
+    birthday TEXT,
+    anniversary TEXT,
+    website TEXT,
+
+    -- Meta
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
-    synced_at TEXT                          -- Son senkronizasyon
+    synced_at TEXT,
+    device_synced_at TEXT                   -- Cihaz rehberi ile son sync
 );
 
 -- =============================================
@@ -254,9 +552,10 @@ CREATE TABLE contacts (
 CREATE TABLE phone_numbers (
     id TEXT PRIMARY KEY,
     contact_id TEXT NOT NULL,
-    number TEXT NOT NULL,                   -- Normalize edilmiş numara
-    formatted_number TEXT,                  -- Görüntüleme formatı
-    label TEXT DEFAULT 'mobile',            -- mobile, home, work, other
+    number TEXT NOT NULL,
+    formatted_number TEXT,
+    country_code TEXT,
+    label TEXT DEFAULT 'mobile',
     is_primary INTEGER DEFAULT 0,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (contact_id) REFERENCES contacts(id) ON DELETE CASCADE
@@ -269,7 +568,7 @@ CREATE TABLE email_addresses (
     id TEXT PRIMARY KEY,
     contact_id TEXT NOT NULL,
     email TEXT NOT NULL,
-    label TEXT DEFAULT 'personal',          -- personal, work, other
+    label TEXT DEFAULT 'personal',
     is_primary INTEGER DEFAULT 0,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (contact_id) REFERENCES contacts(id) ON DELETE CASCADE
@@ -286,27 +585,50 @@ CREATE TABLE addresses (
     state TEXT,
     postal_code TEXT,
     country TEXT,
-    label TEXT DEFAULT 'home',              -- home, work, other
+    label TEXT DEFAULT 'home',
     formatted_address TEXT,
+    latitude REAL,
+    longitude REAL,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (contact_id) REFERENCES contacts(id) ON DELETE CASCADE
 );
 
 -- =============================================
--- ÇAĞRI GEÇMİŞİ TABLOSU
+-- ÇAĞRI GEÇMİŞİ TABLOSU (Detaylı)
 -- =============================================
 CREATE TABLE call_logs (
     id TEXT PRIMARY KEY,
-    contact_id TEXT,                        -- NULL olabilir (bilinmeyen numara)
+    contact_id TEXT,
     phone_number TEXT NOT NULL,
     formatted_number TEXT,
+    contact_name TEXT,
+    contact_photo TEXT,
+
+    -- Çağrı Detayları
     call_type TEXT NOT NULL,                -- incoming, outgoing, missed, rejected, blocked
-    duration INTEGER DEFAULT 0,             -- Saniye cinsinden
-    call_date TEXT NOT NULL,                -- ISO 8601 format
-    is_read INTEGER DEFAULT 0,              -- Cevapsız arama okundu mu
+    call_category TEXT DEFAULT 'voice',     -- voice, video
+    duration INTEGER DEFAULT 0,
+
+    -- Zaman Bilgisi
+    call_date TEXT NOT NULL,
+    call_time TEXT NOT NULL,
+    call_timestamp INTEGER NOT NULL,        -- Unix timestamp
+
+    -- Ek Bilgiler
+    is_read INTEGER DEFAULT 0,
     is_new INTEGER DEFAULT 1,
-    geocoded_location TEXT,                 -- Konum bilgisi
+    sim_slot INTEGER,
+    geocoded_location TEXT,
+    network_type TEXT,
+
+    -- Arama Kaydı
+    has_recording INTEGER DEFAULT 0,
+    recording_path TEXT,
+    recording_duration INTEGER,
+
+    -- Meta
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+
     FOREIGN KEY (contact_id) REFERENCES contacts(id) ON DELETE SET NULL
 );
 
@@ -317,9 +639,164 @@ CREATE TABLE blocked_numbers (
     id TEXT PRIMARY KEY,
     phone_number TEXT NOT NULL UNIQUE,
     contact_id TEXT,
-    reason TEXT,                            -- spam, harassment, other
+    contact_name TEXT,
+    reason TEXT,
+    block_calls INTEGER DEFAULT 1,
+    block_messages INTEGER DEFAULT 1,
     blocked_at TEXT DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (contact_id) REFERENCES contacts(id) ON DELETE SET NULL
+);
+
+-- =============================================
+-- TAKVİM ETKİNLİKLERİ TABLOSU
+-- =============================================
+CREATE TABLE events (
+    id TEXT PRIMARY KEY,
+    google_event_id TEXT,                   -- Google Calendar sync için
+    calendar_id TEXT DEFAULT 'default',
+
+    -- Temel Bilgiler
+    title TEXT NOT NULL,
+    description TEXT,
+    location TEXT,
+    location_latitude REAL,
+    location_longitude REAL,
+
+    -- Zaman
+    start_date TEXT NOT NULL,
+    start_time TEXT,
+    end_date TEXT NOT NULL,
+    end_time TEXT,
+    is_all_day INTEGER DEFAULT 0,
+    timezone TEXT,
+
+    -- Tekrar
+    is_recurring INTEGER DEFAULT 0,
+    recurrence_rule TEXT,                   -- RRULE format
+    recurrence_end_date TEXT,
+
+    -- Görünüm
+    color TEXT DEFAULT '#4285F4',
+
+    -- Bildirim
+    reminders TEXT,                         -- JSON array: [15, 60, 1440]
+
+    -- Katılımcılar
+    attendees TEXT,                         -- JSON array
+
+    -- İlişkiler
+    linked_contact_id TEXT,
+
+    -- Sync
+    is_synced INTEGER DEFAULT 0,
+    sync_status TEXT,                       -- pending, synced, error
+    last_synced_at TEXT,
+
+    -- Meta
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (linked_contact_id) REFERENCES contacts(id) ON DELETE SET NULL
+);
+
+-- =============================================
+-- TAKVİMLER TABLOSU
+-- =============================================
+CREATE TABLE calendars (
+    id TEXT PRIMARY KEY,
+    google_calendar_id TEXT,
+    name TEXT NOT NULL,
+    color TEXT DEFAULT '#4285F4',
+    is_visible INTEGER DEFAULT 1,
+    is_default INTEGER DEFAULT 0,
+    is_google_calendar INTEGER DEFAULT 0,
+    sync_enabled INTEGER DEFAULT 1,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
+
+-- =============================================
+-- NOTLAR TABLOSU
+-- =============================================
+CREATE TABLE notes (
+    id TEXT PRIMARY KEY,
+    title TEXT,
+    content TEXT NOT NULL,                  -- HTML/Markdown
+    plain_text_content TEXT,                -- Arama için
+
+    -- Organizasyon
+    color TEXT DEFAULT '#FFFFFF',
+    category_id TEXT,
+    tags TEXT,                              -- JSON array
+    is_pinned INTEGER DEFAULT 0,
+
+    -- İlişkiler
+    linked_contact_id TEXT,
+    linked_event_id TEXT,
+
+    -- Hatırlatıcı
+    reminder_at TEXT,
+    reminder_notified INTEGER DEFAULT 0,
+
+    -- Meta
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (linked_contact_id) REFERENCES contacts(id) ON DELETE SET NULL,
+    FOREIGN KEY (linked_event_id) REFERENCES events(id) ON DELETE SET NULL
+);
+
+-- =============================================
+-- NOT KATEGORİLERİ TABLOSU
+-- =============================================
+CREATE TABLE note_categories (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    color TEXT,
+    icon TEXT,
+    sort_order INTEGER DEFAULT 0,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
+
+-- =============================================
+-- HATIRLATICILAR TABLOSU
+-- =============================================
+CREATE TABLE reminders (
+    id TEXT PRIMARY KEY,
+    title TEXT NOT NULL,
+    description TEXT,
+
+    -- Zamanlama
+    due_date TEXT NOT NULL,
+    due_time TEXT,
+    is_all_day INTEGER DEFAULT 0,
+
+    -- Tekrar
+    repeat_type TEXT DEFAULT 'none',        -- none, daily, weekly, monthly, yearly, custom
+    repeat_config TEXT,                     -- JSON
+    next_occurrence TEXT,
+
+    -- Bildirim
+    notify_before TEXT,                     -- JSON array: [0, 15, 60]
+
+    -- Durum
+    is_completed INTEGER DEFAULT 0,
+    completed_at TEXT,
+
+    -- İlişkiler
+    linked_contact_id TEXT,
+    linked_event_id TEXT,
+    linked_note_id TEXT,
+
+    -- Öncelik
+    priority TEXT DEFAULT 'medium',         -- low, medium, high
+
+    -- Meta
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (linked_contact_id) REFERENCES contacts(id) ON DELETE SET NULL,
+    FOREIGN KEY (linked_event_id) REFERENCES events(id) ON DELETE SET NULL,
+    FOREIGN KEY (linked_note_id) REFERENCES notes(id) ON DELETE SET NULL
 );
 
 -- =============================================
@@ -327,53 +804,55 @@ CREATE TABLE blocked_numbers (
 -- =============================================
 CREATE TABLE themes (
     id TEXT PRIMARY KEY,
+    store_theme_id TEXT,                    -- Mağazadan indirilen tema
     name TEXT NOT NULL,
     description TEXT,
-    type TEXT NOT NULL,                     -- app, incoming_call, in_call, outgoing_call
-    is_system INTEGER DEFAULT 0,            -- Sistem varsayılan tema mı
+    type TEXT NOT NULL,                     -- app, incoming_voice, incoming_video, etc.
+
+    -- Durum
+    is_system INTEGER DEFAULT 0,
     is_premium INTEGER DEFAULT 0,
-    price REAL DEFAULT 0,
+    is_active INTEGER DEFAULT 0,
+
+    -- İçerik
+    config TEXT NOT NULL,                   -- JSON tema konfigürasyonu
     preview_image TEXT,
-    config TEXT NOT NULL,                   -- JSON - tema konfigürasyonu
-    is_active INTEGER DEFAULT 0,
-    download_count INTEGER DEFAULT 0,
-    rating REAL DEFAULT 0,
+
+    -- Özelleştirme
+    custom_config TEXT,                     -- Kullanıcı özelleştirmeleri
+
+    -- Meta
+    downloaded_at TEXT,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP
 );
 
 -- =============================================
--- KULLANICI TEMALARI (İndirilen/Satın Alınan)
+-- ZİL SESLERİ TABLOSU
 -- =============================================
-CREATE TABLE user_themes (
+CREATE TABLE ringtones (
     id TEXT PRIMARY KEY,
-    theme_id TEXT NOT NULL,
-    purchased_at TEXT,
-    downloaded_at TEXT DEFAULT CURRENT_TIMESTAMP,
-    is_active INTEGER DEFAULT 0,
-    custom_config TEXT,                     -- Özelleştirmeler (JSON)
-    FOREIGN KEY (theme_id) REFERENCES themes(id) ON DELETE CASCADE
-);
+    store_ringtone_id TEXT,                 -- Mağazadan indirilen
+    name TEXT NOT NULL,
+    artist_name TEXT,
 
--- =============================================
--- AYARLAR TABLOSU
--- =============================================
-CREATE TABLE settings (
-    key TEXT PRIMARY KEY,
-    value TEXT NOT NULL,
-    category TEXT,                          -- general, appearance, calls, notifications, privacy
-    updated_at TEXT DEFAULT CURRENT_TIMESTAMP
-);
+    -- Dosya
+    file_path TEXT NOT NULL,
+    duration INTEGER,
+    file_size INTEGER,
+    format TEXT,
 
--- =============================================
--- HIZLI ARAMA (SPEED DIAL) TABLOSU
--- =============================================
-CREATE TABLE speed_dial (
-    position INTEGER PRIMARY KEY,           -- 1-9 tuşları
-    contact_id TEXT,
-    phone_number TEXT,
-    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (contact_id) REFERENCES contacts(id) ON DELETE CASCADE
+    -- Kategori
+    category TEXT,
+    is_custom INTEGER DEFAULT 0,            -- Kullanıcı ekledi mi
+
+    -- Durum
+    is_default_ringtone INTEGER DEFAULT 0,
+    is_default_notification INTEGER DEFAULT 0,
+
+    -- Meta
+    downloaded_at TEXT,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP
 );
 
 -- =============================================
@@ -382,8 +861,13 @@ CREATE TABLE speed_dial (
 CREATE TABLE contact_groups (
     id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
-    color TEXT,                             -- Hex renk kodu
+    color TEXT,
     icon TEXT,
+
+    -- Grup Zil Sesi
+    group_ringtone_uri TEXT,
+
+    -- Meta
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP
 );
@@ -402,16 +886,66 @@ CREATE TABLE contact_group_members (
 );
 
 -- =============================================
+-- HIZLI ARAMA TABLOSU
+-- =============================================
+CREATE TABLE speed_dial (
+    position INTEGER PRIMARY KEY,
+    contact_id TEXT,
+    phone_number TEXT,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (contact_id) REFERENCES contacts(id) ON DELETE CASCADE
+);
+
+-- =============================================
+-- GOOGLE HESAPLARI TABLOSU
+-- =============================================
+CREATE TABLE google_accounts (
+    id TEXT PRIMARY KEY,
+    email TEXT NOT NULL UNIQUE,
+    display_name TEXT,
+    avatar_url TEXT,
+    access_token TEXT,
+    refresh_token TEXT,
+    token_expires_at TEXT,
+
+    -- Sync Ayarları
+    calendar_sync_enabled INTEGER DEFAULT 1,
+    contacts_sync_enabled INTEGER DEFAULT 0,
+
+    -- Meta
+    connected_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    last_synced_at TEXT
+);
+
+-- =============================================
+-- AYARLAR TABLOSU
+-- =============================================
+CREATE TABLE settings (
+    key TEXT PRIMARY KEY,
+    value TEXT NOT NULL,
+    category TEXT,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
+
+-- =============================================
 -- İNDEXLER
 -- =============================================
 CREATE INDEX idx_contacts_display_name ON contacts(display_name);
-CREATE INDEX idx_contacts_is_favorite ON contacts(is_favorite);
-CREATE INDEX idx_contacts_is_blocked ON contacts(is_blocked);
+CREATE INDEX idx_contacts_favorite ON contacts(is_favorite);
+CREATE INDEX idx_contacts_blocked ON contacts(is_blocked);
 CREATE INDEX idx_phone_numbers_number ON phone_numbers(number);
 CREATE INDEX idx_phone_numbers_contact ON phone_numbers(contact_id);
-CREATE INDEX idx_call_logs_date ON call_logs(call_date DESC);
+CREATE INDEX idx_call_logs_timestamp ON call_logs(call_timestamp DESC);
 CREATE INDEX idx_call_logs_contact ON call_logs(contact_id);
 CREATE INDEX idx_call_logs_number ON call_logs(phone_number);
+CREATE INDEX idx_call_logs_type ON call_logs(call_type);
+CREATE INDEX idx_events_start_date ON events(start_date);
+CREATE INDEX idx_events_calendar ON events(calendar_id);
+CREATE INDEX idx_events_google_id ON events(google_event_id);
+CREATE INDEX idx_notes_updated ON notes(updated_at DESC);
+CREATE INDEX idx_notes_pinned ON notes(is_pinned);
+CREATE INDEX idx_reminders_due ON reminders(due_date);
+CREATE INDEX idx_reminders_completed ON reminders(is_completed);
 CREATE INDEX idx_themes_type ON themes(type);
 CREATE INDEX idx_themes_active ON themes(is_active);
 ```
@@ -420,7 +954,7 @@ CREATE INDEX idx_themes_active ON themes(is_active);
 
 ```sql
 -- =============================================
--- KULLANICILAR (Supabase Auth ile entegre)
+-- KULLANICI PROFİLLERİ
 -- =============================================
 CREATE TABLE profiles (
     id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
@@ -429,10 +963,20 @@ CREATE TABLE profiles (
     display_name TEXT,
     avatar_url TEXT,
     phone_number TEXT,
-    is_premium INTEGER DEFAULT 0,
+
+    -- Premium
+    is_premium BOOLEAN DEFAULT false,
+    premium_plan TEXT,                      -- monthly, yearly, lifetime
     premium_expires_at TIMESTAMPTZ,
+
+    -- Tercihler
+    preferred_language TEXT DEFAULT 'tr',
+    preferred_currency TEXT DEFAULT 'TRY',
+
+    -- Meta
     created_at TIMESTAMPTZ DEFAULT NOW(),
-    updated_at TIMESTAMPTZ DEFAULT NOW()
+    updated_at TIMESTAMPTZ DEFAULT NOW(),
+    last_seen_at TIMESTAMPTZ
 );
 
 -- =============================================
@@ -441,60 +985,148 @@ CREATE TABLE profiles (
 CREATE TABLE store_themes (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     author_id UUID REFERENCES profiles(id),
+
+    -- Temel
     name TEXT NOT NULL,
     description TEXT,
-    type TEXT NOT NULL,                     -- app, incoming_call, in_call, outgoing_call
-    category TEXT,                          -- minimalist, neon, retro, nature, etc.
-    is_premium BOOLEAN DEFAULT false,
+    type TEXT NOT NULL,
+    category TEXT,
+
+    -- Fiyat
+    is_free BOOLEAN DEFAULT true,
     price DECIMAL(10,2) DEFAULT 0,
-    preview_images TEXT[],                  -- Array of image URLs
+    currency TEXT DEFAULT 'TRY',
+
+    -- İçerik
     config JSONB NOT NULL,
+    preview_images TEXT[],
+    preview_video_url TEXT,
+
+    -- Etiketler
     tags TEXT[],
+    supported_versions TEXT[],
+
+    -- İstatistik
     download_count INTEGER DEFAULT 0,
     rating_sum INTEGER DEFAULT 0,
     rating_count INTEGER DEFAULT 0,
+
+    -- Durum
     is_featured BOOLEAN DEFAULT false,
     is_approved BOOLEAN DEFAULT false,
+    is_active BOOLEAN DEFAULT true,
+
+    -- Meta
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 -- =============================================
--- TEMA SATIN ALMALARI
+-- ZİL SESİ MAĞAZASI
 -- =============================================
-CREATE TABLE theme_purchases (
+CREATE TABLE store_ringtones (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    user_id UUID NOT NULL REFERENCES profiles(id),
-    theme_id UUID NOT NULL REFERENCES store_themes(id),
-    price_paid DECIMAL(10,2),
-    transaction_id TEXT,
-    purchased_at TIMESTAMPTZ DEFAULT NOW(),
-    UNIQUE(user_id, theme_id)
+    author_id UUID REFERENCES profiles(id),
+
+    -- Temel
+    name TEXT NOT NULL,
+    artist_name TEXT,
+    description TEXT,
+
+    -- Dosya
+    preview_url TEXT NOT NULL,
+    download_url TEXT NOT NULL,
+    duration INTEGER NOT NULL,
+    file_size INTEGER NOT NULL,
+    format TEXT NOT NULL,
+
+    -- Kategori
+    category TEXT NOT NULL,
+    tags TEXT[],
+
+    -- Fiyat
+    is_free BOOLEAN DEFAULT true,
+    price DECIMAL(10,2) DEFAULT 0,
+    currency TEXT DEFAULT 'TRY',
+
+    -- İstatistik
+    download_count INTEGER DEFAULT 0,
+    rating_sum INTEGER DEFAULT 0,
+    rating_count INTEGER DEFAULT 0,
+
+    -- Durum
+    is_featured BOOLEAN DEFAULT false,
+    is_approved BOOLEAN DEFAULT false,
+    is_active BOOLEAN DEFAULT true,
+
+    -- Meta
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 -- =============================================
--- TEMA DEĞERLENDİRMELERİ
+-- SATIN ALMALAR
 -- =============================================
-CREATE TABLE theme_reviews (
+CREATE TABLE purchases (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     user_id UUID NOT NULL REFERENCES profiles(id),
-    theme_id UUID NOT NULL REFERENCES store_themes(id),
+
+    -- Ürün
+    item_type TEXT NOT NULL,                -- theme, ringtone, premium
+    item_id UUID,
+
+    -- Ödeme
+    price DECIMAL(10,2) NOT NULL,
+    currency TEXT NOT NULL,
+    payment_method TEXT,
+    transaction_id TEXT,
+
+    -- Durum
+    status TEXT DEFAULT 'completed',        -- pending, completed, refunded
+
+    -- Meta
+    purchased_at TIMESTAMPTZ DEFAULT NOW(),
+    refunded_at TIMESTAMPTZ,
+
+    UNIQUE(user_id, item_type, item_id)
+);
+
+-- =============================================
+-- DEĞERLENDİRMELER
+-- =============================================
+CREATE TABLE reviews (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID NOT NULL REFERENCES profiles(id),
+
+    -- Ürün
+    item_type TEXT NOT NULL,                -- theme, ringtone
+    item_id UUID NOT NULL,
+
+    -- Değerlendirme
     rating INTEGER CHECK (rating >= 1 AND rating <= 5),
     comment TEXT,
+
+    -- Meta
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW(),
-    UNIQUE(user_id, theme_id)
+
+    UNIQUE(user_id, item_type, item_id)
 );
 
 -- =============================================
--- KULLANICI TERCİHLERİ SENKRONİZASYONU
+-- KULLANICI VERİ SENKRONİZASYONU
 -- =============================================
 CREATE TABLE user_sync_data (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     user_id UUID NOT NULL REFERENCES profiles(id),
-    data_type TEXT NOT NULL,                -- favorites, blocked, settings, speed_dial
+
+    -- Veri
+    data_type TEXT NOT NULL,                -- favorites, blocked, settings, speed_dial, theme_prefs
     data JSONB NOT NULL,
+
+    -- Meta
     synced_at TIMESTAMPTZ DEFAULT NOW(),
+
     UNIQUE(user_id, data_type)
 );
 
@@ -502,813 +1134,1014 @@ CREATE TABLE user_sync_data (
 -- ROW LEVEL SECURITY
 -- =============================================
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
-ALTER TABLE theme_purchases ENABLE ROW LEVEL SECURITY;
-ALTER TABLE theme_reviews ENABLE ROW LEVEL SECURITY;
+ALTER TABLE purchases ENABLE ROW LEVEL SECURITY;
+ALTER TABLE reviews ENABLE ROW LEVEL SECURITY;
 ALTER TABLE user_sync_data ENABLE ROW LEVEL SECURITY;
 
--- Kullanıcılar sadece kendi profillerini görebilir
+-- Profil politikaları
 CREATE POLICY "Users can view own profile" ON profiles
     FOR SELECT USING (auth.uid() = id);
-
 CREATE POLICY "Users can update own profile" ON profiles
     FOR UPDATE USING (auth.uid() = id);
 
--- Tema satın almaları
-CREATE POLICY "Users can view own purchases" ON theme_purchases
+-- Satın alma politikaları
+CREATE POLICY "Users can view own purchases" ON purchases
     FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "Users can insert own purchases" ON purchases
+    FOR INSERT WITH CHECK (auth.uid() = user_id);
 
--- Senkronizasyon verileri
+-- Değerlendirme politikaları
+CREATE POLICY "Users can view all reviews" ON reviews
+    FOR SELECT USING (true);
+CREATE POLICY "Users can manage own reviews" ON reviews
+    FOR ALL USING (auth.uid() = user_id);
+
+-- Sync data politikaları
 CREATE POLICY "Users can manage own sync data" ON user_sync_data
     FOR ALL USING (auth.uid() = user_id);
+
+-- Mağaza temaları herkes görebilir
+CREATE POLICY "Anyone can view approved themes" ON store_themes
+    FOR SELECT USING (is_approved = true AND is_active = true);
+
+-- Mağaza zil sesleri herkes görebilir
+CREATE POLICY "Anyone can view approved ringtones" ON store_ringtones
+    FOR SELECT USING (is_approved = true AND is_active = true);
 ```
 
 ---
 
-## 4. Tema Sistemi Mimarisi
+## 4. Kullanılacak React Native Bileşenleri
 
-### 4.1 Tema Yapısı
+### 4.1 UI Kütüphaneleri
 
-```typescript
-// types/theme.ts
+| Kütüphane | Kullanım Alanı | Öncelik |
+|-----------|----------------|---------|
+| **React Native Paper** | Ana UI bileşenleri (Button, Card, Dialog, List, TextInput, FAB, Snackbar, Menu) | ⭐⭐⭐ |
+| **React Native Elements** | Avatar, Badge, Overlay, SearchBar, Slider | ⭐⭐⭐ |
+| **NativeBase** | Alternatif/ek bileşenler gerekirse | ⭐⭐ |
+| **Shoutem UI** | Özel kart tasarımları, banner'lar | ⭐ |
 
-interface AppTheme {
-  id: string;
-  name: string;
-  type: 'app';
-  colors: {
-    // Ana renkler
-    primary: string;
-    secondary: string;
-    accent: string;
+### 4.2 Navigasyon
 
-    // Arka plan renkleri
-    background: string;
-    surface: string;
-    card: string;
+| Kütüphane | Kullanım Alanı |
+|-----------|----------------|
+| **React Navigation** | Stack, Tab, Drawer navigasyonları |
+| **@react-navigation/bottom-tabs** | Ana tab bar |
+| **@react-navigation/stack** | Ekran yığınları |
+| **@react-navigation/drawer** | Yan menü |
 
-    // Metin renkleri
-    text: string;
-    textSecondary: string;
-    textDisabled: string;
+### 4.3 Animasyon ve Gesture
 
-    // Durum renkleri
-    success: string;
-    warning: string;
-    error: string;
-    info: string;
+| Kütüphane | Kullanım Alanı |
+|-----------|----------------|
+| **React Native Reanimated** | Performanslı animasyonlar, shared transitions |
+| **React Native Gesture Handler** | Swipe, pinch, long press |
+| **Lottie for React Native** | JSON animasyonlar, loading, success/error |
+| **React Native Animatable** | Basit fade, zoom, rotate animasyonları |
 
-    // Çağrı renkleri
-    callIncoming: string;
-    callOutgoing: string;
-    callMissed: string;
-    callRejected: string;
+### 4.4 Native Modüller
 
-    // Navigasyon
-    tabBar: string;
-    tabBarActive: string;
-    tabBarInactive: string;
+| Kütüphane | Kullanım Alanı |
+|-----------|----------------|
+| **react-native-contacts** | Cihaz rehberine erişim |
+| **react-native-callkeep** | Çağrı yönetimi, VoIP desteği |
+| **react-native-call-log** | Çağrı geçmişi okuma |
+| **react-native-incall-manager** | Arama sırasında ses/proximity yönetimi |
+| **react-native-permissions** | İzin yönetimi |
+| **react-native-fs** | Dosya sistemi işlemleri |
+| **react-native-sound** | Zil sesi çalma/önizleme |
+| **react-native-video** | Video arama preview |
+| **@react-native-google-signin/google-signin** | Google hesap girişi |
+| **react-native-calendar-events** | Cihaz takvimi erişimi |
 
-    // Diğer
-    border: string;
-    divider: string;
-    shadow: string;
-    overlay: string;
-  };
-  typography: {
-    fontFamily: string;
-    fontFamilyBold: string;
-    sizes: {
-      xs: number;
-      sm: number;
-      md: number;
-      lg: number;
-      xl: number;
-      xxl: number;
-    };
-  };
-  spacing: {
-    xs: number;
-    sm: number;
-    md: number;
-    lg: number;
-    xl: number;
-  };
-  borderRadius: {
-    sm: number;
-    md: number;
-    lg: number;
-    full: number;
-  };
-  shadows: {
-    sm: ShadowConfig;
-    md: ShadowConfig;
-    lg: ShadowConfig;
-  };
-}
+### 4.5 Veritabanı ve Depolama
 
-interface CallScreenTheme {
-  id: string;
-  name: string;
-  type: 'incoming_call' | 'in_call' | 'outgoing_call';
-  background: {
-    type: 'solid' | 'gradient' | 'image' | 'blur' | 'animated';
-    value: string | GradientConfig | AnimationConfig;
-  };
-  callerInfo: {
-    nameColor: string;
-    nameSize: number;
-    numberColor: string;
-    numberSize: number;
-    avatarStyle: 'circle' | 'rounded' | 'square';
-    avatarSize: number;
-    avatarBorder: BorderConfig;
-  };
-  buttons: {
-    answer: ButtonTheme;
-    reject: ButtonTheme;
-    mute: ButtonTheme;
-    speaker: ButtonTheme;
-    keypad: ButtonTheme;
-    hold: ButtonTheme;
-    endCall: ButtonTheme;
-  };
-  animation: {
-    type: 'none' | 'pulse' | 'wave' | 'ripple' | 'glow';
-    duration: number;
-    color: string;
-  };
-  statusBar: {
-    style: 'light' | 'dark';
-    backgroundColor: string;
-  };
-}
+| Kütüphane | Kullanım Alanı |
+|-----------|----------------|
+| **react-native-sqlite-storage** | Yerel SQLite veritabanı |
+| **@supabase/supabase-js** | Bulut veritabanı, auth, realtime |
+| **@react-native-async-storage/async-storage** | Key-value depolama |
 
-interface ButtonTheme {
-  backgroundColor: string;
-  iconColor: string;
-  iconSize: number;
-  size: number;
-  borderRadius: number;
-  borderColor?: string;
-  borderWidth?: number;
-  shadow?: ShadowConfig;
-  pressedOpacity?: number;
-  activeBackgroundColor?: string;
-  activeIconColor?: string;
-}
+### 4.6 Diğer Önemli Kütüphaneler
 
-interface GradientConfig {
-  type: 'linear' | 'radial';
-  colors: string[];
-  locations?: number[];
-  start?: { x: number; y: number };
-  end?: { x: number; y: number };
-}
+| Kütüphane | Kullanım Alanı |
+|-----------|----------------|
+| **React Native Vector Icons** | İkonlar (MaterialIcons, FontAwesome, Ionicons) |
+| **react-native-linear-gradient** | Gradient arka planlar |
+| **@gorhom/bottom-sheet** | Alt sayfa modalleri |
+| **react-native-modal** | Modal diyaloglar |
+| **react-native-modalize** | Gelişmiş alt kaydırmalı modaller |
+| **react-native-calendars** | Takvim bileşeni |
+| **react-native-push-notification** | Yerel bildirimler |
+| **@react-native-firebase/messaging** | FCM push bildirimleri |
+| **react-native-image-picker** | Fotoğraf seçme/çekme |
+| **react-native-fast-image** | Performanslı resim yükleme |
+| **date-fns** | Tarih formatlama |
+| **libphonenumber-js** | Telefon numarası formatlama |
+| **react-native-uuid** | UUID oluşturma |
 
-interface AnimationConfig {
-  type: 'particles' | 'waves' | 'gradient_shift';
-  config: Record<string, any>;
-}
-```
+### 4.7 Floating/PiP için
 
-### 4.2 Varsayılan Temalar
-
-```typescript
-// themes/presets/defaultDark.ts
-
-export const defaultDarkTheme: AppTheme = {
-  id: 'default-dark',
-  name: 'Karanlık',
-  type: 'app',
-  colors: {
-    primary: '#4CAF50',
-    secondary: '#2196F3',
-    accent: '#FF9800',
-    background: '#121212',
-    surface: '#1E1E1E',
-    card: '#252525',
-    text: '#FFFFFF',
-    textSecondary: '#B0B0B0',
-    textDisabled: '#666666',
-    success: '#4CAF50',
-    warning: '#FF9800',
-    error: '#F44336',
-    info: '#2196F3',
-    callIncoming: '#4CAF50',
-    callOutgoing: '#2196F3',
-    callMissed: '#F44336',
-    callRejected: '#FF9800',
-    tabBar: '#1E1E1E',
-    tabBarActive: '#4CAF50',
-    tabBarInactive: '#808080',
-    border: '#333333',
-    divider: '#2A2A2A',
-    shadow: '#000000',
-    overlay: 'rgba(0,0,0,0.5)',
-  },
-  typography: {
-    fontFamily: 'System',
-    fontFamilyBold: 'System',
-    sizes: { xs: 10, sm: 12, md: 14, lg: 16, xl: 20, xxl: 24 },
-  },
-  spacing: { xs: 4, sm: 8, md: 16, lg: 24, xl: 32 },
-  borderRadius: { sm: 4, md: 8, lg: 16, full: 9999 },
-  shadows: {
-    sm: { shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.2, shadowRadius: 2 },
-    md: { shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.25, shadowRadius: 4 },
-    lg: { shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 8 },
-  },
-};
-```
-
-```typescript
-// themes/presets/incomingCallNeon.ts
-
-export const neonIncomingCallTheme: CallScreenTheme = {
-  id: 'neon-incoming',
-  name: 'Neon Gece',
-  type: 'incoming_call',
-  background: {
-    type: 'gradient',
-    value: {
-      type: 'linear',
-      colors: ['#0F0C29', '#302B63', '#24243E'],
-      start: { x: 0, y: 0 },
-      end: { x: 1, y: 1 },
-    },
-  },
-  callerInfo: {
-    nameColor: '#FFFFFF',
-    nameSize: 28,
-    numberColor: '#B0B0B0',
-    numberSize: 16,
-    avatarStyle: 'circle',
-    avatarSize: 120,
-    avatarBorder: {
-      width: 3,
-      color: '#00F5FF',
-      style: 'solid',
-    },
-  },
-  buttons: {
-    answer: {
-      backgroundColor: '#00E676',
-      iconColor: '#FFFFFF',
-      iconSize: 32,
-      size: 72,
-      borderRadius: 36,
-      shadow: { shadowColor: '#00E676', shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.6, shadowRadius: 15 },
-    },
-    reject: {
-      backgroundColor: '#FF1744',
-      iconColor: '#FFFFFF',
-      iconSize: 32,
-      size: 72,
-      borderRadius: 36,
-      shadow: { shadowColor: '#FF1744', shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.6, shadowRadius: 15 },
-    },
-    // ... diğer butonlar
-  },
-  animation: {
-    type: 'pulse',
-    duration: 1500,
-    color: '#00F5FF',
-  },
-  statusBar: {
-    style: 'light',
-    backgroundColor: 'transparent',
-  },
-};
-```
+| Kütüphane | Kullanım Alanı |
+|-----------|----------------|
+| **react-native-pip-android** | Picture-in-Picture modu |
+| **react-native-floating-bubble** | Floating widget (Android) |
+| **react-native-system-setting** | Sistem overlay izni kontrolü |
 
 ---
 
-## 5. Ekran Tasarımları ve Bileşenler
+## 5. Ayarlar Yapısı (Kullanıcı Dostu)
 
-### 5.1 Ana Ekranlar
+### 5.1 Ayarlar Ana Ekranı
 
-#### Favoriler Ekranı
 ```
 ┌─────────────────────────────────────┐
-│  ☰  Favoriler                    🔍 │
+│  ⚙️  Ayarlar                        │
 ├─────────────────────────────────────┤
-│ ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐    │
-│ │ 👤  │ │ 👤  │ │ 👤  │ │ 👤  │    │
-│ │     │ │     │ │     │ │     │    │
-│ └─────┘ └─────┘ └─────┘ └─────┘    │
-│  AŞKIM   Ortak   Babam   Zafer     │
 │                                     │
-│ ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐    │
-│ │ 👤  │ │ 👤  │ │ 👤  │ │ 👤  │    │
-│ └─────┘ └─────┘ └─────┘ └─────┘    │
-│ Çağan Öz  Ahmet  Av.Umut  Barış    │
+│  👤 Hesap                           │
+│     Profil, Giriş, Premium         │
 │                                     │
-│ ─────────────────────────────────── │
-│ Sık iletişim kurulanlar             │
-│ ┌────────────────────────────────┐  │
-│ │ 👤  Senem Daşkıran Yeni        │  │
-│ ├────────────────────────────────┤  │
-│ │ 👤  Ömür Günal                 │  │
-│ ├────────────────────────────────┤  │
-│ │ 👤  Barış Bot                  │  │
-│ └────────────────────────────────┘  │
-├─────────────────────────────────────┤
-│ [⭐] [🕐] [👥] [⌨️] [⚙️]             │
-│ Fav   Son  Kişi  Tuş   Ayar        │
-└─────────────────────────────────────┘
-```
-
-#### Çağrı Geçmişi Ekranı
-```
-┌─────────────────────────────────────┐
-│  ☰  Son Aramalar              Tümü │
-├─────────────────────────────────────┤
-│ ┌────────────────────────────────┐  │
-│ │ 👤 Senem Daşkıran     01:24   │  │
-│ │ ↗️ +90 546 543 46 31   az önce │  │
-│ ├────────────────────────────────┤  │
-│ │ 👤 AŞKIM [260]         00:31  │  │
-│ │ ↗️ +90 532 397 94 00  53d önce│  │
-│ ├────────────────────────────────┤  │
-│ │ D  Deniz Kızım [3]     00:18  │  │
-│ │ ↙️ +90 542 775 88 07   1s önce│  │
-│ ├────────────────────────────────┤  │
-│ │ 👤 Çağan Öz [166]      23:59  │  │
-│ │ ↙️ 0536 562 21 76    1.5s önce│  │
-│ └────────────────────────────────┘  │
+│  ─────────────────────────────────  │
 │                                     │
-│         ┌─────────────────┐         │
-│         │   🔢 Tuş Takımı │         │
-│         └─────────────────┘         │
-├─────────────────────────────────────┤
-│ [⭐] [🕐] [👥] [⌨️] [⚙️]             │
-└─────────────────────────────────────┘
-```
-
-#### Rehber Ekranı
-```
-┌─────────────────────────────────────┐
-│  🔍 1979 kişi içinde ara...        │
-├─────────────────────────────────────┤
-│ ┌────────────────────────────────┐ #│
-│ │ 👤 💗Başak Tanem Bebişlik💗    │ 0│
-│ ├────────────────────────────────┤ A│
-│ │ 🔴 07 Yıkama Ali               │ B│
-│ ├────────────────────────────────┤ C│
-│ │ 👤 1 Ağır Ceza Mübaşir Erol    │ Ç│
-│ ├────────────────────────────────┤ D│
-│ │ 👤 1 Aile Mahkemesi Müdür...   │ E│
-│ ├────────────────────────────────┤ F│
-│ │ 👤 1 Asliye Ceza Mübaşir İb.   │ G│
-│ ├────────────────────────────────┤ H│
-│ │ 👤 1 Asliye Hukuk Kâtip Emine  │ I│
-│ ├────────────────────────────────┤ K│
-│ │ 👤 1 Asliye Kemal              │ L│
-│ ├────────────────────────────────┤ M│
-│ │ 👤 1 İcra Gökhan               │ N│
-│ └────────────────────────────────┘ .│
-├─────────────────────────────────────┤
-│  [+]    KİŞİLERİ ARA           [⋮] │
-└─────────────────────────────────────┘
-```
-
-### 5.2 Arama Ekranları
-
-#### Gelen Arama Ekranı
-```
-┌─────────────────────────────────────┐
+│  🎨 Görünüm                         │
+│     Tema, Renkler, Yazı Boyutu     │
 │                                     │
-│           ┌─────────┐               │
-│           │         │               │
-│           │   👤    │    ← Avatar   │
-│           │         │      (pulse   │
-│           └─────────┘      animasyon)│
+│  📞 Aramalar                        │
+│     Zil Sesi, Titreşim, Kayıt      │
 │                                     │
-│         Senem Daşkıran              │
-│       +90 546 543 46 31             │
+│  👥 Rehber                          │
+│     Sıralama, Görünüm, Sync        │
 │                                     │
-│          Gelen Arama...             │
+│  📅 Takvim                          │
+│     Google Sync, Bildirimler       │
 │                                     │
+│  🔔 Bildirimler                     │
+│     Sesler, Titreşim, LED          │
 │                                     │
+│  🔒 Gizlilik                        │
+│     Engelleme, Kilit, Gizli Mod    │
 │                                     │
+│  ☁️ Yedekleme                       │
+│     Otomatik, Manuel, Geri Yükle   │
 │                                     │
-│    ┌─────────┐    ┌─────────┐      │
-│    │  💬    │    │   🔔    │      │
-│    │ Mesaj   │    │  Hatır. │      │
-│    └─────────┘    └─────────┘      │
-│                                     │
-│    ┌─────────┐    ┌─────────┐      │
-│    │   ❌    │    │   ✅    │      │
-│    │ Reddet  │    │ Cevapla │      │
-│    └─────────┘    └─────────┘      │
+│  ℹ️ Hakkında                        │
+│     Sürüm, Yardım, Geri Bildirim   │
 │                                     │
 └─────────────────────────────────────┘
 ```
 
-#### Arama Sırasında Ekran
-```
-┌─────────────────────────────────────┐
-│           ┌─────────┐               │
-│           │   👤    │               │
-│           └─────────┘               │
-│         Senem Daşkıran              │
-│            02:45                    │
-│                                     │
-│  ┌──────┐ ┌──────┐ ┌──────┐        │
-│  │  🔇  │ │  ⌨️   │ │  🔊  │        │
-│  │ Sesiz│ │ Tuşlar│ │Hopar.│        │
-│  └──────┘ └──────┘ └──────┘        │
-│                                     │
-│  ┌──────┐ ┌──────┐ ┌──────┐        │
-│  │  ⏸️  │ │  👥  │ │  ➕   │        │
-│  │Beklet│ │Konfer.│ │ Ekle │        │
-│  └──────┘ └──────┘ └──────┘        │
-│                                     │
-│         ┌───────────────┐           │
-│         │      📞       │           │
-│         │   Bitir       │           │
-│         └───────────────┘           │
-│                                     │
-└─────────────────────────────────────┘
-```
-
----
-
-## 6. Ayarlar Yapısı
-
-### 6.1 Ayar Kategorileri
+### 5.2 Detaylı Ayar Kategorileri
 
 ```typescript
-// types/settings.ts
-
 interface AppSettings {
-  // Genel Ayarlar
-  general: {
-    language: 'tr' | 'en' | 'de' | 'fr';
-    defaultTab: 'favorites' | 'recent' | 'contacts' | 'dialpad';
-    hapticFeedback: boolean;
-    soundEffects: boolean;
-  };
-
-  // Görünüm Ayarları
+  // ═══════════════════════════════════
+  // GÖRÜNÜM AYARLARI
+  // ═══════════════════════════════════
   appearance: {
-    appThemeId: string;
-    incomingCallThemeId: string;
-    outgoingCallThemeId: string;
-    inCallThemeId: string;
-    systemTheme: boolean;              // Sistem temasını takip et
+    // Tema
+    appTheme: string;                       // Tema ID
+    followSystemTheme: boolean;             // Sistem temasını takip et
+
+    // Arama Ekranı Temaları
+    incomingVoiceTheme: string;
+    incomingVideoTheme: string;
+    outgoingVoiceTheme: string;
+    outgoingVideoTheme: string;
+    inCallTheme: string;
+    inVideoCallTheme: string;
+    floatingCallTheme: string;
+    dialerTheme: string;
+
+    // Yazı
     fontSize: 'small' | 'medium' | 'large';
-    contactListStyle: 'compact' | 'comfortable' | 'large';
-    showContactPhotos: boolean;
+    fontFamily: string;
+
+    // Animasyonlar
     animationsEnabled: boolean;
+    reduceMotion: boolean;
   };
 
-  // Çağrı Ayarları
+  // ═══════════════════════════════════
+  // ARAMA AYARLARI
+  // ═══════════════════════════════════
   calls: {
-    answerAutomatically: boolean;
-    answerDelay: number;               // Saniye
+    // Zil Sesi
+    defaultRingtone: string;
+    ringtoneVolume: number;
+
+    // Titreşim
     vibrateOnRing: boolean;
+    vibrationPattern: 'default' | 'short' | 'long' | 'none';
+
+    // Flaş
     flashOnRing: boolean;
-    ringtoneUri: string;
-    proximityScreenOff: boolean;       // Yakınlık sensörü
-    showCallerId: boolean;
-    rejectWithSms: boolean;
-    rejectSmsTemplate: string;
+
+    // Davranış
+    answerOnHeadset: boolean;
+    endCallOnPowerButton: boolean;
+    proximityScreenOff: boolean;
+
+    // Otomatik Cevaplama
+    autoAnswer: {
+      enabled: boolean;
+      delay: number;
+      onlyFavorites: boolean;
+      onlyBluetooth: boolean;
+    };
+
+    // Mesajla Reddet
+    rejectWithSms: {
+      enabled: boolean;
+      templates: string[];
+    };
+
+    // Arama Kaydı
     callRecording: {
       enabled: boolean;
-      autoRecord: boolean;
-      recordIncoming: boolean;
-      recordOutgoing: boolean;
-      storageLocation: string;
+      autoRecord: 'none' | 'all' | 'contacts' | 'unknown';
+      audioSource: 'mic' | 'voice_call' | 'voice_communication';
+      format: 'mp3' | 'aac' | 'wav';
+      quality: 'low' | 'medium' | 'high';
+      storageLocation: 'internal' | 'external';
+    };
+
+    // Floating UI
+    floatingCall: {
+      enabled: boolean;
+      autoMinimize: boolean;
+      showOnLockScreen: boolean;
     };
   };
 
-  // Bildirim Ayarları
-  notifications: {
-    showMissedCallNotification: boolean;
-    showCallerId: boolean;
-    ledColor: string;
-    notificationSound: string;
-    doNotDisturbBypass: boolean;
+  // ═══════════════════════════════════
+  // REHBER AYARLARI
+  // ═══════════════════════════════════
+  contacts: {
+    // Görünüm
+    sortBy: 'firstName' | 'lastName' | 'displayName';
+    nameFormat: 'firstLast' | 'lastFirst';
+    listStyle: 'compact' | 'comfortable' | 'large';
+    showPhotos: boolean;
+    defaultPhoto: 'initials' | 'icon' | 'silhouette';
+
+    // Senkronizasyon
+    deviceSync: {
+      enabled: boolean;
+      autoSync: boolean;
+      syncPhotos: boolean;
+      syncInterval: number;
+    };
+
+    // Akıllı Öneriler
+    showFrequentContacts: boolean;
+    showBirthdayReminders: boolean;
   };
 
-  // Gizlilik Ayarları
+  // ═══════════════════════════════════
+  // TAKVİM AYARLARI
+  // ═══════════════════════════════════
+  calendar: {
+    // Görünüm
+    defaultView: 'month' | 'week' | 'day' | 'agenda';
+    weekStartsOn: 'sunday' | 'monday';
+    showWeekNumbers: boolean;
+
+    // Google Sync
+    googleSync: {
+      enabled: boolean;
+      accountEmail: string;
+      syncDirection: 'both' | 'from_google' | 'to_google';
+      calendarsToSync: string[];
+      syncFrequency: number;
+    };
+
+    // Varsayılan Hatırlatıcı
+    defaultReminders: number[];             // Dakika cinsinden
+
+    // Zaman Dilimi
+    timezone: string;
+    autoTimezone: boolean;
+  };
+
+  // ═══════════════════════════════════
+  // BİLDİRİM AYARLARI
+  // ═══════════════════════════════════
+  notifications: {
+    // Cevapsız Arama
+    missedCall: {
+      enabled: boolean;
+      sound: string;
+      vibrate: boolean;
+      showPreview: boolean;
+    };
+
+    // Mesaj (gelecekte SMS desteği için)
+    message: {
+      enabled: boolean;
+      sound: string;
+      vibrate: boolean;
+      showPreview: boolean;
+    };
+
+    // Takvim
+    calendar: {
+      enabled: boolean;
+      sound: string;
+      vibrate: boolean;
+    };
+
+    // Hatırlatıcı
+    reminder: {
+      enabled: boolean;
+      sound: string;
+      vibrate: boolean;
+      persistent: boolean;
+    };
+
+    // LED
+    ledEnabled: boolean;
+    ledColor: string;
+
+    // Rahatsız Etme
+    doNotDisturb: {
+      enabled: boolean;
+      allowFavorites: boolean;
+      allowRepeatCallers: boolean;
+      schedule: {
+        enabled: boolean;
+        startTime: string;
+        endTime: string;
+        days: number[];
+      };
+    };
+  };
+
+  // ═══════════════════════════════════
+  // GİZLİLİK AYARLARI
+  // ═══════════════════════════════════
   privacy: {
-    hideCallHistory: boolean;
-    requireAuthForContacts: boolean;
+    // Engelleme
     blockUnknownCallers: boolean;
     blockHiddenNumbers: boolean;
     blockSpamCallers: boolean;
-    spamProtection: boolean;
+
+    // Uygulama Kilidi
+    appLock: {
+      enabled: boolean;
+      method: 'pin' | 'pattern' | 'biometric';
+      lockDelay: number;                    // Saniye
+      lockOnBackground: boolean;
+    };
+
+    // Gizli Mod
+    incognitoMode: {
+      enabled: boolean;
+      hideCallHistory: boolean;
+      hideContacts: boolean;
+    };
+
+    // Arayan Kimliği
+    showMyCallerId: 'always' | 'never' | 'contacts_only';
   };
 
-  // Senkronizasyon Ayarları
+  // ═══════════════════════════════════
+  // SENKRONİZASYON AYARLARI
+  // ═══════════════════════════════════
   sync: {
-    autoSync: boolean;
-    syncInterval: number;              // Dakika
-    syncFavorites: boolean;
-    syncBlocked: boolean;
-    syncSettings: boolean;
-    wifiOnly: boolean;
+    // Bulut Sync
+    cloudSync: {
+      enabled: boolean;
+      wifiOnly: boolean;
+      syncFavorites: boolean;
+      syncBlocked: boolean;
+      syncSettings: boolean;
+      syncThemes: boolean;
+    };
+
+    // Otomatik Yedekleme
+    autoBackup: {
+      enabled: boolean;
+      frequency: 'daily' | 'weekly' | 'monthly';
+      includeCallHistory: boolean;
+      includeNotes: boolean;
+      includeCalendar: boolean;
+      wifiOnly: boolean;
+    };
   };
 
-  // Yedekleme Ayarları
-  backup: {
-    autoBackup: boolean;
-    backupFrequency: 'daily' | 'weekly' | 'monthly';
-    includeCallHistory: boolean;
-    includeSettings: boolean;
-    includeThemes: boolean;
+  // ═══════════════════════════════════
+  // GELİŞMİŞ AYARLAR
+  // ═══════════════════════════════════
+  advanced: {
+    // Varsayılan Uygulama
+    defaultDialerEnabled: boolean;
+    defaultContactsEnabled: boolean;
+
+    // Performans
+    lowPowerMode: boolean;
+    cacheSize: 'small' | 'medium' | 'large';
+
+    // Geliştirici
+    debugMode: boolean;
+    showPerformanceOverlay: boolean;
   };
 }
-```
-
-### 6.2 Ayarlar Ekranı Yapısı
-
-```
-Ayarlar
-├── Hesap
-│   ├── Profil
-│   ├── Giriş Yap / Kayıt Ol
-│   └── Premium
-│
-├── Görünüm
-│   ├── Uygulama Teması
-│   ├── Gelen Arama Teması
-│   ├── Arama Sırasında Teması
-│   ├── Tema Mağazası
-│   ├── Yazı Boyutu
-│   ├── Kişi Listesi Görünümü
-│   └── Animasyonlar
-│
-├── Aramalar
-│   ├── Otomatik Cevaplama
-│   ├── Titreşim
-│   ├── Zil Sesi
-│   ├── Mesajla Reddet
-│   ├── Arama Kaydı
-│   └── Hızlı Arama (Speed Dial)
-│
-├── Bildirimler
-│   ├── Cevapsız Arama Bildirimi
-│   ├── LED Rengi
-│   └── Bildirim Sesi
-│
-├── Gizlilik ve Güvenlik
-│   ├── Engelli Numaralar
-│   ├── Spam Koruması
-│   ├── Bilinmeyen Arayanları Engelle
-│   └── Uygulama Kilidi
-│
-├── Senkronizasyon
-│   ├── Hesap Senkronizasyonu
-│   ├── Yalnızca Wi-Fi
-│   └── Senkronizasyon Geçmişi
-│
-├── Yedekleme
-│   ├── Yedeği Dışa Aktar
-│   ├── Yedeği İçe Aktar
-│   └── Otomatik Yedekleme
-│
-├── Gelişmiş
-│   ├── Varsayılan Uygulama Ayarları
-│   ├── Önbelleği Temizle
-│   ├── Veritabanını Sıfırla
-│   └── Geliştirici Seçenekleri
-│
-└── Hakkında
-    ├── Sürüm
-    ├── Gizlilik Politikası
-    ├── Kullanım Şartları
-    └── Lisanslar
 ```
 
 ---
 
-## 7. Native Modül Entegrasyonları
+## 6. Proje Klasör Yapısı
 
-### 7.1 Gerekli Kütüphaneler
-
-```json
-{
-  "dependencies": {
-    // Temel
-    "react": "18.2.0",
-    "react-native": "0.73.x",
-    "typescript": "5.x",
-
-    // Navigasyon
-    "@react-navigation/native": "^6.x",
-    "@react-navigation/bottom-tabs": "^6.x",
-    "@react-navigation/stack": "^6.x",
-
-    // State Yönetimi
-    "@reduxjs/toolkit": "^2.x",
-    "react-redux": "^9.x",
-
-    // UI Kütüphaneleri
-    "react-native-paper": "^5.x",
-    "react-native-vector-icons": "^10.x",
-    "react-native-reanimated": "^3.x",
-    "react-native-gesture-handler": "^2.x",
-    "@gorhom/bottom-sheet": "^4.x",
-    "react-native-linear-gradient": "^2.x",
-
-    // Native Modüller
-    "react-native-contacts": "^7.x",
-    "react-native-callkeep": "^4.x",
-    "react-native-call-log": "^4.x",
-    "react-native-incall-manager": "^4.x",
-    "react-native-permissions": "^4.x",
-    "react-native-fs": "^2.x",
-
-    // Veritabanı
-    "react-native-sqlite-storage": "^6.x",
-    "@supabase/supabase-js": "^2.x",
-    "@react-native-async-storage/async-storage": "^1.x",
-
-    // Diğer
-    "react-native-uuid": "^2.x",
-    "date-fns": "^3.x",
-    "libphonenumber-js": "^1.x"
-  }
-}
+```
+src/
+├── app/
+│   ├── App.tsx
+│   ├── store.ts
+│   └── navigation/
+│       ├── RootNavigator.tsx
+│       ├── MainTabNavigator.tsx
+│       ├── CallStackNavigator.tsx
+│       ├── ContactStackNavigator.tsx
+│       ├── CalendarStackNavigator.tsx
+│       ├── SettingsStackNavigator.tsx
+│       └── types.ts
+│
+├── features/
+│   ├── auth/
+│   │   ├── screens/
+│   │   ├── components/
+│   │   ├── hooks/
+│   │   ├── services/
+│   │   └── authSlice.ts
+│   │
+│   ├── contacts/
+│   │   ├── screens/
+│   │   │   ├── ContactListScreen.tsx
+│   │   │   ├── ContactDetailScreen.tsx
+│   │   │   ├── ContactEditScreen.tsx
+│   │   │   ├── FavoritesScreen.tsx
+│   │   │   └── ContactGroupsScreen.tsx
+│   │   ├── components/
+│   │   │   ├── ContactCard.tsx
+│   │   │   ├── ContactAvatar.tsx
+│   │   │   ├── AlphabetScroller.tsx
+│   │   │   ├── ContactActionSheet.tsx
+│   │   │   └── RingtoneSelector.tsx
+│   │   ├── hooks/
+│   │   │   ├── useContacts.ts
+│   │   │   ├── useFavorites.ts
+│   │   │   └── useContactSync.ts
+│   │   ├── services/
+│   │   │   ├── contactsService.ts
+│   │   │   └── deviceContactsService.ts
+│   │   └── contactsSlice.ts
+│   │
+│   ├── calls/
+│   │   ├── screens/
+│   │   │   ├── CallHistoryScreen.tsx
+│   │   │   ├── CallDetailScreen.tsx
+│   │   │   ├── DialerScreen.tsx
+│   │   │   ├── IncomingCallScreen.tsx
+│   │   │   ├── IncomingVideoCallScreen.tsx
+│   │   │   ├── OutgoingCallScreen.tsx
+│   │   │   ├── OutgoingVideoCallScreen.tsx
+│   │   │   ├── InCallScreen.tsx
+│   │   │   ├── InVideoCallScreen.tsx
+│   │   │   └── FloatingCallScreen.tsx
+│   │   ├── components/
+│   │   │   ├── CallLogItem.tsx
+│   │   │   ├── CallLogStats.tsx
+│   │   │   ├── Dialpad.tsx
+│   │   │   ├── CallActionButton.tsx
+│   │   │   ├── CallTimer.tsx
+│   │   │   ├── FloatingCallWidget.tsx
+│   │   │   └── VideoCallControls.tsx
+│   │   ├── hooks/
+│   │   │   ├── useCallManager.ts
+│   │   │   ├── useCallHistory.ts
+│   │   │   └── useFloatingCall.ts
+│   │   ├── services/
+│   │   │   ├── callService.ts
+│   │   │   └── callRecordingService.ts
+│   │   └── callsSlice.ts
+│   │
+│   ├── calendar/
+│   │   ├── screens/
+│   │   │   ├── CalendarScreen.tsx
+│   │   │   ├── AgendaScreen.tsx
+│   │   │   ├── EventDetailScreen.tsx
+│   │   │   └── EventEditScreen.tsx
+│   │   ├── components/
+│   │   │   ├── CalendarView.tsx
+│   │   │   ├── EventCard.tsx
+│   │   │   ├── DayView.tsx
+│   │   │   ├── WeekView.tsx
+│   │   │   └── MonthView.tsx
+│   │   ├── hooks/
+│   │   │   ├── useCalendar.ts
+│   │   │   └── useGoogleCalendarSync.ts
+│   │   ├── services/
+│   │   │   ├── calendarService.ts
+│   │   │   └── googleCalendarService.ts
+│   │   └── calendarSlice.ts
+│   │
+│   ├── notes/
+│   │   ├── screens/
+│   │   │   ├── NotesListScreen.tsx
+│   │   │   ├── NoteDetailScreen.tsx
+│   │   │   └── NoteEditorScreen.tsx
+│   │   ├── components/
+│   │   │   ├── NoteCard.tsx
+│   │   │   ├── RichTextEditor.tsx
+│   │   │   └── NoteCategories.tsx
+│   │   ├── hooks/
+│   │   │   └── useNotes.ts
+│   │   ├── services/
+│   │   │   └── notesService.ts
+│   │   └── notesSlice.ts
+│   │
+│   ├── reminders/
+│   │   ├── screens/
+│   │   │   ├── RemindersScreen.tsx
+│   │   │   └── ReminderEditScreen.tsx
+│   │   ├── components/
+│   │   │   ├── ReminderCard.tsx
+│   │   │   └── ReminderForm.tsx
+│   │   ├── hooks/
+│   │   │   └── useReminders.ts
+│   │   ├── services/
+│   │   │   └── remindersService.ts
+│   │   └── remindersSlice.ts
+│   │
+│   ├── themes/
+│   │   ├── screens/
+│   │   │   ├── ThemeStoreScreen.tsx
+│   │   │   ├── ThemeDetailScreen.tsx
+│   │   │   ├── ThemeCustomizeScreen.tsx
+│   │   │   └── MyThemesScreen.tsx
+│   │   ├── components/
+│   │   │   ├── ThemeCard.tsx
+│   │   │   ├── ThemePreview.tsx
+│   │   │   ├── ColorPicker.tsx
+│   │   │   └── ThemeSelector.tsx
+│   │   ├── presets/
+│   │   │   ├── index.ts
+│   │   │   ├── lightThemes.ts
+│   │   │   ├── darkThemes.ts
+│   │   │   ├── blueThemes.ts
+│   │   │   ├── callThemes.ts
+│   │   │   └── specialThemes.ts
+│   │   ├── hooks/
+│   │   │   └── useTheme.ts
+│   │   ├── services/
+│   │   │   └── themeService.ts
+│   │   ├── ThemeProvider.tsx
+│   │   └── themesSlice.ts
+│   │
+│   ├── ringtones/
+│   │   ├── screens/
+│   │   │   ├── RingtoneStoreScreen.tsx
+│   │   │   ├── RingtoneDetailScreen.tsx
+│   │   │   └── MyRingtonesScreen.tsx
+│   │   ├── components/
+│   │   │   ├── RingtoneCard.tsx
+│   │   │   ├── RingtonePlayer.tsx
+│   │   │   └── RingtoneCategories.tsx
+│   │   ├── hooks/
+│   │   │   └── useRingtones.ts
+│   │   ├── services/
+│   │   │   └── ringtoneService.ts
+│   │   └── ringtonesSlice.ts
+│   │
+│   └── settings/
+│       ├── screens/
+│       │   ├── SettingsScreen.tsx
+│       │   ├── AppearanceSettingsScreen.tsx
+│       │   ├── CallSettingsScreen.tsx
+│       │   ├── ContactSettingsScreen.tsx
+│       │   ├── CalendarSettingsScreen.tsx
+│       │   ├── NotificationSettingsScreen.tsx
+│       │   ├── SyncSettingsScreen.tsx
+│       │   ├── PrivacySettingsScreen.tsx
+│       │   ├── BackupSettingsScreen.tsx
+│       │   ├── BlockedNumbersScreen.tsx
+│       │   └── AboutScreen.tsx
+│       ├── components/
+│       │   ├── SettingItem.tsx
+│       │   ├── SettingSection.tsx
+│       │   ├── SettingSwitch.tsx
+│       │   └── SettingPicker.tsx
+│       └── settingsSlice.ts
+│
+├── shared/
+│   ├── components/
+│   │   ├── Button.tsx
+│   │   ├── Input.tsx
+│   │   ├── Avatar.tsx
+│   │   ├── Card.tsx
+│   │   ├── Modal.tsx
+│   │   ├── BottomSheet.tsx
+│   │   ├── LoadingSpinner.tsx
+│   │   ├── EmptyState.tsx
+│   │   ├── ErrorBoundary.tsx
+│   │   ├── SearchBar.tsx
+│   │   ├── Badge.tsx
+│   │   ├── Divider.tsx
+│   │   ├── FAB.tsx
+│   │   └── ConfirmDialog.tsx
+│   ├── hooks/
+│   │   ├── useDatabase.ts
+│   │   ├── usePermissions.ts
+│   │   ├── useDebounce.ts
+│   │   ├── useKeyboard.ts
+│   │   └── useNetworkStatus.ts
+│   └── utils/
+│       ├── formatters.ts
+│       ├── validators.ts
+│       ├── helpers.ts
+│       ├── colors.ts
+│       └── constants.ts
+│
+├── database/
+│   ├── sqlite/
+│   │   ├── database.ts
+│   │   ├── migrations/
+│   │   │   ├── 001_initial.ts
+│   │   │   ├── 002_calendar.ts
+│   │   │   ├── 003_notes.ts
+│   │   │   └── index.ts
+│   │   ├── repositories/
+│   │   │   ├── contactsRepository.ts
+│   │   │   ├── callLogsRepository.ts
+│   │   │   ├── eventsRepository.ts
+│   │   │   ├── notesRepository.ts
+│   │   │   ├── remindersRepository.ts
+│   │   │   ├── themesRepository.ts
+│   │   │   ├── ringtonesRepository.ts
+│   │   │   └── settingsRepository.ts
+│   │   └── models/
+│   │       └── index.ts
+│   └── supabase/
+│       ├── client.ts
+│       ├── auth.ts
+│       ├── themeStore.ts
+│       ├── ringtoneStore.ts
+│       └── sync.ts
+│
+├── services/
+│   ├── native/
+│   │   ├── CallManager.ts
+│   │   ├── ContactsManager.ts
+│   │   ├── CalendarManager.ts
+│   │   ├── NotificationManager.ts
+│   │   ├── PermissionsManager.ts
+│   │   └── FloatingWindowManager.ts
+│   └── api/
+│       ├── googleCalendarApi.ts
+│       └── storeApi.ts
+│
+├── constants/
+│   ├── colors.ts
+│   ├── typography.ts
+│   ├── spacing.ts
+│   ├── config.ts
+│   └── permissions.ts
+│
+└── types/
+    ├── contact.ts
+    ├── call.ts
+    ├── calendar.ts
+    ├── note.ts
+    ├── reminder.ts
+    ├── theme.ts
+    ├── ringtone.ts
+    ├── settings.ts
+    └── navigation.ts
 ```
 
-### 7.2 Android Manifest İzinleri
+---
+
+## 7. Android Manifest İzinleri
 
 ```xml
-<!-- android/app/src/main/AndroidManifest.xml -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-<manifest>
-    <!-- Temel İzinler -->
+    <!-- ═══════════════════════════════════ -->
+    <!-- TEMEL İZİNLER                        -->
+    <!-- ═══════════════════════════════════ -->
+
+    <!-- Rehber -->
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+
+    <!-- Telefon -->
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.READ_CALL_LOG" />
     <uses-permission android:name="android.permission.WRITE_CALL_LOG" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
     <uses-permission android:name="android.permission.ANSWER_PHONE_CALLS" />
     <uses-permission android:name="android.permission.MANAGE_OWN_CALLS" />
 
-    <!-- Bildirimler -->
+    <!-- Takvim -->
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+
+    <!-- ═══════════════════════════════════ -->
+    <!-- MEDYA VE DEPOLAMA                    -->
+    <!-- ═══════════════════════════════════ -->
+
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+
+    <!-- ═══════════════════════════════════ -->
+    <!-- BİLDİRİMLER VE SİSTEM               -->
+    <!-- ═══════════════════════════════════ -->
+
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
 
-    <!-- Depolama (Arama kaydı için) -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- ═══════════════════════════════════ -->
+    <!-- AĞ                                   -->
+    <!-- ═══════════════════════════════════ -->
 
-    <!-- Ağ -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-    <!-- Foreground Service -->
+    <!-- ═══════════════════════════════════ -->
+    <!-- FOREGROUND SERVICE                   -->
+    <!-- ═══════════════════════════════════ -->
+
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_PHONE_CALL" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
 
-    <!-- Varsayılan Uygulama -->
-    <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
+    <!-- ═══════════════════════════════════ -->
+    <!-- FLOATING WINDOW / PIP               -->
+    <!-- ═══════════════════════════════════ -->
 
-    <application>
-        <!-- Varsayılan Arama Uygulaması Olarak Kayıt -->
-        <activity android:name=".MainActivity">
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <!-- ═══════════════════════════════════ -->
+    <!-- BİYOMETRİK                           -->
+    <!-- ═══════════════════════════════════ -->
+
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+
+    <!-- ═══════════════════════════════════ -->
+    <!-- FEATURES                             -->
+    <!-- ═══════════════════════════════════ -->
+
+    <uses-feature android:name="android.hardware.telephony" android:required="false" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
+
+    <application
+        android:name=".MainApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+
+        <!-- ═══════════════════════════════════ -->
+        <!-- VARSAYILAN ARAMA UYGULAMASI         -->
+        <!-- ═══════════════════════════════════ -->
+
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true"
+            android:supportsPictureInPicture="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- Dialer Intent -->
+            <intent-filter>
+                <action android:name="android.intent.action.DIAL" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.DIAL" />
                 <data android:scheme="tel" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+
+            <!-- View tel: links -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <data android:scheme="tel" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
+
+            <!-- Call Intent -->
+            <intent-filter>
+                <action android:name="android.intent.action.CALL" />
+                <data android:scheme="tel" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
         </activity>
 
-        <!-- Call Receiver -->
-        <receiver android:name=".CallReceiver"
+        <!-- ═══════════════════════════════════ -->
+        <!-- INCALL SERVICE                      -->
+        <!-- ═══════════════════════════════════ -->
+
+        <service
+            android:name=".InCallService"
+            android:permission="android.permission.BIND_INCALL_SERVICE"
+            android:exported="true">
+            <meta-data
+                android:name="android.telecom.IN_CALL_SERVICE_UI"
+                android:value="true" />
+            <meta-data
+                android:name="android.telecom.IN_CALL_SERVICE_RINGING"
+                android:value="true" />
+            <intent-filter>
+                <action android:name="android.telecom.InCallService" />
+            </intent-filter>
+        </service>
+
+        <!-- ═══════════════════════════════════ -->
+        <!-- CALL RECEIVER                       -->
+        <!-- ═══════════════════════════════════ -->
+
+        <receiver
+            android:name=".CallReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
         </receiver>
 
-        <!-- Incall Service -->
-        <service android:name=".InCallService"
-            android:permission="android.permission.BIND_INCALL_SERVICE"
+        <!-- ═══════════════════════════════════ -->
+        <!-- BOOT RECEIVER (Hatırlatıcılar)      -->
+        <!-- ═══════════════════════════════════ -->
+
+        <receiver
+            android:name=".BootReceiver"
             android:exported="true">
-            <meta-data
-                android:name="android.telecom.IN_CALL_SERVICE_UI"
-                android:value="true" />
             <intent-filter>
-                <action android:name="android.telecom.InCallService" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
-        </service>
+        </receiver>
+
+        <!-- ═══════════════════════════════════ -->
+        <!-- FLOATING CALL SERVICE               -->
+        <!-- ═══════════════════════════════════ -->
+
+        <service
+            android:name=".FloatingCallService"
+            android:exported="false"
+            android:foregroundServiceType="phoneCall" />
+
     </application>
+
 </manifest>
 ```
 
 ---
 
-## 8. Geliştirme Aşamaları
+## 8. Geliştirme Fazları
 
 ### Faz 1: Temel Altyapı (2-3 hafta)
-
-- [ ] Proje kurulumu (React Native + TypeScript)
+- [ ] React Native + TypeScript proje kurulumu
 - [ ] Klasör yapısı oluşturma
-- [ ] Navigasyon sistemi
-- [ ] Redux store kurulumu
-- [ ] SQLite veritabanı kurulumu ve şema
-- [ ] Supabase entegrasyonu
-- [ ] Temel UI bileşenleri
+- [ ] React Navigation kurulumu
+- [ ] Redux Toolkit + RTK Query kurulumu
+- [ ] SQLite veritabanı ve şema
+- [ ] Supabase client kurulumu
+- [ ] Temel UI bileşenleri (Paper + Elements)
+- [ ] Tema Provider altyapısı
+- [ ] İzin yönetim sistemi
 
 ### Faz 2: Rehber Modülü (2-3 hafta)
-
-- [ ] Kişi listesi ekranı
+- [ ] Kişi listesi ekranı (alfabetik kaydırma)
 - [ ] Kişi detay ekranı
 - [ ] Kişi ekleme/düzenleme
-- [ ] Favoriler ekranı
+- [ ] Favoriler ekranı (grid görünüm)
+- [ ] Cihaz rehberi senkronizasyonu
+- [ ] Profil resmi sync
+- [ ] Kişiye özel zil sesi
 - [ ] Arama ve filtreleme
-- [ ] Alfabetik kaydırma
-- [ ] Native contacts entegrasyonu
 
 ### Faz 3: Çağrı Modülü (3-4 hafta)
-
-- [ ] Çağrı geçmişi ekranı
+- [ ] Detaylı çağrı geçmişi ekranı
+- [ ] Çağrı istatistikleri
 - [ ] Tuş takımı ekranı
-- [ ] Gelen arama ekranı
-- [ ] Giden arama ekranı
+- [ ] Gelen arama ekranı (sesli)
+- [ ] Giden arama ekranı (sesli)
 - [ ] Arama sırasında ekran
+- [ ] Video arama UI altyapısı
+- [ ] Floating call widget
 - [ ] CallKeep entegrasyonu
 - [ ] Varsayılan uygulama kaydı
 
-### Faz 4: Tema Sistemi (2-3 hafta)
+### Faz 4: Takvim ve Hatırlatıcılar (2-3 hafta)
+- [ ] Takvim ekranı (ay/hafta/gün)
+- [ ] Etkinlik ekleme/düzenleme
+- [ ] Google Calendar OAuth
+- [ ] Google Calendar sync (çift yönlü)
+- [ ] Hatırlatıcılar modülü
+- [ ] Bildirim zamanlaması
+- [ ] Tekrarlayan etkinlikler
 
+### Faz 5: Notlar Modülü (1-2 hafta)
+- [ ] Not listesi ekranı
+- [ ] Zengin metin editörü
+- [ ] Not kategorileri
+- [ ] Kişi/etkinlik bağlantısı
+- [ ] Arama ve filtreleme
+
+### Faz 6: Tema Sistemi (2-3 hafta)
+- [ ] Varsayılan temalar (15+ renk)
 - [ ] Tema context ve provider
-- [ ] Varsayılan temalar (açık/koyu)
 - [ ] Arama ekranı temaları
 - [ ] Tema önizleme
 - [ ] Tema özelleştirme
 - [ ] Tema kaydetme/yükleme
 
-### Faz 5: Tema Mağazası (2-3 hafta)
-
-- [ ] Mağaza ekranı
-- [ ] Tema detay sayfası
-- [ ] İndirme sistemi
-- [ ] Satın alma entegrasyonu
+### Faz 7: Mağazalar (2-3 hafta)
+- [ ] Tema mağazası ekranı
+- [ ] Tema detay ve önizleme
+- [ ] Zil sesi mağazası ekranı
+- [ ] Zil sesi önizleme/indirme
+- [ ] Satın alma sistemi
 - [ ] Değerlendirme sistemi
-- [ ] Supabase tema API
 
-### Faz 6: Ayarlar ve Özelleştirme (2 hafta)
-
-- [ ] Ayarlar ekranları
-- [ ] Tercih yönetimi
-- [ ] Engelli numaralar
-- [ ] Senkronizasyon
+### Faz 8: Ayarlar (2 hafta)
+- [ ] Tüm ayar ekranları
+- [ ] Ayar kalıcılığı
+- [ ] Google hesap bağlama
+- [ ] Engelli numaralar yönetimi
 - [ ] Yedekleme/geri yükleme
+- [ ] Uygulama kilidi
 
-### Faz 7: Kimlik Doğrulama (1-2 hafta)
-
-- [ ] Giriş ekranı
-- [ ] Kayıt ekranı
-- [ ] Profil yönetimi
+### Faz 9: Kimlik Doğrulama (1-2 hafta)
 - [ ] Supabase Auth entegrasyonu
+- [ ] Giriş/kayıt ekranları
+- [ ] Google ile giriş
+- [ ] Profil yönetimi
+- [ ] Premium sistem
 
-### Faz 8: Test ve İyileştirme (2 hafta)
-
+### Faz 10: Test ve İyileştirme (2-3 hafta)
 - [ ] Unit testler
 - [ ] Integration testler
+- [ ] E2E testler
 - [ ] Performans optimizasyonu
+- [ ] Bellek yönetimi
 - [ ] Bug düzeltmeleri
 - [ ] UI/UX iyileştirmeleri
 
 ---
 
-## 9. Notlar ve Dikkat Edilecekler
-
-### Android Özel Durumlar
-
-1. **Android 10+**: Arka planda çağrı işlemleri için özel izinler gerekiyor
-2. **Android 14+**: Tam ekran bildirimler için ek izin gerekiyor
-3. **MIUI/OneUI**: Bazı üretici ROM'larında ek ayarlar gerekebilir
+## 9. Önemli Notlar
 
 ### Performans
-
-1. Büyük rehberler (1000+ kişi) için sayfalama kullan
-2. Kişi fotoğrafları için lazy loading uygula
-3. Çağrı geçmişi için infinite scroll kullan
-4. SQLite sorgularında index kullan
+1. FlatList ile sanallaştırma (1000+ kişi)
+2. Resimler için FastImage + thumbnail
+3. SQLite index'leri aktif kullan
+4. Memo ve useCallback optimizasyonları
+5. Lazy loading ile ekran yükleme
 
 ### Güvenlik
+1. Hassas verileri şifrele (Keychain/Keystore)
+2. Supabase RLS aktif
+3. API anahtarlarını .env'de sakla
+4. Biometric authentication desteği
 
-1. Hassas verileri şifrele
-2. Supabase RLS (Row Level Security) kullan
-3. API anahtarlarını güvenli sakla
-4. Kullanıcı verilerini minimum düzeyde topla
+### Android Uyumluluk
+1. Android 10+: Scoped storage
+2. Android 12+: Exact alarms izni
+3. Android 13+: Granular media permissions
+4. Android 14+: Foreground service tipi zorunlu
+
+### Test Cihazları
+- Samsung (OneUI)
+- Xiaomi (MIUI)
+- Huawei (EMUI)
+- Stock Android (Pixel)
 
 ---
 
-*Bu doküman, proje geliştirme sürecinde güncellenecektir.*
+*Son Güncelleme: Ocak 2026*
+*Versiyon: 2.0*
