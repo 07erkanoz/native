@@ -1533,6 +1533,34 @@ CREATE POLICY "Anyone can view approved ringtones" ON store_ringtones
 
 ## 5. Ayarlar Yapısı (Kullanıcı Dostu)
 
+> **Detaylı ayarlar dokümantasyonu için:** [`SETTINGS.md`](./SETTINGS.md) dosyasına bakın.
+
+### ⚠️ KRİTİK: Proximity Sensörü (Yakınlık Sensörü)
+
+**Bu özellik ZORUNLUDUR ve varsayılan olarak AÇIK olmalıdır.**
+
+```typescript
+// Proximity Sensörü - Arama sırasında
+// Telefon kulağa yaklaştığında:
+// 1. Ekran kapanır
+// 2. Dokunmatik devre dışı kalır
+// Telefon kulaktan uzaklaştığında:
+// 1. Ekran açılır
+// 2. Dokunmatik aktif olur
+
+interface ProximitySensorSettings {
+  enabled: boolean;                    // Varsayılan: true (ZORUNLU)
+  sensitivity: 'low' | 'normal' | 'high';
+  screenOnDelay: number;               // ms (200ms önerilen)
+}
+```
+
+**Neden Kritik?**
+- Yanlış dokunuşları önler (arama sırasında yanakla tuşa basma)
+- Pil tasarrufu sağlar
+- Kullanıcı deneyimi için temel özellik
+- Tüm telefon uygulamalarında standart
+
 ### 5.1 Ayarlar Ana Ekranı
 
 ```
@@ -1540,23 +1568,37 @@ CREATE POLICY "Anyone can view approved ringtones" ON store_ringtones
 │  ⚙️  Ayarlar                        │
 ├─────────────────────────────────────┤
 │                                     │
-│  👤 Hesap                           │
-│     Profil, Giriş, Premium         │
-│                                     │
-│  ─────────────────────────────────  │
-│                                     │
 │  🎨 Görünüm                         │
-│     Tema, Renkler, Yazı Boyutu     │
+│     Tema, sekmeler, yazı boyutu     │
 │                                     │
-│  📞 Aramalar                        │
-│     Zil Sesi, Titreşim, Kayıt      │
+│  ⚡ Davranış                        │
+│     Hızlı eylemler, arama bilgi     │
 │                                     │
-│  👥 Rehber                          │
-│     Sıralama, Görünüm, Sync        │
+│  🔢 Tuş Takımı                      │
+│     T9, sesler, titreşim            │
 │                                     │
-│  📅 Takvim                          │
-│     Google Sync, Bildirimler       │
+│  👥 Kişiler                         │
+│     Sıralama, görünüm, sync         │
 │                                     │
+│  📋 Arama Geçmişi                   │
+│     Gruplama, filtreleme            │
+│                                     │
+│  📞 Gelen/Giden Çağrılar ★          │
+│     Ekranlar, PROXIMITY SENSÖRÜ     │
+│                                     │
+│  📱 Çift SIM                        │
+│     SIM tercihleri                  │
+│                                     │
+│  🚫 Kara Liste                      │
+│     Engellenen numaralar            │
+│                                     │
+│  📅 Takvim & Notlar                 │
+│     Google sync, hatırlatıcılar     │
+│                                     │
+│  🔔 Bildirimler                     │
+│     Sesler, titreşim, LED           │
+│                                     │
+│  ☁️ Yedekleme                       │
 │  🔔 Bildirimler                     │
 │     Sesler, Titreşim, LED          │
 │                                     │
