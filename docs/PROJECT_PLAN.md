@@ -535,11 +535,166 @@ interface ContactCustomization {
 ```
 
 #### Profil Resmi Senkronizasyonu
-- Cihaz rehberindeki fotoğrafları otomatik çekme
-- Uygulama içi özel fotoğraf ekleme
-- Fotoğraf öncelik sıralaması (özel > cihaz > varsayılan avatar)
-- Fotoğraf kalitesi ayarı
-- Thumbnail oluşturma
+
+**Fotoğraf Öncelik Sıralaması:**
+```
+1. Kullanıcının manuel eklediği özel fotoğraf
+2. Cihaz rehberindeki fotoğraf
+3. Google Contacts fotoğrafı (People API)
+4. Gravatar fotoğrafı (e-posta ile)
+5. Otomatik avatar (baş harfler + renk)
+```
+
+##### Google People API Entegrasyonu
+
+Google hesabındaki kişilerin fotoğraflarını telefon numarasına göre eşleştirme:
+
+```typescript
+// Google People API ile kişi fotoğraflarını çekme
+interface GoogleContactPhoto {
+  resourceName: string;
+  phoneNumber: string;
+  photoUrl: string;
+}
+
+// Gerekli OAuth Scope
+const GOOGLE_SCOPES = [
+  'https://www.googleapis.com/auth/contacts.readonly'
+];
+
+// API Endpoint
+// GET https://people.googleapis.com/v1/people/me/connections
+//     ?personFields=names,phoneNumbers,photos
+//     &pageSize=1000
+
+async function syncGoogleContactPhotos(): Promise<GoogleContactPhoto[]> {
+  const { accessToken } = await GoogleSignin.getTokens();
+
+  const response = await fetch(
+    'https://people.googleapis.com/v1/people/me/connections?personFields=names,phoneNumbers,photos&pageSize=1000',
+    { headers: { Authorization: `Bearer ${accessToken}` } }
+  );
+
+  const data = await response.json();
+
+  return data.connections
+    .filter(c => c.photos?.length > 0 && c.phoneNumbers?.length > 0)
+    .map(c => ({
+      resourceName: c.resourceName,
+      phoneNumber: normalizePhoneNumber(c.phoneNumbers[0].value),
+      photoUrl: c.photos[0].url
+    }));
+}
+```
+
+**Dikkat:** Bu özellik "sensitive scope" kategorisinde olduğundan Google App Verification gerektirir.
+
+##### Gravatar Entegrasyonu
+
+E-posta adresinden profil fotoğrafı çekme (API key gerektirmez):
+
+```typescript
+import CryptoJS from 'crypto-js';
+
+function getGravatarUrl(email: string, size: number = 200): string {
+  const cleanEmail = email.trim().toLowerCase();
+  const hash = CryptoJS.SHA256(cleanEmail).toString();
+
+  // d=404: fotoğraf yoksa 404 döner (kontrol için)
+  // d=identicon: fotoğraf yoksa geometrik pattern
+  return `https://gravatar.com/avatar/${hash}?d=404&s=${size}`;
+}
+
+async function checkGravatarExists(email: string): Promise<string | null> {
+  const url = getGravatarUrl(email);
+  try {
+    const response = await fetch(url, { method: 'HEAD' });
+    return response.ok ? url.replace('d=404', 'd=identicon') : null;
+  } catch {
+    return null;
+  }
+}
+```
+
+**Gravatar Fallback Seçenekleri:**
+| Parametre | Sonuç |
+|-----------|-------|
+| `d=mp` | Mystery Person (siluet) |
+| `d=identicon` | Geometrik pattern |
+| `d=robohash` | Robot avatarı |
+| `d=retro` | 8-bit piksel yüz |
+
+##### Birleşik Fotoğraf Servisi
+
+```typescript
+interface ContactPhotoSource {
+  type: 'custom' | 'device' | 'google' | 'gravatar' | 'avatar';
+  url: string;
+  priority: number;
+}
+
+async function getContactPhoto(contact: Contact): Promise<ContactPhotoSource> {
+  // 1. Özel fotoğraf (en yüksek öncelik)
+  if (contact.customPhotoUri) {
+    return { type: 'custom', url: contact.customPhotoUri, priority: 1 };
+  }
+
+  // 2. Cihaz rehberi fotoğrafı
+  if (contact.thumbnailPath) {
+    return { type: 'device', url: contact.thumbnailPath, priority: 2 };
+  }
+
+  // 3. Google Contacts fotoğrafı (telefon numarasına göre)
+  const googlePhoto = await getGoogleContactPhoto(contact.phoneNumbers?.[0]?.number);
+  if (googlePhoto) {
+    return { type: 'google', url: googlePhoto, priority: 3 };
+  }
+
+  // 4. Gravatar (e-posta adresine göre)
+  if (contact.emailAddresses?.length > 0) {
+    const gravatarUrl = await checkGravatarExists(contact.emailAddresses[0].email);
+    if (gravatarUrl) {
+      return { type: 'gravatar', url: gravatarUrl, priority: 4 };
+    }
+  }
+
+  // 5. Otomatik avatar (baş harfler)
+  return {
+    type: 'avatar',
+    url: generateAvatarUrl(contact.displayName),
+    priority: 5
+  };
+}
+```
+
+##### Fotoğraf Önbelleği
+
+```typescript
+interface PhotoCache {
+  contactId: string;
+  sourceType: 'custom' | 'device' | 'google' | 'gravatar' | 'avatar';
+  localPath: string;           // Önbelleklenmiş dosya yolu
+  originalUrl?: string;        // Kaynak URL
+  lastUpdated: Date;
+  expiresAt: Date;             // Google/Gravatar için yenileme süresi
+}
+
+// SQLite tablosu
+CREATE TABLE photo_cache (
+  contact_id TEXT PRIMARY KEY,
+  source_type TEXT NOT NULL,
+  local_path TEXT NOT NULL,
+  original_url TEXT,
+  last_updated TEXT NOT NULL,
+  expires_at TEXT NOT NULL
+);
+```
+
+**Özellikler:**
+- Fotoğraf kalitesi ayarı (düşük/orta/yüksek)
+- Thumbnail oluşturma (liste görünümü için)
+- Önbellek yönetimi (7 gün sonra yenileme)
+- Offline kullanım için yerel kayıt
 
 ### 2.8 Tema Mağazası
 
