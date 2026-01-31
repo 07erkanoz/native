@@ -34,6 +34,8 @@ import { Avatar } from '../components';
 import { RootStackScreenProps } from '../navigation/types';
 import callStateManager, { ActiveCall } from '../services/CallStateManager';
 import { defaultAppService } from '../services';
+import VoLTEModule, { HdAudioEvent } from '../native/VoLTEModule';
+import { getCountryFromPhoneNumber } from '../data/countryCodes';
 
 const { width, height } = Dimensions.get('window');
 
@@ -82,9 +84,58 @@ const OngoingCallScreen: React.FC<Props> = ({ navigation, route }) => {
   const [showKeypad, setShowKeypad] = useState(false);
   const [callStatus, setCallStatus] = useState<string>(t('calls.status.connecting') || 'Bağlanıyor...');
 
+  // VoLTE/HD Voice State
+  const [isHdCall, setIsHdCall] = useState(false);
+  const [audioQuality, setAudioQuality] = useState<string>('standard');
+  const [networkType, setNetworkType] = useState<string>('');
+
+  // Ülke bilgisi
+  const countryInfo = useMemo(() => {
+    if (callInfo?.phoneNumber) {
+      return getCountryFromPhoneNumber(callInfo.phoneNumber);
+    }
+    return null;
+  }, [callInfo?.phoneNumber]);
+
   // Animasyonlar
   const pulseAnim = useRef(new Animated.Value(1)).current;
   const statusOpacity = useRef(new Animated.Value(1)).current;
+
+  // VoLTE/HD durumunu al ve dinle
+  useEffect(() => {
+    // İlk durumu al
+    const fetchVoLTEStatus = async () => {
+      try {
+        const status = await VoLTEModule.getVoLTEStatus();
+        setNetworkType(status.networkType);
+
+        // HD durumunu kontrol et
+        const hdStatus = await VoLTEModule.getActiveCallHdStatus();
+        if (hdStatus.hasActiveCall) {
+          setIsHdCall(hdStatus.isHdAudio);
+          setAudioQuality(hdStatus.isHdAudio ? 'hd' : 'standard');
+        } else {
+          // Tahmin et
+          setIsHdCall(status.isHdCall);
+          setAudioQuality(status.isHdCall ? 'hd' : 'standard');
+        }
+      } catch (error) {
+        console.log('VoLTE durumu alınamadı:', error);
+      }
+    };
+
+    fetchVoLTEStatus();
+
+    // HD ses değişikliklerini dinle
+    const hdListener = VoLTEModule.addHdAudioListener((event: HdAudioEvent) => {
+      setIsHdCall(event.isHdAudio);
+      setAudioQuality(event.audioQuality);
+    });
+
+    return () => {
+      hdListener.remove();
+    };
+  }, []);
 
   // Çağrı bilgisini al
   useEffect(() => {
@@ -299,6 +350,24 @@ const OngoingCallScreen: React.FC<Props> = ({ navigation, route }) => {
 
       {/* Orta Kısım - Arayan Bilgisi */}
       <View style={styles.callerSection}>
+        {/* VoLTE/HD ve Durum Satırı - Üstte */}
+        <View style={styles.callQualityRow}>
+          {/* VoLTE/HD Rozeti */}
+          {isHdCall && (
+            <View style={[styles.volteBadge, { backgroundColor: 'rgba(255,255,255,0.15)' }]}>
+              <Text style={[styles.volteText, { color: callColors.text }]}>
+                {audioQuality === 'hd_wifi' ? 'HD WiFi' : audioQuality === 'wifi' ? 'WiFi' : 'VoLTE'}
+              </Text>
+            </View>
+          )}
+          {/* Arama Durumu */}
+          <Text style={[styles.callStatusText, { color: callColors.textMuted }]}>
+            {callInfo.state === 'connected'
+              ? formatDuration(duration)
+              : callStatus}
+          </Text>
+        </View>
+
         <Animated.View
           style={[
             styles.avatarContainer,
@@ -308,7 +377,7 @@ const OngoingCallScreen: React.FC<Props> = ({ navigation, route }) => {
           <Avatar
             name={callInfo.displayName || callInfo.phoneNumber}
             photoUri={callInfo.photoUri}
-            size={100}
+            size={120}
           />
 
           {/* Durum İndikatörü */}
@@ -337,32 +406,41 @@ const OngoingCallScreen: React.FC<Props> = ({ navigation, route }) => {
           </View>
         </Animated.View>
 
-        {/* İsim ve Numara */}
+        {/* İsim */}
         <Text style={[styles.callerName, { color: callColors.text }]}>
           {callInfo.displayName || t('common.unknown')}
         </Text>
-        <Text style={[styles.callerNumber, { color: callColors.textMuted }]}>
-          {callInfo.phoneNumber}
-        </Text>
 
-        {/* Durum / Süre */}
-        <View style={styles.statusContainer}>
-          {callInfo.state === 'connected' ? (
-            <Text style={[styles.durationText, { color: callColors.primary }]}>
-              {formatDuration(duration)}
-            </Text>
-          ) : (
-            <Text style={[styles.statusText, { color: callColors.textMuted }]}>
-              {callStatus}
-            </Text>
+        {/* Numara ve Ülke */}
+        <View style={styles.numberRow}>
+          {countryInfo && (
+            <Text style={styles.countryFlag}>{countryInfo.flag}</Text>
           )}
+          <Text style={[styles.callerNumber, { color: callColors.textMuted }]}>
+            {callInfo.phoneNumber}
+          </Text>
         </View>
 
-        {/* Kalite İndikatörü */}
-        <View style={[styles.qualityIndicator, { backgroundColor: callColors.surfaceVariant }]}>
-          <MaterialCommunityIcons name="signal-cellular-3" size={16} color={callColors.primary} />
-          <Text style={[styles.qualityText, { color: callColors.primary }]}>HD</Text>
-        </View>
+        {/* Ülke Adı */}
+        {countryInfo && (
+          <Text style={[styles.countryName, { color: callColors.textMuted }]}>
+            {countryInfo.nameTr}
+          </Text>
+        )}
+
+        {/* HD Kalite İndikatörü - Alt kısım */}
+        {isHdCall && (
+          <View style={[styles.qualityIndicator, { backgroundColor: callColors.surfaceVariant }]}>
+            <MaterialCommunityIcons
+              name={audioQuality === 'hd_wifi' || audioQuality === 'wifi' ? 'wifi' : 'signal-cellular-3'}
+              size={16}
+              color={callColors.primary}
+            />
+            <Text style={[styles.qualityText, { color: callColors.primary }]}>
+              {audioQuality === 'hd_wifi' ? 'HD+' : audioQuality === 'wifi' ? 'WiFi' : 'HD'}
+            </Text>
+          </View>
+        )}
       </View>
 
       {/* Kontrol Butonları */}
@@ -511,8 +589,28 @@ const styles = StyleSheet.create({
   },
   callerSection: {
     alignItems: 'center',
-    paddingTop: 20,
-    paddingBottom: 30,
+    paddingTop: 10,
+    paddingBottom: 20,
+  },
+  callQualityRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 16,
+    gap: 8,
+  },
+  volteBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 4,
+  },
+  volteText: {
+    fontSize: 12,
+    fontWeight: '600',
+    letterSpacing: 0.5,
+  },
+  callStatusText: {
+    fontSize: 14,
   },
   avatarContainer: {
     position: 'relative',
@@ -532,10 +630,22 @@ const styles = StyleSheet.create({
   callerName: {
     fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 4,
+    marginBottom: 8,
+  },
+  numberRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  countryFlag: {
+    fontSize: 18,
   },
   callerNumber: {
     fontSize: 16,
+  },
+  countryName: {
+    fontSize: 13,
+    marginTop: 4,
   },
   statusContainer: {
     marginTop: 12,

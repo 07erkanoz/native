@@ -36,6 +36,8 @@ import { RootStackScreenProps } from '../navigation/types';
 import { Contact } from '../types';
 import ContactRepository from '../database/repositories/ContactRepository';
 import { defaultAppService } from '../services';
+import VoLTEModule from '../native/VoLTEModule';
+import { getCountryFromPhoneNumber } from '../data/countryCodes';
 
 const { width, height } = Dimensions.get('window');
 const SWIPE_THRESHOLD = 80;
@@ -79,6 +81,15 @@ const IncomingCallScreen: React.FC<Props> = ({ navigation, route }) => {
   const [showQuickReplies, setShowQuickReplies] = useState(false);
   const [isAnswering, setIsAnswering] = useState(false);
   const [isDeclining, setIsDeclining] = useState(false);
+  const [isVolteCall, setIsVolteCall] = useState(false);
+
+  // Ülke bilgisi
+  const countryInfo = useMemo(() => {
+    if (callerInfo.number) {
+      return getCountryFromPhoneNumber(callerInfo.number);
+    }
+    return null;
+  }, [callerInfo.number]);
 
   // Animasyonlar
   const answerButtonScale = useRef(new Animated.Value(1)).current;
@@ -117,6 +128,19 @@ const IncomingCallScreen: React.FC<Props> = ({ navigation, route }) => {
       clearInterval(interval);
       Vibration.cancel();
     };
+  }, []);
+
+  // VoLTE durumunu kontrol et
+  useEffect(() => {
+    const checkVoLTE = async () => {
+      try {
+        const status = await VoLTEModule.getVoLTEStatus();
+        setIsVolteCall(status.isHdCall);
+      } catch (error) {
+        console.log('VoLTE kontrolü başarısız:', error);
+      }
+    };
+    checkVoLTE();
   }, []);
 
   // Arayan bilgisini al
@@ -238,9 +262,17 @@ const IncomingCallScreen: React.FC<Props> = ({ navigation, route }) => {
 
       {/* Üst Kısım - Arayan Bilgisi */}
       <View style={styles.callerSection}>
-        <Text style={[styles.callLabel, { color: callColors.textMuted }]}>
-          {t('calls.incoming') || 'Gelen Arama'}
-        </Text>
+        {/* VoLTE ve Gelen Arama Etiketi */}
+        <View style={styles.callLabelRow}>
+          {isVolteCall && (
+            <View style={[styles.volteBadge, { backgroundColor: 'rgba(255,255,255,0.15)' }]}>
+              <Text style={[styles.volteText, { color: callColors.text }]}>VoLTE</Text>
+            </View>
+          )}
+          <Text style={[styles.callLabel, { color: callColors.textMuted }]}>
+            {t('calls.incoming') || 'Gelen Arama'}
+          </Text>
+        </View>
 
         {/* Avatar */}
         <Animated.View
@@ -260,13 +292,27 @@ const IncomingCallScreen: React.FC<Props> = ({ navigation, route }) => {
           </View>
         </Animated.View>
 
-        {/* İsim ve Numara */}
+        {/* İsim */}
         <Text style={[styles.callerName, { color: theme.colors.onSurface }]}>
           {callerInfo.name}
         </Text>
+
+        {/* Numara ve Ülke Bayrağı */}
         {callerInfo.name !== callerInfo.number && callerInfo.number && (
-          <Text style={[styles.callerNumber, { color: callColors.textMuted }]}>
-            {callerInfo.number}
+          <View style={styles.numberRow}>
+            {countryInfo && (
+              <Text style={styles.countryFlag}>{countryInfo.flag}</Text>
+            )}
+            <Text style={[styles.callerNumber, { color: callColors.textMuted }]}>
+              {callerInfo.number}
+            </Text>
+          </View>
+        )}
+
+        {/* Ülke Adı */}
+        {countryInfo && (
+          <Text style={[styles.countryName, { color: callColors.textMuted }]}>
+            {countryInfo.nameTr}
           </Text>
         )}
 
@@ -457,12 +503,27 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingTop: 60,
   },
+  callLabelRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 24,
+  },
+  volteBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 4,
+  },
+  volteText: {
+    fontSize: 12,
+    fontWeight: '600',
+    letterSpacing: 0.5,
+  },
   callLabel: {
     fontSize: 14,
     fontWeight: '500',
     textTransform: 'uppercase',
     letterSpacing: 2,
-    marginBottom: 24,
   },
   avatarContainer: {
     marginBottom: 24,
@@ -478,8 +539,20 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 8,
   },
+  numberRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginBottom: 4,
+  },
+  countryFlag: {
+    fontSize: 20,
+  },
   callerNumber: {
     fontSize: 18,
+  },
+  countryName: {
+    fontSize: 14,
     marginBottom: 4,
   },
   callerCompany: {
