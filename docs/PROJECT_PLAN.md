@@ -254,38 +254,221 @@ interface CalendarSyncConfig {
 └─────────────────────────────────────┘
 ```
 
-### 2.5 Notlar Modülü
+### 2.5 Notlar Modülü (Gelişmiş)
 
-#### Not Özellikleri
-- Zengin metin desteği (bold, italic, liste)
-- Kategoriler ve etiketler
-- Renk kodlaması
-- Kişiye bağlı notlar
-- Arama ve filtreleme
-- Sabitleme (pin)
+#### Not Türleri
+| Tür | Açıklama | İkon |
+|-----|----------|------|
+| **Metin Notu** | Zengin metin editörü ile | 📝 |
+| **Sesli Not** | Ses kaydı ile | 🎤 |
+| **Görsel Not** | Resim + metin | 🖼️ |
+| **Arama Notu** | Görüşme sırasında/sonrası | 📞 |
+| **Checklist** | Yapılacaklar listesi | ✅ |
 
-#### Not Yapısı
+#### Rich Text Editor Özellikleri
+- **Metin Biçimlendirme**: Bold, italic, underline, strikethrough
+- **Başlıklar**: H1, H2, H3
+- **Listeler**: Numaralı liste, madde işaretli liste, checklist
+- **Medya**: Resim ekleme (galeri/kamera)
+- **Sesli Not**: Kayıt ve oynatma
+- **Bağlantılar**: URL, kişi bağlama, etkinlik bağlama
+- **Alıntı**: Blockquote
+- **Kod Bloğu**: Monospace metin
+- **Yatay Çizgi**: Ayraç
+
+#### Sesli Not Özellikleri
+```typescript
+interface VoiceNote {
+  id: string;
+  noteId: string;
+
+  // Ses Dosyası
+  filePath: string;
+  duration: number;                  // Saniye
+  fileSize: number;                  // Byte
+  format: 'aac' | 'm4a';
+
+  // Dalga Formu (Waveform)
+  waveformData: number[];            // Görselleştirme için
+
+  // Meta
+  recordedAt: string;
+  createdAt: string;
+}
+```
+
+#### Not Editörü Toolbar
+```
+┌─────────────────────────────────────────────────────────────┐
+│ [B] [I] [U] [S] │ [H1][H2][H3] │ [•][1.][☐] │ [🖼️][🎤][🔗] │
+└─────────────────────────────────────────────────────────────┘
+  Bold Italic      Başlıklar      Listeler     Medya/Ses/Link
+  Underline Strike
+```
+
+#### Sesli Not Kayıt UI
+```
+┌─────────────────────────────────────┐
+│                                     │
+│      ┌───────────────────┐          │
+│      │ ▁▃▅▇▅▃▁▃▅▇▅▃▁▃▅▇ │ Waveform │
+│      └───────────────────┘          │
+│                                     │
+│            02:34                    │
+│                                     │
+│    ┌─────────┐  ┌─────────┐        │
+│    │   ⏹️    │  │   ✅    │        │
+│    │  Durdur │  │ Kaydet  │        │
+│    └─────────┘  └─────────┘        │
+│                                     │
+└─────────────────────────────────────┘
+```
+
+#### Not Yapısı (Güncellenmiş)
 ```typescript
 interface Note {
   id: string;
   title: string;
-  content: string;                   // HTML veya Markdown
-  plainTextContent: string;          // Arama için
+
+  // İçerik Türleri
+  noteType: 'text' | 'voice' | 'visual' | 'call' | 'checklist';
+  content: string;                   // JSON (Rich Text Content)
+  plainTextContent: string;          // Arama için düz metin
+
+  // Sesli Notlar
+  voiceNotes: VoiceNote[];
+
+  // Görseller
+  images: NoteImage[];
+
+  // Checklist
+  checklistItems?: ChecklistItem[];
+
+  // Arama Bağlantısı (Görüşme sırasında alınan notlar)
+  linkedCallId?: string;
+  callTimestamp?: string;
+  callContactName?: string;
 
   // Organizasyon
   color: string;
   categoryId?: string;
   tags: string[];
   isPinned: boolean;
+  isArchived: boolean;
 
   // İlişkiler
   linkedContactId?: string;
   linkedEventId?: string;
 
+  // Hatırlatıcı
+  reminderAt?: string;
+  reminderNotified: boolean;
+
   // Meta
   createdAt: string;
   updatedAt: string;
-  reminderAt?: string;
+}
+
+interface NoteImage {
+  id: string;
+  noteId: string;
+  uri: string;
+  thumbnailUri: string;
+  width: number;
+  height: number;
+  caption?: string;
+  position: number;
+  createdAt: string;
+}
+
+interface ChecklistItem {
+  id: string;
+  text: string;
+  isChecked: boolean;
+  position: number;
+}
+```
+
+### 2.5.1 Arama Sırasında Not Alma
+
+#### Özellikler
+- Arama ekranında not butonu
+- Hızlı not açılır penceresi (bottom sheet)
+- Sesli not kaydetme (arama sırasında)
+- Arama bittikten sonra not istemi
+- Otomatik kişi ve zaman bağlantısı
+
+#### Arama Sırasında Not UI
+```
+┌─────────────────────────────────────┐
+│       Senem Daşkıran    02:45      │
+│                                     │
+│  ┌────┐ ┌────┐ ┌────┐ ┌────┐      │
+│  │ 🔇 │ │ ⌨️  │ │ 🔊 │ │ 📝 │ ← Not│
+│  │Mute│ │Tuş │ │Spkr│ │ Not│      │
+│  └────┘ └────┘ └────┘ └────┘      │
+│                                     │
+│         ┌───────────────┐           │
+│         │      📞       │           │
+│         │   Bitir       │           │
+│         └───────────────┘           │
+└─────────────────────────────────────┘
+
+       ↓ Not butonuna basıldığında
+
+┌─────────────────────────────────────┐
+│  📝 Arama Notu          [X] Kapat  │
+├─────────────────────────────────────┤
+│  Senem Daşkıran ile görüşme        │
+│  02:45 - Devam ediyor              │
+├─────────────────────────────────────┤
+│                                     │
+│  ┌─────────────────────────────┐   │
+│  │ Not yazın...                │   │
+│  │                             │   │
+│  │                             │   │
+│  └─────────────────────────────┘   │
+│                                     │
+│  [🎤 Sesli Not]      [✅ Kaydet]   │
+│                                     │
+└─────────────────────────────────────┘
+```
+
+#### Arama Sonrası Not İstemi
+```
+┌─────────────────────────────────────┐
+│                                     │
+│        Arama Sonlandı               │
+│                                     │
+│     Senem Daşkıran                  │
+│     Süre: 05:32                     │
+│                                     │
+│  ┌─────────────────────────────┐   │
+│  │   📝 Bu görüşme için        │   │
+│  │      not eklemek ister      │   │
+│  │      misiniz?               │   │
+│  └─────────────────────────────┘   │
+│                                     │
+│   [Hayır]           [Not Ekle]     │
+│                                     │
+└─────────────────────────────────────┘
+```
+
+#### Arama Notu Konfigürasyonu
+```typescript
+interface CallNoteSettings {
+  // Arama sırasında
+  showNoteButtonInCall: boolean;     // Not butonu göster
+  enableVoiceNoteDuringCall: boolean; // Sesli not izni
+
+  // Arama sonrası
+  promptNoteAfterCall: boolean;      // Arama sonrası sor
+  promptOnlyForContacts: boolean;    // Sadece kayıtlı kişiler
+  promptMinDuration: number;         // Min süre (saniye)
+
+  // Varsayılan
+  defaultNoteColor: string;
+  autoLinkContact: boolean;          // Kişiyi otomatik bağla
 }
 ```
 
@@ -621,14 +804,41 @@ CREATE TABLE call_logs (
     geocoded_location TEXT,
     network_type TEXT,
 
-    -- Arama Kaydı
-    has_recording INTEGER DEFAULT 0,
-    recording_path TEXT,
-    recording_duration INTEGER,
+    -- Arama Notu Bağlantısı (Kayıt yerine not)
+    has_note INTEGER DEFAULT 0,
 
     -- Meta
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
 
+    FOREIGN KEY (contact_id) REFERENCES contacts(id) ON DELETE SET NULL
+);
+
+-- =============================================
+-- ARAMA NOTLARI TABLOSU (Google Play Uyumlu)
+-- =============================================
+CREATE TABLE call_notes (
+    id TEXT PRIMARY KEY,
+    call_log_id TEXT NOT NULL,           -- Bağlı olduğu arama
+    contact_id TEXT,
+
+    -- Not İçeriği
+    content TEXT,                        -- Metin notu (JSON/Rich Text)
+    plain_text_content TEXT,             -- Arama için düz metin
+
+    -- Sesli Not (Arama bittikten sonra kaydedilen)
+    voice_note_path TEXT,
+    voice_note_duration INTEGER,
+    voice_note_waveform TEXT,            -- JSON array
+
+    -- Zaman
+    noted_at TEXT NOT NULL,              -- Not alınma zamanı
+    call_duration INTEGER,               -- Arama ne kadar sürdü
+
+    -- Meta
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (call_log_id) REFERENCES call_logs(id) ON DELETE CASCADE,
     FOREIGN KEY (contact_id) REFERENCES contacts(id) ON DELETE SET NULL
 );
 
@@ -1351,20 +1561,21 @@ interface AppSettings {
       onlyBluetooth: boolean;
     };
 
-    // Mesajla Reddet
+    // Mesajla Reddet (SMS uygulamasını açar - Google Play uyumlu)
     rejectWithSms: {
       enabled: boolean;
       templates: string[];
+      openSmsApp: true;                // SMS uygulamasına yönlendirir
     };
 
-    // Arama Kaydı
-    callRecording: {
+    // Arama Sırasında Not (Google Play Uyumlu - Kayıt yerine)
+    callNotes: {
       enabled: boolean;
-      autoRecord: 'none' | 'all' | 'contacts' | 'unknown';
-      audioSource: 'mic' | 'voice_call' | 'voice_communication';
-      format: 'mp3' | 'aac' | 'wav';
-      quality: 'low' | 'medium' | 'high';
-      storageLocation: 'internal' | 'external';
+      showNoteButtonInCall: boolean;   // Arama ekranında not butonu
+      promptNoteAfterCall: boolean;    // Arama sonrası not sor
+      promptOnlyForContacts: boolean;  // Sadece kayıtlı kişiler için
+      promptMinDuration: number;       // Min süre (saniye)
+      enableVoiceNote: boolean;        // Sesli not kaydı (arama bittikten sonra)
     };
 
     // Floating UI
@@ -1624,7 +1835,7 @@ src/
 │   │   │   └── useFloatingCall.ts
 │   │   ├── services/
 │   │   │   ├── callService.ts
-│   │   │   └── callRecordingService.ts
+│   │   │   └── callNotesService.ts      # Arama sırasında/sonrası not
 │   │   └── callsSlice.ts
 │   │
 │   ├── calendar/
