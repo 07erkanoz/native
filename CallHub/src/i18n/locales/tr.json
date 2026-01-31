@@ -314,11 +314,7 @@
     },
 
     "about": {
-      "title": "Hakkında",
-      "version": "Versiyon",
-      "rateApp": "Uygulamayı Puanla",
-      "privacyPolicy": "Gizlilik Politikası",
-      "termsOfService": "Kullanım Şartları"
+      "title": "Hakkında"
     },
 
     "calendar": {
@@ -767,5 +763,24 @@
       "charity": "Bağış talep aramaları",
       "other": "Diğer istenmeyen aramalar"
     }
+  },
+  "about": {
+    "byLifeos": "by Lifeos",
+    "version": "Versiyon",
+    "appDescription": "Aramalarınızı daha akıllı yönetin. Modern tasarım, güçlü özellikler ve kişiselleştirilebilir arayüz.",
+    "lifeos": "Lifeos Ekosistemi",
+    "lifeosDescription": "Lifeos, hayatınızı düzenlemenize yardımcı olan uygulama ailesinin adıdır. LifeCall bu ekosistemin ilk üyesidir.",
+    "visitWebsite": "Web Sitesini Ziyaret Et",
+    "legal": "Yasal",
+    "privacyPolicy": "Gizlilik Politikası",
+    "termsOfService": "Kullanım Şartları",
+    "support": "Destek",
+    "rateApp": "Uygulamayı Puanla",
+    "rateAppDesc": "Beğendiyseniz 5 yıldız verin",
+    "contactSupport": "Destek ile İletişim",
+    "contactSupportDesc": "Sorularınız veya önerileriniz için",
+    "followUs": "Bizi Takip Edin",
+    "madeWithLove": "Türkiye'de sevgiyle yapıldı",
+    "allRightsReserved": "Tüm hakları saklıdır."
   }
 }

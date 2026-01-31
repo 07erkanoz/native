@@ -92,10 +92,12 @@ const SettingsScreen: React.FC = () => {
       <List.Section>
         <List.Item
           title={t('settings.about.title')}
+          description="Lifeos"
           left={() => renderIcon('information')}
-          onPress={() => navigation.navigate('SettingsAbout' as any)}
+          onPress={() => navigation.navigate('SettingsAbout')}
           style={[styles.listItem, { backgroundColor: theme.colors.surface }]}
           titleStyle={{ color: theme.colors.onSurface }}
+          descriptionStyle={{ color: theme.colors.onSurfaceVariant }}
         />
       </List.Section>
     </ScrollView>

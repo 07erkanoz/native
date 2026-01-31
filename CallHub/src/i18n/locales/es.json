@@ -300,11 +300,7 @@
     },
 
     "about": {
-      "title": "Acerca de",
-      "version": "Versión",
-      "rateApp": "Valorar app",
-      "privacyPolicy": "Política de privacidad",
-      "termsOfService": "Términos de servicio"
+      "title": "Acerca de"
     },
 
     "calendar": {
@@ -782,5 +778,24 @@
 
     "warning": "Sospecha de spam",
     "warningMessage": "Este número ha sido reportado {{count}} veces como spam"
+  },
+  "about": {
+    "byLifeos": "por Lifeos",
+    "version": "Versión",
+    "appDescription": "Gestiona tus llamadas de forma inteligente. Diseño moderno, funciones potentes e interfaz personalizable.",
+    "lifeos": "Ecosistema Lifeos",
+    "lifeosDescription": "Lifeos es una familia de aplicaciones diseñadas para ayudarte a organizar tu vida. LifeCall es el primer miembro de este ecosistema.",
+    "visitWebsite": "Visitar sitio web",
+    "legal": "Legal",
+    "privacyPolicy": "Política de privacidad",
+    "termsOfService": "Términos de servicio",
+    "support": "Soporte",
+    "rateApp": "Valorar app",
+    "rateAppDesc": "Si te gusta, danos 5 estrellas",
+    "contactSupport": "Contactar soporte",
+    "contactSupportDesc": "Para preguntas o sugerencias",
+    "followUs": "Síguenos",
+    "madeWithLove": "Hecho con amor en Turquía",
+    "allRightsReserved": "Todos los derechos reservados."
   }
 }

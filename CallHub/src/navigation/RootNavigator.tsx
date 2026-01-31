@@ -29,6 +29,7 @@ import NoteDetailScreen from '../screens/NoteDetailScreen';
 import SettingsAppearanceScreen from '../screens/settings/SettingsAppearanceScreen';
 import SettingsLanguageScreen from '../screens/settings/SettingsLanguageScreen';
 import SettingsCalendarScreen from '../screens/settings/SettingsCalendarScreen';
+import SettingsAboutScreen from '../screens/settings/SettingsAboutScreen';
 import ThemeStoreScreen from '../screens/store/ThemeStoreScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -205,6 +206,15 @@ const RootNavigator: React.FC = () => {
         component={NoteDetailScreen}
         options={{
           headerShown: false,
+        }}
+      />
+
+      {/* Hakkında */}
+      <Stack.Screen
+        name="SettingsAbout"
+        component={SettingsAboutScreen}
+        options={{
+          title: t('settings.about.title'),
         }}
       />
 
