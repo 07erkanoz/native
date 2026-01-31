@@ -156,6 +156,10 @@ const NoteEditScreen: React.FC = () => {
   const [selectedTags, setSelectedTags] = useState<string[]>(existingNote?.tags || []);
   const [folderId, setFolderId] = useState<string | undefined>(existingNote?.folderId);
 
+  // Rich text state
+  const [selection, setSelection] = useState<{ start: number; end: number }>({ start: 0, end: 0 });
+  const [showFormattingToolbar, setShowFormattingToolbar] = useState(false);
+
   // UI state
   const [isSaving, setIsSaving] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
@@ -259,6 +263,66 @@ const NoteEditScreen: React.FC = () => {
       }
     };
   }, [hasChanges, existingNote]);
+
+  // Rich text formatting functions
+  const applyFormatting = useCallback(
+    (format: 'bold' | 'italic' | 'underline' | 'strikethrough' | 'heading' | 'bullet' | 'number') => {
+      const { start, end } = selection;
+      const selectedText = content.substring(start, end);
+      let newText = '';
+      let cursorOffset = 0;
+
+      switch (format) {
+        case 'bold':
+          newText = `**${selectedText}**`;
+          cursorOffset = 2;
+          break;
+        case 'italic':
+          newText = `*${selectedText}*`;
+          cursorOffset = 1;
+          break;
+        case 'underline':
+          newText = `__${selectedText}__`;
+          cursorOffset = 2;
+          break;
+        case 'strikethrough':
+          newText = `~~${selectedText}~~`;
+          cursorOffset = 2;
+          break;
+        case 'heading':
+          newText = `## ${selectedText}`;
+          cursorOffset = 3;
+          break;
+        case 'bullet':
+          newText = `• ${selectedText}`;
+          cursorOffset = 2;
+          break;
+        case 'number':
+          newText = `1. ${selectedText}`;
+          cursorOffset = 3;
+          break;
+        default:
+          newText = selectedText;
+      }
+
+      const beforeSelection = content.substring(0, start);
+      const afterSelection = content.substring(end);
+      const newContent = beforeSelection + newText + afterSelection;
+
+      setContent(newContent);
+
+      // Move cursor after formatting
+      if (contentInputRef.current) {
+        const newPosition = start + newText.length;
+        setTimeout(() => {
+          contentInputRef.current?.setNativeProps({
+            selection: { start: newPosition, end: newPosition },
+          });
+        }, 50);
+      }
+    },
+    [content, selection]
+  );
 
   // Handle back with unsaved changes
   const handleBack = useCallback(() => {
@@ -805,16 +869,66 @@ const NoteEditScreen: React.FC = () => {
 
           {/* Content area based on type */}
           {noteType === 'text' && (
-            <TextInput
-              ref={contentInputRef}
-              style={[styles.contentInput, { color: theme.colors.onSurface }]}
-              placeholder={t('notes.contentPlaceholder')}
-              placeholderTextColor={theme.colors.onSurfaceVariant}
-              value={content}
-              onChangeText={setContent}
-              multiline
-              textAlignVertical="top"
-            />
+            <>
+              {/* Formatting Toolbar */}
+              <View style={[styles.formattingToolbar, { backgroundColor: theme.colors.surfaceVariant }]}>
+                <TouchableOpacity
+                  style={styles.formatButton}
+                  onPress={() => applyFormatting('bold')}
+                >
+                  <MaterialCommunityIcons name="format-bold" size={22} color={theme.colors.onSurface} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.formatButton}
+                  onPress={() => applyFormatting('italic')}
+                >
+                  <MaterialCommunityIcons name="format-italic" size={22} color={theme.colors.onSurface} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.formatButton}
+                  onPress={() => applyFormatting('underline')}
+                >
+                  <MaterialCommunityIcons name="format-underline" size={22} color={theme.colors.onSurface} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.formatButton}
+                  onPress={() => applyFormatting('strikethrough')}
+                >
+                  <MaterialCommunityIcons name="format-strikethrough" size={22} color={theme.colors.onSurface} />
+                </TouchableOpacity>
+                <View style={styles.formatDivider} />
+                <TouchableOpacity
+                  style={styles.formatButton}
+                  onPress={() => applyFormatting('heading')}
+                >
+                  <MaterialCommunityIcons name="format-header-2" size={22} color={theme.colors.onSurface} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.formatButton}
+                  onPress={() => applyFormatting('bullet')}
+                >
+                  <MaterialCommunityIcons name="format-list-bulleted" size={22} color={theme.colors.onSurface} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.formatButton}
+                  onPress={() => applyFormatting('number')}
+                >
+                  <MaterialCommunityIcons name="format-list-numbered" size={22} color={theme.colors.onSurface} />
+                </TouchableOpacity>
+              </View>
+
+              <TextInput
+                ref={contentInputRef}
+                style={[styles.contentInput, { color: theme.colors.onSurface }]}
+                placeholder={t('notes.contentPlaceholder')}
+                placeholderTextColor={theme.colors.onSurfaceVariant}
+                value={content}
+                onChangeText={setContent}
+                onSelectionChange={(e) => setSelection(e.nativeEvent.selection)}
+                multiline
+                textAlignVertical="top"
+              />
+            </>
           )}
 
           {noteType === 'checklist' && (
@@ -1323,6 +1437,24 @@ const styles = StyleSheet.create({
   },
   typeChip: {
     marginRight: 8,
+  },
+  formattingToolbar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 8,
+    marginBottom: 12,
+  },
+  formatButton: {
+    padding: 8,
+    borderRadius: 4,
+  },
+  formatDivider: {
+    width: 1,
+    height: 20,
+    backgroundColor: 'rgba(0,0,0,0.2)',
+    marginHorizontal: 8,
   },
   titleInput: {
     fontSize: 24,

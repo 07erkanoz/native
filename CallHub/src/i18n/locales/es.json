@@ -317,10 +317,28 @@
 
     "backup": {
       "title": "Copia de seguridad",
+      "description": "Respaldar sus datos",
       "autoBackup": "Copia automática",
+      "autoBackupEnabled": "Copia de seguridad automática",
+      "autoBackupDesc": "Copia de seguridad diaria automática",
       "backupNow": "Hacer copia ahora",
       "restore": "Restaurar",
-      "lastBackup": "Última copia"
+      "lastBackup": "Última copia",
+      "actions": "Acciones",
+      "import": "Importar desde archivo",
+      "backupList": "Copias de seguridad",
+      "noBackups": "Sin copias de seguridad",
+      "backupCreated": "Copia creada",
+      "backupFailed": "Copia fallida",
+      "restoreConfirmTitle": "Restaurar",
+      "restoreConfirmMessage": "¿Está seguro de que desea restaurar esta copia? Los datos actuales se sobrescribirán.",
+      "restoreSuccess": "Datos restaurados correctamente. Por favor reinicie la app.",
+      "restoreFailed": "Restauración fallida",
+      "deleteConfirmTitle": "Eliminar copia",
+      "deleteConfirmMessage": "¿Está seguro de que desea eliminar esta copia de seguridad?",
+      "importSuccess": "Copia importada y restaurada. Por favor reinicie la app.",
+      "importFailed": "Importación fallida",
+      "infoText": "Las copias se almacenan localmente en su dispositivo. Se respaldan ajustes, notas, eventos de calendario y lista de bloqueo."
     },
 
     "about": {
@@ -356,9 +374,12 @@
   "calendar": {
     "title": "Calendario",
     "today": "Hoy",
+    "year": "Año",
     "month": "Mes",
     "week": "Semana",
     "day": "Día",
+    "daysAgo": "días",
+    "daysLater": "días después",
     "agenda": "Agenda",
     "monthView": "Vista mensual",
     "weekView": "Vista semanal",

@@ -1,30 +1,27 @@
 /**
  * LifeCall - Takvim Ekranı
  *
- * Ana takvim görünümü:
- * - Aylık/Haftalık/Günlük görünümler
- * - Etkinlik listesi
- * - Hızlı etkinlik ekleme
+ * Samsung Calendar benzeri UI:
+ * - Aylık görünüm (etkinlik başlıkları günlerin üzerinde)
+ * - Haftalık görünüm (saat grid'i ile)
+ * - Günlük görünüm (agenda listesi)
+ * - Alt sekmeler (Year/Month/Week/Day)
  */
 
-import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import {
   View,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  FlatList,
   Dimensions,
 } from 'react-native';
 import {
   Text,
   FAB,
-  Chip,
   IconButton,
   Surface,
   Divider,
-  Menu,
-  Badge,
 } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
@@ -48,7 +45,9 @@ import {
   subWeeks,
   addDays,
   subDays,
-  getDay,
+  differenceInDays,
+  getHours,
+  getMinutes,
 } from 'date-fns';
 import { tr, enUS } from 'date-fns/locale';
 
@@ -60,17 +59,18 @@ import {
   goToNextMonth,
   goToPreviousMonth,
   goToToday,
-  selectEventsByDate,
-  selectVisibleEvents,
 } from '../store/slices/calendarSlice';
 import { CalendarViewMode, CalendarEvent, EVENT_COLORS } from '../types/calendar';
 
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
-const DAY_WIDTH = (SCREEN_WIDTH - 32) / 7;
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
+const DAY_WIDTH = (SCREEN_WIDTH - 16) / 7;
+const HOUR_HEIGHT = 60;
 
 // Haftanın günleri
-const WEEK_DAYS_TR = ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'];
-const WEEK_DAYS_EN = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const WEEK_DAYS_TR = ['PZT', 'SAL', 'ÇAR', 'PER', 'CUM', 'CMT', 'PAZ'];
+const WEEK_DAYS_EN = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+
+type ViewTab = 'year' | 'month' | 'week' | 'day';
 
 const CalendarScreen: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -85,7 +85,7 @@ const CalendarScreen: React.FC = () => {
   );
 
   // Local state
-  const [viewMenuVisible, setViewMenuVisible] = useState(false);
+  const [activeTab, setActiveTab] = useState<ViewTab>('month');
 
   // Locale
   const locale = i18n.language === 'tr' ? tr : enUS;
@@ -100,10 +100,10 @@ const CalendarScreen: React.FC = () => {
 
   // Takvim günleri (6 haftalık grid için)
   const calendarDays = useMemo(() => {
-    const start = startOfWeek(monthStart, { weekStartsOn: settings.firstDayOfWeek as 0 | 1 | 6 });
-    const end = endOfWeek(monthEnd, { weekStartsOn: settings.firstDayOfWeek as 0 | 1 | 6 });
+    const firstDayOfWeek = settings.firstDayOfWeek === 0 ? 0 : 1; // 0 = Pazar, 1 = Pazartesi
+    const start = startOfWeek(monthStart, { weekStartsOn: firstDayOfWeek as 0 | 1 });
+    const end = endOfWeek(monthEnd, { weekStartsOn: firstDayOfWeek as 0 | 1 });
 
-    // 6 hafta için yeterli gün olsun
     const days = eachDayOfInterval({ start, end });
     while (days.length < 42) {
       days.push(addDays(days[days.length - 1], 1));
@@ -111,6 +111,13 @@ const CalendarScreen: React.FC = () => {
 
     return days.slice(0, 42);
   }, [monthStart, monthEnd, settings.firstDayOfWeek]);
+
+  // Haftalık görünüm için günler
+  const weekDaysForView = useMemo(() => {
+    const firstDayOfWeek = settings.firstDayOfWeek === 0 ? 0 : 1;
+    const start = startOfWeek(selectedDateObj, { weekStartsOn: firstDayOfWeek as 0 | 1 });
+    return eachDayOfInterval({ start, end: addDays(start, 6) });
+  }, [selectedDateObj, settings.firstDayOfWeek]);
 
   // Görünür etkinlikler
   const visibleEvents = useMemo(() => {
@@ -133,49 +140,49 @@ const CalendarScreen: React.FC = () => {
 
   // Seçili gündeki etkinlikler
   const selectedDayEvents = useMemo(() => {
-    return getEventsForDay(selectedDateObj);
+    return getEventsForDay(selectedDateObj).sort((a, b) => {
+      return a.startDate.localeCompare(b.startDate);
+    });
   }, [selectedDateObj, getEventsForDay]);
 
-  // Navigasyon fonksiyonları
+  // "X days ago" hesapla
+  const daysAgoText = useMemo(() => {
+    const diff = differenceInDays(new Date(), selectedDateObj);
+    if (diff === 0) return t('common.today');
+    if (diff === 1) return t('common.yesterday');
+    if (diff === -1) return t('common.tomorrow');
+    if (diff > 0) return `${diff} ${t('calendar.daysAgo') || 'days ago'}`;
+    return `${Math.abs(diff)} ${t('calendar.daysLater') || 'days later'}`;
+  }, [selectedDateObj, t]);
+
+  // Navigasyon
   const handlePrevious = useCallback(() => {
-    if (viewMode === 'month') {
+    if (activeTab === 'month' || activeTab === 'year') {
       dispatch(goToPreviousMonth());
-    } else if (viewMode === 'week') {
+    } else if (activeTab === 'week') {
       const prevWeek = subWeeks(selectedDateObj, 1);
       dispatch(selectDate(format(prevWeek, 'yyyy-MM-dd')));
     } else {
       const prevDay = subDays(selectedDateObj, 1);
       dispatch(selectDate(format(prevDay, 'yyyy-MM-dd')));
     }
-  }, [dispatch, viewMode, selectedDateObj]);
+  }, [dispatch, activeTab, selectedDateObj]);
 
   const handleNext = useCallback(() => {
-    if (viewMode === 'month') {
+    if (activeTab === 'month' || activeTab === 'year') {
       dispatch(goToNextMonth());
-    } else if (viewMode === 'week') {
+    } else if (activeTab === 'week') {
       const nextWeek = addWeeks(selectedDateObj, 1);
       dispatch(selectDate(format(nextWeek, 'yyyy-MM-dd')));
     } else {
       const nextDay = addDays(selectedDateObj, 1);
       dispatch(selectDate(format(nextDay, 'yyyy-MM-dd')));
     }
-  }, [dispatch, viewMode, selectedDateObj]);
-
-  const handleToday = useCallback(() => {
-    dispatch(goToToday());
-  }, [dispatch]);
+  }, [dispatch, activeTab, selectedDateObj]);
 
   const handleDateSelect = useCallback(
     (date: Date) => {
       dispatch(selectDate(format(date, 'yyyy-MM-dd')));
-    },
-    [dispatch]
-  );
-
-  const handleViewModeChange = useCallback(
-    (mode: CalendarViewMode) => {
-      dispatch(setViewMode(mode));
-      setViewMenuVisible(false);
     },
     [dispatch]
   );
@@ -191,301 +198,425 @@ const CalendarScreen: React.FC = () => {
     navigation.navigate('EventEdit' as never, { date: selectedDate } as never);
   }, [navigation, selectedDate]);
 
-  // Görünüm modu başlığı
-  const viewModeTitle = useMemo(() => {
-    switch (viewMode) {
-      case 'month':
-        return format(selectedDateObj, 'MMMM yyyy', { locale });
-      case 'week':
-        const weekStart = startOfWeek(selectedDateObj, { weekStartsOn: settings.firstDayOfWeek as 0 | 1 | 6 });
-        const weekEnd = endOfWeek(selectedDateObj, { weekStartsOn: settings.firstDayOfWeek as 0 | 1 | 6 });
-        return `${format(weekStart, 'd MMM', { locale })} - ${format(weekEnd, 'd MMM yyyy', { locale })}`;
-      case 'day':
-        return format(selectedDateObj, 'EEEE, d MMMM yyyy', { locale });
-      case 'agenda':
-        return t('calendar.agenda');
-      default:
-        return '';
-    }
-  }, [viewMode, selectedDateObj, locale, settings.firstDayOfWeek, t]);
-
-  // Gün hücresi render
-  const renderDayCell = useCallback(
+  // Aylık görünüm - gün hücresi
+  const renderMonthDayCell = useCallback(
     (date: Date, index: number) => {
       const isCurrentMonth = isSameMonth(date, selectedDateObj);
       const isSelected = isSameDay(date, selectedDateObj);
       const isTodayDate = isToday(date);
       const dayEvents = getEventsForDay(date);
-      const hasEvents = dayEvents.length > 0;
+      const isWeekend = date.getDay() === 0 || date.getDay() === 6;
 
       return (
         <TouchableOpacity
           key={index}
-          style={[
-            styles.dayCell,
-            isSelected && { backgroundColor: theme.colors.primaryContainer },
-            isTodayDate && !isSelected && { borderColor: theme.colors.primary, borderWidth: 2 },
-          ]}
+          style={styles.monthDayCell}
           onPress={() => handleDateSelect(date)}
           activeOpacity={0.7}
         >
-          <Text
-            style={[
-              styles.dayNumber,
-              {
-                color: isCurrentMonth
-                  ? isSelected
-                    ? theme.colors.onPrimaryContainer
-                    : theme.colors.onSurface
-                  : theme.colors.onSurfaceVariant,
-              },
-              isTodayDate && { fontWeight: 'bold' },
-            ]}
-          >
-            {format(date, 'd')}
-          </Text>
-
-          {/* Etkinlik noktaları */}
-          {hasEvents && (
-            <View style={styles.eventDotsContainer}>
-              {dayEvents.slice(0, 3).map((event, i) => (
-                <View
-                  key={event.id}
-                  style={[
-                    styles.eventDot,
-                    { backgroundColor: EVENT_COLORS[event.color || 'blue'] },
-                  ]}
-                />
-              ))}
-              {dayEvents.length > 3 && (
-                <Text style={[styles.moreEventsText, { color: theme.colors.onSurfaceVariant }]}>
-                  +{dayEvents.length - 3}
-                </Text>
-              )}
-            </View>
-          )}
-        </TouchableOpacity>
-      );
-    },
-    [selectedDateObj, theme, getEventsForDay, handleDateSelect]
-  );
-
-  // Etkinlik kartı render
-  const renderEventCard = useCallback(
-    (event: CalendarEvent) => {
-      const startTime = format(parseISO(event.startDate), 'HH:mm');
-      const endTime = format(parseISO(event.endDate), 'HH:mm');
-      const eventColor = EVENT_COLORS[event.color || 'blue'];
-
-      return (
-        <TouchableOpacity
-          key={event.id}
-          style={[styles.eventCard, { backgroundColor: theme.colors.surfaceVariant }]}
-          onPress={() => handleEventPress(event)}
-          activeOpacity={0.7}
-        >
-          <View style={[styles.eventColorBar, { backgroundColor: eventColor }]} />
-          <View style={styles.eventContent}>
-            <Text
-              variant="titleSmall"
-              style={{ color: theme.colors.onSurface }}
-              numberOfLines={1}
+          {/* Gün numarası */}
+          <View style={styles.dayNumberContainer}>
+            <View
+              style={[
+                styles.dayNumberCircle,
+                isTodayDate && { backgroundColor: theme.colors.primary },
+                isSelected && !isTodayDate && {
+                  borderWidth: 2,
+                  borderColor: theme.colors.primary,
+                  backgroundColor: 'transparent',
+                },
+              ]}
             >
-              {event.title}
-            </Text>
-            {!event.allDay && (
-              <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
-                {startTime} - {endTime}
+              <Text
+                style={[
+                  styles.monthDayNumber,
+                  {
+                    color: isTodayDate
+                      ? theme.colors.onPrimary
+                      : !isCurrentMonth
+                      ? theme.colors.onSurfaceDisabled
+                      : isWeekend
+                      ? theme.colors.primary
+                      : theme.colors.onSurface,
+                  },
+                ]}
+              >
+                {format(date, 'd')}
+              </Text>
+            </View>
+          </View>
+
+          {/* Etkinlik başlıkları */}
+          <View style={styles.dayEventsContainer}>
+            {dayEvents.slice(0, 2).map((event, i) => (
+              <TouchableOpacity
+                key={event.id}
+                style={[
+                  styles.eventTag,
+                  { backgroundColor: EVENT_COLORS[event.color || 'blue'] },
+                ]}
+                onPress={() => handleEventPress(event)}
+              >
+                <Text style={styles.eventTagText} numberOfLines={1}>
+                  {event.title}
+                </Text>
+              </TouchableOpacity>
+            ))}
+            {dayEvents.length > 2 && (
+              <Text style={[styles.moreEventsText, { color: theme.colors.primary }]}>
+                +{dayEvents.length - 2}
               </Text>
             )}
-            {event.allDay && (
-              <Chip compact style={styles.allDayChip}>
-                {t('calendar.allDay')}
-              </Chip>
-            )}
-            {event.location && (
-              <View style={styles.locationRow}>
-                <MaterialCommunityIcons
-                  name="map-marker-outline"
-                  size={14}
-                  color={theme.colors.onSurfaceVariant}
-                />
-                <Text
-                  variant="bodySmall"
-                  style={{ color: theme.colors.onSurfaceVariant, marginLeft: 4 }}
-                  numberOfLines={1}
-                >
-                  {event.location.placeName || event.location.address}
-                </Text>
-              </View>
-            )}
-            {event.isCallReminder && (
-              <View style={styles.callReminderRow}>
-                <MaterialCommunityIcons
-                  name="phone"
-                  size={14}
-                  color={theme.colors.primary}
-                />
-                <Text
-                  variant="bodySmall"
-                  style={{ color: theme.colors.primary, marginLeft: 4 }}
-                >
-                  {t('calendar.callReminder')}
-                </Text>
-              </View>
-            )}
           </View>
-          <IconButton
-            icon="chevron-right"
-            size={20}
-            iconColor={theme.colors.onSurfaceVariant}
-          />
         </TouchableOpacity>
       );
     },
-    [theme, handleEventPress, t]
+    [selectedDateObj, theme, getEventsForDay, handleDateSelect, handleEventPress]
+  );
+
+  // Haftalık görünüm
+  const renderWeekView = () => {
+    const hours = Array.from({ length: 24 }, (_, i) => i);
+
+    return (
+      <View style={styles.weekViewContainer}>
+        {/* Gün başlıkları */}
+        <View style={styles.weekHeader}>
+          <View style={styles.weekTimeColumn} />
+          {weekDaysForView.map((date, index) => {
+            const isTodayDate = isToday(date);
+            const isSelected = isSameDay(date, selectedDateObj);
+            return (
+              <TouchableOpacity
+                key={index}
+                style={styles.weekDayHeader}
+                onPress={() => handleDateSelect(date)}
+              >
+                <Text style={[styles.weekDayName, { color: theme.colors.onSurfaceVariant }]}>
+                  {weekDays[index]}
+                </Text>
+                <View
+                  style={[
+                    styles.weekDayNumberCircle,
+                    isTodayDate && { backgroundColor: theme.colors.primary },
+                    isSelected && !isTodayDate && {
+                      borderWidth: 2,
+                      borderColor: theme.colors.primary
+                    },
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.weekDayNumber,
+                      { color: isTodayDate ? theme.colors.onPrimary : theme.colors.onSurface },
+                    ]}
+                  >
+                    {format(date, 'd')}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+
+        {/* Saat grid'i */}
+        <ScrollView style={styles.weekGrid} showsVerticalScrollIndicator={false}>
+          {hours.map((hour) => (
+            <View key={hour} style={styles.hourRow}>
+              <View style={styles.weekTimeColumn}>
+                <Text style={[styles.hourText, { color: theme.colors.onSurfaceVariant }]}>
+                  {hour.toString().padStart(2, '0')}:00
+                </Text>
+              </View>
+              {weekDaysForView.map((date, dayIndex) => {
+                const dayEvents = getEventsForDay(date).filter((event) => {
+                  const eventHour = getHours(parseISO(event.startDate));
+                  return eventHour === hour;
+                });
+                return (
+                  <View
+                    key={dayIndex}
+                    style={[
+                      styles.hourCell,
+                      { borderColor: theme.colors.outlineVariant },
+                    ]}
+                  >
+                    {dayEvents.map((event) => (
+                      <TouchableOpacity
+                        key={event.id}
+                        style={[
+                          styles.weekEventBlock,
+                          { backgroundColor: EVENT_COLORS[event.color || 'blue'] },
+                        ]}
+                        onPress={() => handleEventPress(event)}
+                      >
+                        <Text style={styles.weekEventText} numberOfLines={2}>
+                          {event.title}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                );
+              })}
+            </View>
+          ))}
+        </ScrollView>
+      </View>
+    );
+  };
+
+  // Günlük görünüm (agenda)
+  const renderDayView = () => (
+    <ScrollView style={styles.dayViewContainer} showsVerticalScrollIndicator={false}>
+      {selectedDayEvents.length === 0 ? (
+        <View style={styles.noEventsContainer}>
+          <MaterialCommunityIcons
+            name="calendar-blank-outline"
+            size={64}
+            color={theme.colors.onSurfaceVariant}
+          />
+          <Text style={[styles.noEventsText, { color: theme.colors.onSurfaceVariant }]}>
+            {t('calendar.noEvents')}
+          </Text>
+        </View>
+      ) : (
+        selectedDayEvents.map((event) => {
+          const startTime = format(parseISO(event.startDate), 'HH:mm');
+          const endTime = format(parseISO(event.endDate), 'HH:mm');
+          const eventColor = EVENT_COLORS[event.color || 'blue'];
+
+          return (
+            <TouchableOpacity
+              key={event.id}
+              style={[styles.dayEventCard, { backgroundColor: theme.colors.surfaceVariant }]}
+              onPress={() => handleEventPress(event)}
+            >
+              <View style={[styles.dayEventColorBar, { backgroundColor: eventColor }]} />
+              <View style={styles.dayEventContent}>
+                <Text style={[styles.dayEventTitle, { color: theme.colors.onSurface }]}>
+                  {event.title}
+                </Text>
+                <Text style={[styles.dayEventTime, { color: theme.colors.onSurfaceVariant }]}>
+                  {event.allDay ? t('calendar.allDay') : `${startTime}-${endTime}`}
+                  {event.location && ` | ${event.location.address || event.location.placeName}`}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          );
+        })
+      )}
+    </ScrollView>
+  );
+
+  // Etkinlik listesi (ay görünümünde alt kısım)
+  const renderEventsList = () => (
+    <View style={[styles.eventsListContainer, { backgroundColor: theme.colors.surface }]}>
+      <View style={styles.eventsListHandle} />
+
+      {selectedDayEvents.length === 0 ? (
+        <View style={styles.emptyEventsList}>
+          <Text style={[styles.noEventsSmall, { color: theme.colors.onSurfaceVariant }]}>
+            {t('calendar.noEvents')}
+          </Text>
+        </View>
+      ) : (
+        <ScrollView style={styles.eventsListScroll} showsVerticalScrollIndicator={false}>
+          {selectedDayEvents.map((event) => {
+            const startTime = format(parseISO(event.startDate), 'HH:mm');
+            const endTime = format(parseISO(event.endDate), 'HH:mm');
+            const eventColor = EVENT_COLORS[event.color || 'blue'];
+
+            return (
+              <TouchableOpacity
+                key={event.id}
+                style={[styles.eventListItem, { backgroundColor: theme.colors.surfaceVariant }]}
+                onPress={() => handleEventPress(event)}
+              >
+                <View style={[styles.eventListDot, { backgroundColor: eventColor }]} />
+                <View style={styles.eventListContent}>
+                  <Text style={[styles.eventListTitle, { color: theme.colors.onSurface }]} numberOfLines={1}>
+                    {event.title}
+                  </Text>
+                  <Text style={[styles.eventListTime, { color: theme.colors.onSurfaceVariant }]}>
+                    {event.allDay ? t('calendar.allDay') : `${startTime}-${endTime}`}
+                    {event.location && ` | ${event.location.address || event.location.placeName}`}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
+      )}
+    </View>
   );
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       {/* Header */}
-      <Surface style={[styles.header, { backgroundColor: theme.colors.surface }]} elevation={1}>
-        <View style={styles.headerTop}>
-          {/* Navigasyon */}
-          <View style={styles.headerNav}>
-            <IconButton icon="chevron-left" onPress={handlePrevious} />
-            <TouchableOpacity onPress={handleToday} style={styles.headerTitleContainer}>
-              <Text variant="titleLarge" style={{ color: theme.colors.onSurface }}>
-                {viewModeTitle}
-              </Text>
-            </TouchableOpacity>
-            <IconButton icon="chevron-right" onPress={handleNext} />
+      <View style={[styles.header, { paddingTop: insets.top }]}>
+        <View style={styles.headerRow}>
+          <View style={styles.headerLeft}>
+            <Text style={[styles.headerTitle, { color: theme.colors.onBackground }]}>
+              {format(selectedDateObj, 'yyyy / M', { locale })}
+            </Text>
+            <Text style={[styles.headerSubtitle, { color: theme.colors.onSurfaceVariant }]}>
+              {daysAgoText}
+            </Text>
           </View>
-
-          {/* Görünüm modu */}
-          <Menu
-            visible={viewMenuVisible}
-            onDismiss={() => setViewMenuVisible(false)}
-            anchor={
-              <IconButton
-                icon={
-                  viewMode === 'month'
-                    ? 'calendar-month'
-                    : viewMode === 'week'
-                    ? 'calendar-week'
-                    : viewMode === 'day'
-                    ? 'calendar-today'
-                    : 'format-list-bulleted'
-                }
-                onPress={() => setViewMenuVisible(true)}
-              />
-            }
-          >
-            <Menu.Item
-              leadingIcon="calendar-month"
-              title={t('calendar.monthView')}
-              onPress={() => handleViewModeChange('month')}
+          <View style={styles.headerRight}>
+            <IconButton
+              icon="plus"
+              size={24}
+              onPress={handleAddEvent}
             />
-            <Menu.Item
-              leadingIcon="calendar-week"
-              title={t('calendar.weekView')}
-              onPress={() => handleViewModeChange('week')}
+            <IconButton
+              icon="dots-vertical"
+              size={24}
+              onPress={() => navigation.navigate('SettingsCalendar' as never)}
             />
-            <Menu.Item
-              leadingIcon="calendar-today"
-              title={t('calendar.dayView')}
-              onPress={() => handleViewModeChange('day')}
-            />
-            <Menu.Item
-              leadingIcon="format-list-bulleted"
-              title={t('calendar.agenda')}
-              onPress={() => handleViewModeChange('agenda')}
-            />
-          </Menu>
+          </View>
         </View>
+      </View>
 
-        {/* Bugün butonu */}
-        {!isToday(selectedDateObj) && (
-          <TouchableOpacity style={styles.todayButton} onPress={handleToday}>
-            <Text style={{ color: theme.colors.primary }}>{t('calendar.today')}</Text>
-          </TouchableOpacity>
-        )}
-      </Surface>
-
-      {/* Takvim Grid */}
-      {viewMode === 'month' && (
-        <View style={styles.calendarGrid}>
-          {/* Haftanın günleri başlığı */}
-          <View style={styles.weekDaysHeader}>
-            {weekDays.map((day, index) => (
-              <View key={index} style={styles.weekDayCell}>
-                <Text
-                  variant="labelSmall"
-                  style={{ color: theme.colors.onSurfaceVariant }}
-                >
-                  {day}
-                </Text>
-              </View>
-            ))}
-          </View>
-
-          {/* Gün hücreleri */}
-          <View style={styles.daysGrid}>
-            {calendarDays.map((date, index) => renderDayCell(date, index))}
-          </View>
+      {/* Haftanın günleri başlığı (aylık görünümde) */}
+      {activeTab === 'month' && (
+        <View style={styles.weekDaysRow}>
+          {weekDays.map((day, index) => (
+            <View key={index} style={styles.weekDayLabelCell}>
+              <Text
+                style={[
+                  styles.weekDayLabel,
+                  {
+                    color: index >= 5
+                      ? theme.colors.primary
+                      : theme.colors.onSurfaceVariant
+                  },
+                ]}
+              >
+                {day}
+              </Text>
+            </View>
+          ))}
         </View>
       )}
 
-      {/* Etkinlik Listesi */}
-      <View style={[styles.eventsSection, { backgroundColor: theme.colors.background }]}>
-        <View style={styles.eventsSectionHeader}>
-          <Text variant="titleMedium" style={{ color: theme.colors.onSurface }}>
-            {format(selectedDateObj, 'd MMMM EEEE', { locale })}
-          </Text>
-          <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
-            {selectedDayEvents.length} {t('calendar.events')}
-          </Text>
-        </View>
-
-        <Divider />
-
-        {selectedDayEvents.length === 0 ? (
-          <View style={styles.noEventsContainer}>
-            <MaterialCommunityIcons
-              name="calendar-blank-outline"
-              size={64}
-              color={theme.colors.onSurfaceVariant}
-            />
-            <Text
-              variant="bodyLarge"
-              style={{ color: theme.colors.onSurfaceVariant, marginTop: 12 }}
-            >
-              {t('calendar.noEvents')}
-            </Text>
-            <Text
-              variant="bodySmall"
-              style={{ color: theme.colors.onSurfaceVariant, marginTop: 4 }}
-            >
-              {t('calendar.tapToAdd')}
-            </Text>
+      {/* İçerik */}
+      {activeTab === 'month' && (
+        <>
+          {/* Aylık takvim grid'i */}
+          <View style={styles.monthGrid}>
+            {calendarDays.map((date, index) => renderMonthDayCell(date, index))}
           </View>
-        ) : (
-          <ScrollView style={styles.eventsList} showsVerticalScrollIndicator={false}>
-            {selectedDayEvents.map(renderEventCard)}
-          </ScrollView>
-        )}
+
+          {/* Etkinlik listesi */}
+          {renderEventsList()}
+        </>
+      )}
+
+      {activeTab === 'week' && renderWeekView()}
+
+      {activeTab === 'day' && (
+        <View style={styles.dayViewWrapper}>
+          <Text style={[styles.dayViewTitle, { color: theme.colors.onBackground }]}>
+            {format(selectedDateObj, 'EEEE, d MMMM yyyy', { locale })}
+          </Text>
+          {renderDayView()}
+        </View>
+      )}
+
+      {/* Alt sekmeler */}
+      <View style={[styles.bottomTabs, { backgroundColor: theme.colors.surface, paddingBottom: insets.bottom }]}>
+        <TouchableOpacity
+          style={styles.bottomTab}
+          onPress={() => setActiveTab('year')}
+        >
+          <MaterialCommunityIcons
+            name="calendar-blank-multiple"
+            size={24}
+            color={activeTab === 'year' ? theme.colors.primary : theme.colors.onSurfaceVariant}
+          />
+          <Text
+            style={[
+              styles.bottomTabText,
+              { color: activeTab === 'year' ? theme.colors.primary : theme.colors.onSurfaceVariant },
+            ]}
+          >
+            {t('calendar.year') || 'Year'}
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.bottomTab}
+          onPress={() => setActiveTab('month')}
+        >
+          <MaterialCommunityIcons
+            name="calendar-month"
+            size={24}
+            color={activeTab === 'month' ? theme.colors.primary : theme.colors.onSurfaceVariant}
+          />
+          <Text
+            style={[
+              styles.bottomTabText,
+              { color: activeTab === 'month' ? theme.colors.primary : theme.colors.onSurfaceVariant },
+            ]}
+          >
+            {t('calendar.month') || 'Month'}
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.bottomTab}
+          onPress={() => setActiveTab('week')}
+        >
+          <MaterialCommunityIcons
+            name="calendar-week"
+            size={24}
+            color={activeTab === 'week' ? theme.colors.primary : theme.colors.onSurfaceVariant}
+          />
+          <Text
+            style={[
+              styles.bottomTabText,
+              { color: activeTab === 'week' ? theme.colors.primary : theme.colors.onSurfaceVariant },
+            ]}
+          >
+            {t('calendar.week') || 'Week'}
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.bottomTab}
+          onPress={() => setActiveTab('day')}
+        >
+          <MaterialCommunityIcons
+            name="calendar-today"
+            size={24}
+            color={activeTab === 'day' ? theme.colors.primary : theme.colors.onSurfaceVariant}
+          />
+          <Text
+            style={[
+              styles.bottomTabText,
+              { color: activeTab === 'day' ? theme.colors.primary : theme.colors.onSurfaceVariant },
+            ]}
+          >
+            {t('calendar.day') || 'Day'}
+          </Text>
+        </TouchableOpacity>
       </View>
 
-      {/* FAB - Etkinlik Ekle */}
-      <FAB
-        icon="plus"
-        style={[
-          styles.fab,
-          { backgroundColor: theme.colors.primary, bottom: insets.bottom + 16 },
-        ]}
-        color={theme.colors.onPrimary}
-        onPress={handleAddEvent}
-      />
+      {/* Bugün FAB */}
+      {!isToday(selectedDateObj) && (
+        <FAB
+          icon="calendar-today"
+          style={[
+            styles.todayFab,
+            { backgroundColor: theme.colors.primary, bottom: insets.bottom + 70 },
+          ]}
+          color={theme.colors.onPrimary}
+          size="small"
+          onPress={() => dispatch(goToToday())}
+          label={format(new Date(), 'd')}
+        />
+      )}
     </View>
   );
 };
@@ -495,123 +626,262 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    paddingHorizontal: 8,
+    paddingHorizontal: 16,
     paddingBottom: 8,
   },
-  headerTop: {
+  headerRow: {
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
-  headerNav: {
+  headerLeft: {
     flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
+    alignItems: 'baseline',
+    gap: 12,
   },
-  headerTitleContainer: {
-    flex: 1,
-    alignItems: 'center',
+  headerTitle: {
+    fontSize: 28,
+    fontWeight: 'bold',
   },
-  todayButton: {
-    alignSelf: 'center',
-    paddingVertical: 4,
-    paddingHorizontal: 12,
-  },
-  calendarGrid: {
-    paddingHorizontal: 16,
-    paddingTop: 8,
-  },
-  weekDaysHeader: {
-    flexDirection: 'row',
-    marginBottom: 8,
-  },
-  weekDayCell: {
-    width: DAY_WIDTH,
-    alignItems: 'center',
-    paddingVertical: 4,
-  },
-  daysGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  dayCell: {
-    width: DAY_WIDTH,
-    height: 52,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    paddingTop: 4,
-    borderRadius: 8,
-  },
-  dayNumber: {
+  headerSubtitle: {
     fontSize: 14,
   },
-  eventDotsContainer: {
+  headerRight: {
     flexDirection: 'row',
-    marginTop: 4,
+  },
+  weekDaysRow: {
+    flexDirection: 'row',
+    paddingHorizontal: 8,
+    paddingVertical: 8,
+  },
+  weekDayLabelCell: {
+    width: DAY_WIDTH,
     alignItems: 'center',
   },
-  eventDot: {
-    width: 6,
-    height: 6,
+  weekDayLabel: {
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  monthGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingHorizontal: 8,
+  },
+  monthDayCell: {
+    width: DAY_WIDTH,
+    minHeight: 80,
+    paddingVertical: 2,
+  },
+  dayNumberContainer: {
+    alignItems: 'center',
+    marginBottom: 2,
+  },
+  dayNumberCircle: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  monthDayNumber: {
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  dayEventsContainer: {
+    flex: 1,
+    paddingHorizontal: 1,
+  },
+  eventTag: {
     borderRadius: 3,
-    marginHorizontal: 1,
+    paddingHorizontal: 4,
+    paddingVertical: 1,
+    marginBottom: 1,
+  },
+  eventTagText: {
+    color: '#FFFFFF',
+    fontSize: 9,
+    fontWeight: '500',
   },
   moreEventsText: {
-    fontSize: 8,
-    marginLeft: 2,
+    fontSize: 10,
+    fontWeight: '600',
+    marginTop: 1,
   },
-  eventsSection: {
+  eventsListContainer: {
     flex: 1,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
     marginTop: 8,
+    paddingTop: 8,
   },
-  eventsSectionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
+  eventsListHandle: {
+    width: 40,
+    height: 4,
+    backgroundColor: '#E0E0E0',
+    borderRadius: 2,
+    alignSelf: 'center',
+    marginBottom: 12,
   },
-  noEventsContainer: {
+  emptyEventsList: {
     flex: 1,
+    alignItems: 'center',
     justifyContent: 'center',
-    alignItems: 'center',
-    paddingBottom: 80,
+    paddingVertical: 40,
   },
-  eventsList: {
+  noEventsSmall: {
+    fontSize: 14,
+  },
+  eventsListScroll: {
     flex: 1,
     paddingHorizontal: 16,
   },
-  eventCard: {
+  eventListItem: {
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 12,
-    marginVertical: 4,
+    padding: 12,
+    marginBottom: 8,
+  },
+  eventListDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    marginRight: 12,
+  },
+  eventListContent: {
+    flex: 1,
+  },
+  eventListTitle: {
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  eventListTime: {
+    fontSize: 13,
+    marginTop: 2,
+  },
+  // Week view styles
+  weekViewContainer: {
+    flex: 1,
+  },
+  weekHeader: {
+    flexDirection: 'row',
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E0E0E0',
+  },
+  weekTimeColumn: {
+    width: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  weekDayHeader: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  weekDayName: {
+    fontSize: 11,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  weekDayNumberCircle: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  weekDayNumber: {
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  weekGrid: {
+    flex: 1,
+  },
+  hourRow: {
+    flexDirection: 'row',
+    height: HOUR_HEIGHT,
+  },
+  hourText: {
+    fontSize: 11,
+  },
+  hourCell: {
+    flex: 1,
+    borderRightWidth: 0.5,
+    borderBottomWidth: 0.5,
+  },
+  weekEventBlock: {
+    borderRadius: 4,
+    padding: 4,
+    margin: 1,
+    minHeight: 40,
+  },
+  weekEventText: {
+    color: '#FFFFFF',
+    fontSize: 10,
+    fontWeight: '500',
+  },
+  // Day view styles
+  dayViewWrapper: {
+    flex: 1,
+    paddingHorizontal: 16,
+  },
+  dayViewTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    marginVertical: 16,
+  },
+  dayViewContainer: {
+    flex: 1,
+  },
+  noEventsContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 60,
+  },
+  noEventsText: {
+    fontSize: 16,
+    marginTop: 12,
+  },
+  dayEventCard: {
+    flexDirection: 'row',
+    borderRadius: 12,
+    marginBottom: 12,
     overflow: 'hidden',
   },
-  eventColorBar: {
+  dayEventColorBar: {
     width: 4,
-    alignSelf: 'stretch',
   },
-  eventContent: {
+  dayEventContent: {
     flex: 1,
-    paddingVertical: 12,
-    paddingHorizontal: 12,
+    padding: 16,
   },
-  allDayChip: {
-    alignSelf: 'flex-start',
+  dayEventTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  dayEventTime: {
+    fontSize: 14,
     marginTop: 4,
   },
-  locationRow: {
+  // Bottom tabs
+  bottomTabs: {
     flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 4,
+    borderTopWidth: 1,
+    borderTopColor: '#E0E0E0',
+    paddingTop: 8,
   },
-  callReminderRow: {
-    flexDirection: 'row',
+  bottomTab: {
+    flex: 1,
     alignItems: 'center',
-    marginTop: 4,
+    paddingVertical: 8,
   },
-  fab: {
+  bottomTabText: {
+    fontSize: 11,
+    marginTop: 4,
+    fontWeight: '500',
+  },
+  todayFab: {
     position: 'absolute',
     right: 16,
   },

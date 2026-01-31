@@ -32,6 +32,7 @@ import SettingsCalendarScreen from '../screens/settings/SettingsCalendarScreen';
 import SettingsAboutScreen from '../screens/settings/SettingsAboutScreen';
 import SettingsCallThemeScreen from '../screens/settings/SettingsCallThemeScreen';
 import SettingsRingtoneScreen from '../screens/settings/SettingsRingtoneScreen';
+import SettingsBackupScreen from '../screens/SettingsBackupScreen';
 import ThemeStoreScreen from '../screens/store/ThemeStoreScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -222,6 +223,15 @@ const RootNavigator: React.FC = () => {
       <Stack.Screen
         name="NoteDetail"
         component={NoteDetailScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+
+      {/* Yedekleme */}
+      <Stack.Screen
+        name="SettingsBackup"
+        component={SettingsBackupScreen}
         options={{
           headerShown: false,
         }}

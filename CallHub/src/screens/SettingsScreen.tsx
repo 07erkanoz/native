@@ -108,6 +108,19 @@ const SettingsScreen: React.FC = () => {
         />
       </List.Section>
 
+      {/* Yedekleme */}
+      <List.Section>
+        <List.Item
+          title={t('settings.backup.title')}
+          description={t('settings.backup.description') || 'Verilerinizi yedekleyin'}
+          left={() => renderIcon('backup-restore')}
+          onPress={() => navigation.navigate('SettingsBackup' as any)}
+          style={[styles.listItem, { backgroundColor: theme.colors.surface }]}
+          titleStyle={{ color: theme.colors.onSurface }}
+          descriptionStyle={{ color: theme.colors.onSurfaceVariant }}
+        />
+      </List.Section>
+
       {/* Hakkında */}
       <List.Section>
         <List.Item

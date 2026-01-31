@@ -331,10 +331,28 @@
 
     "backup": {
       "title": "Yedekleme",
+      "description": "Verilerinizi yedekleyin",
       "autoBackup": "Otomatik Yedekleme",
+      "autoBackupEnabled": "Otomatik Yedekleme",
+      "autoBackupDesc": "Günlük otomatik yedekleme",
       "backupNow": "Şimdi Yedekle",
       "restore": "Geri Yükle",
-      "lastBackup": "Son Yedekleme"
+      "lastBackup": "Son Yedekleme",
+      "actions": "Eylemler",
+      "import": "Dosyadan Yükle",
+      "backupList": "Yedeklemeler",
+      "noBackups": "Henüz yedekleme yok",
+      "backupCreated": "Yedekleme oluşturuldu",
+      "backupFailed": "Yedekleme başarısız",
+      "restoreConfirmTitle": "Geri Yükle",
+      "restoreConfirmMessage": "Bu yedeklemeyi geri yüklemek istediğinizden emin misiniz? Mevcut veriler üzerine yazılacak.",
+      "restoreSuccess": "Veriler başarıyla geri yüklendi. Uygulamayı yeniden başlatın.",
+      "restoreFailed": "Geri yükleme başarısız",
+      "deleteConfirmTitle": "Yedeklemeyi Sil",
+      "deleteConfirmMessage": "Bu yedeklemeyi silmek istediğinizden emin misiniz?",
+      "importSuccess": "Yedekleme içe aktarıldı ve geri yüklendi. Uygulamayı yeniden başlatın.",
+      "importFailed": "İçe aktarma başarısız",
+      "infoText": "Yedeklemeler cihazınızda yerel olarak saklanır. Ayarlar, notlar, takvim etkinlikleri ve engelleme listesi yedeklenir."
     },
 
     "about": {
@@ -373,9 +391,12 @@
   "calendar": {
     "title": "Takvim",
     "today": "Bugün",
+    "year": "Yıl",
     "month": "Ay",
     "week": "Hafta",
     "day": "Gün",
+    "daysAgo": "gün önce",
+    "daysLater": "gün sonra",
     "agenda": "Ajanda",
     "monthView": "Ay Görünümü",
     "weekView": "Hafta Görünümü",

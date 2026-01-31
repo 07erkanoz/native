@@ -13,3 +13,6 @@ export { default as defaultAppService } from './defaultAppService';
 
 export * from './CallStateManager';
 export { default as callStateManager } from './CallStateManager';
+
+export * from './BackupService';
+export { default as backupService } from './BackupService';

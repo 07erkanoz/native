@@ -317,10 +317,28 @@
 
     "backup": {
       "title": "Sicherung",
+      "description": "Daten sichern",
       "autoBackup": "Automatische Sicherung",
+      "autoBackupEnabled": "Automatische Sicherung",
+      "autoBackupDesc": "Tägliche automatische Sicherung",
       "backupNow": "Jetzt sichern",
       "restore": "Wiederherstellen",
-      "lastBackup": "Letzte Sicherung"
+      "lastBackup": "Letzte Sicherung",
+      "actions": "Aktionen",
+      "import": "Aus Datei laden",
+      "backupList": "Sicherungen",
+      "noBackups": "Noch keine Sicherungen",
+      "backupCreated": "Sicherung erstellt",
+      "backupFailed": "Sicherung fehlgeschlagen",
+      "restoreConfirmTitle": "Wiederherstellen",
+      "restoreConfirmMessage": "Möchten Sie diese Sicherung wirklich wiederherstellen? Aktuelle Daten werden überschrieben.",
+      "restoreSuccess": "Daten erfolgreich wiederhergestellt. Bitte App neu starten.",
+      "restoreFailed": "Wiederherstellung fehlgeschlagen",
+      "deleteConfirmTitle": "Sicherung löschen",
+      "deleteConfirmMessage": "Möchten Sie diese Sicherung wirklich löschen?",
+      "importSuccess": "Sicherung importiert und wiederhergestellt. Bitte App neu starten.",
+      "importFailed": "Import fehlgeschlagen",
+      "infoText": "Sicherungen werden lokal auf Ihrem Gerät gespeichert. Einstellungen, Notizen, Kalendertermine und Sperrliste werden gesichert."
     },
 
     "about": {
@@ -356,9 +374,12 @@
   "calendar": {
     "title": "Kalender",
     "today": "Heute",
+    "year": "Jahr",
     "month": "Monat",
     "week": "Woche",
     "day": "Tag",
+    "daysAgo": "Tagen",
+    "daysLater": "Tagen später",
     "agenda": "Agenda",
     "monthView": "Monatsansicht",
     "weekView": "Wochenansicht",

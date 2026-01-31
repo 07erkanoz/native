@@ -317,10 +317,28 @@
 
     "backup": {
       "title": "Sauvegarde",
+      "description": "Sauvegarder vos données",
       "autoBackup": "Sauvegarde auto",
+      "autoBackupEnabled": "Sauvegarde automatique",
+      "autoBackupDesc": "Sauvegarde automatique quotidienne",
       "backupNow": "Sauvegarder",
       "restore": "Restaurer",
-      "lastBackup": "Dernière sauvegarde"
+      "lastBackup": "Dernière sauvegarde",
+      "actions": "Actions",
+      "import": "Importer depuis fichier",
+      "backupList": "Sauvegardes",
+      "noBackups": "Pas encore de sauvegardes",
+      "backupCreated": "Sauvegarde créée",
+      "backupFailed": "Sauvegarde échouée",
+      "restoreConfirmTitle": "Restaurer",
+      "restoreConfirmMessage": "Voulez-vous vraiment restaurer cette sauvegarde? Les données actuelles seront écrasées.",
+      "restoreSuccess": "Données restaurées avec succès. Veuillez redémarrer l'application.",
+      "restoreFailed": "Restauration échouée",
+      "deleteConfirmTitle": "Supprimer la sauvegarde",
+      "deleteConfirmMessage": "Voulez-vous vraiment supprimer cette sauvegarde?",
+      "importSuccess": "Sauvegarde importée et restaurée. Veuillez redémarrer l'application.",
+      "importFailed": "Import échoué",
+      "infoText": "Les sauvegardes sont stockées localement sur votre appareil. Les paramètres, notes, événements de calendrier et liste de blocage sont sauvegardés."
     },
 
     "about": {
@@ -356,9 +374,12 @@
   "calendar": {
     "title": "Calendrier",
     "today": "Aujourd'hui",
+    "year": "Année",
     "month": "Mois",
     "week": "Semaine",
     "day": "Jour",
+    "daysAgo": "jours",
+    "daysLater": "jours plus tard",
     "agenda": "Agenda",
     "monthView": "Vue mensuelle",
     "weekView": "Vue hebdomadaire",
