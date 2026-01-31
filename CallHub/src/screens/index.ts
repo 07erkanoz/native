@@ -28,3 +28,6 @@ export { default as SettingsLanguageScreen } from './settings/SettingsLanguageSc
 
 // Store Screens
 export { default as ThemeStoreScreen } from './store/ThemeStoreScreen';
+
+// Setup Screens
+export { default as SetupWizardScreen } from './SetupWizardScreen';

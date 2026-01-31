@@ -7,8 +7,9 @@
  * - Floating UI kontrolü
  */
 
-import { NativeEventEmitter, NativeModules, AppState, AppStateStatus } from 'react-native';
+import { NativeEventEmitter, NativeModules, AppState, AppStateStatus, Platform, EmitterSubscription } from 'react-native';
 import { EventEmitter } from 'events';
+import { nativeCallModule, IncomingCallEvent, CallAnsweredEvent, CallEndedEvent } from '../native/CallModule';
 
 // Çağrı durumları
 export type CallState =
@@ -64,10 +65,60 @@ class CallStateManager extends EventEmitter {
   };
   private callDurationInterval: ReturnType<typeof setInterval> | null = null;
 
+  // Native event subscriptions
+  private nativeSubscriptions: EmitterSubscription[] = [];
+
   private constructor() {
     super();
     this.initAppStateListener();
+    this.initNativeCallListeners();
   }
+
+  // Native çağrı event dinleyicileri
+  private initNativeCallListeners() {
+    if (Platform.OS !== 'android') return;
+
+    // Gelen arama
+    const incomingSub = nativeCallModule.onIncomingCall(this.handleNativeIncomingCall);
+    if (incomingSub) this.nativeSubscriptions.push(incomingSub);
+
+    // Arama cevaplandı
+    const answeredSub = nativeCallModule.onCallAnswered(this.handleNativeCallAnswered);
+    if (answeredSub) this.nativeSubscriptions.push(answeredSub);
+
+    // Arama bitti
+    const endedSub = nativeCallModule.onCallEnded(this.handleNativeCallEnded);
+    if (endedSub) this.nativeSubscriptions.push(endedSub);
+  }
+
+  // Native gelen arama event'i
+  private handleNativeIncomingCall = (event: IncomingCallEvent) => {
+    console.log('[CallStateManager] Native gelen arama:', event);
+
+    this.onIncomingCall({
+      id: `call_${event.timestamp}`,
+      phoneNumber: event.phoneNumber,
+      displayName: event.callerName || undefined,
+      photoUri: event.photoUri || undefined,
+    });
+  };
+
+  // Native arama cevaplandı event'i
+  private handleNativeCallAnswered = (event: CallAnsweredEvent) => {
+    console.log('[CallStateManager] Native arama cevaplandı:', event);
+    this.onCallAnswered();
+
+    // Kısa bir gecikmeyle bağlandı olarak işaretle
+    setTimeout(() => {
+      this.onCallConnected();
+    }, 500);
+  };
+
+  // Native arama bitti event'i
+  private handleNativeCallEnded = (event: CallEndedEvent) => {
+    console.log('[CallStateManager] Native arama bitti:', event);
+    this.onCallEnded(event.reason);
+  };
 
   // Singleton instance
   public static getInstance(): CallStateManager {
@@ -291,6 +342,11 @@ class CallStateManager extends EventEmitter {
   public cleanup() {
     this.stopDurationTimer();
     this.removeAllListeners();
+
+    // Native subscription'ları temizle
+    this.nativeSubscriptions.forEach((sub) => sub.remove());
+    this.nativeSubscriptions = [];
+    nativeCallModule.removeAllListeners();
   }
 }
 

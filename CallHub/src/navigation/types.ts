@@ -60,6 +60,9 @@ export type RootStackParamList = {
 
   // Arama
   Search: undefined;
+
+  // Kurulum
+  SetupWizard: undefined;
 };
 
 // Screen props type helpers

@@ -21,6 +21,7 @@ import IncomingCallScreen from '../screens/IncomingCallScreen';
 import OngoingCallScreen from '../screens/OngoingCallScreen';
 import SearchScreen from '../screens/SearchScreen';
 import DialerScreen from '../screens/DialerScreen';
+import SetupWizardScreen from '../screens/SetupWizardScreen';
 import SettingsAppearanceScreen from '../screens/settings/SettingsAppearanceScreen';
 import SettingsLanguageScreen from '../screens/settings/SettingsLanguageScreen';
 import ThemeStoreScreen from '../screens/store/ThemeStoreScreen';
@@ -160,6 +161,18 @@ const RootNavigator: React.FC = () => {
         component={ThemeStoreScreen}
         options={{
           title: t('store.themes'),
+        }}
+      />
+
+      {/* Kurulum Sihirbazı */}
+      <Stack.Screen
+        name="SetupWizard"
+        component={SetupWizardScreen}
+        options={{
+          headerShown: false,
+          presentation: 'fullScreenModal',
+          animation: 'fade',
+          gestureEnabled: false,
         }}
       />
     </Stack.Navigator>

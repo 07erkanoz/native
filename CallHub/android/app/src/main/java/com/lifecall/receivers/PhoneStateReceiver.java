@@ -5,10 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.telephony.TelephonyManager;
 
-import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.bridge.Arguments;
-import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.lifecall.CallModule;
 
 /**
  * LifeCall - Telefon Durum Alıcısı
@@ -50,12 +47,12 @@ public class PhoneStateReceiver extends BroadcastReceiver {
 
                 case TelephonyManager.EXTRA_STATE_OFFHOOK:
                     // Arama aktif (cevaplandı veya aranıyor)
-                    onCallActive(context, phoneNumber);
+                    onCallActive(phoneNumber);
                     break;
 
                 case TelephonyManager.EXTRA_STATE_IDLE:
                     // Arama bitti veya reddedildi
-                    onCallEnded(context, phoneNumber);
+                    onCallEnded(phoneNumber);
                     break;
             }
         }
@@ -65,51 +62,26 @@ public class PhoneStateReceiver extends BroadcastReceiver {
      * Gelen arama
      */
     private void onIncomingCall(Context context, String phoneNumber) {
-        // Intent gönder - IncomingCallActivity'yi başlat
-        Intent intent = new Intent(context, com.lifecall.IncomingCallActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra("phoneNumber", phoneNumber != null ? phoneNumber : "");
-        intent.putExtra("callType", "incoming");
-
-        try {
-            context.startActivity(intent);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        // React Native event gönder
-        sendEvent(context, "onIncomingCall", phoneNumber);
+        // Foreground service ile bildirim göster (tam ekran intent ile)
+        CallModule.showIncomingCallNotification(
+                context,
+                phoneNumber,
+                null // Arayan ismi kişiler DB'den alınabilir
+        );
     }
 
     /**
-     * Arama aktif
+     * Arama aktif (cevaplandı)
      */
-    private void onCallActive(Context context, String phoneNumber) {
-        sendEvent(context, "onCallActive", phoneNumber);
+    private void onCallActive(String phoneNumber) {
+        CallModule.emitCallAnswered(phoneNumber);
     }
 
     /**
      * Arama bitti
      */
-    private void onCallEnded(Context context, String phoneNumber) {
-        sendEvent(context, "onCallEnded", phoneNumber);
+    private void onCallEnded(String phoneNumber) {
+        CallModule.emitCallEnded(phoneNumber, "ended");
         lastPhoneNumber = "";
-    }
-
-    /**
-     * React Native'e event gönder
-     */
-    private void sendEvent(Context context, String eventName, String phoneNumber) {
-        try {
-            // Bu method, uygulamanın React context'ine erişim gerektirir
-            // Genellikle MainApplication üzerinden yapılır
-            WritableMap params = Arguments.createMap();
-            params.putString("phoneNumber", phoneNumber != null ? phoneNumber : "");
-            params.putString("eventType", eventName);
-
-            // Event gönderimi için LifeCallEventEmitter kullanılmalı
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }

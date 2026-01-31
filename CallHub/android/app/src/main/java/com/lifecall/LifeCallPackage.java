@@ -29,6 +29,9 @@ public class LifeCallPackage implements ReactPackage {
         // İzin modülü
         modules.add(new PermissionsModule(reactContext));
 
+        // Çağrı modülü
+        modules.add(new CallModule(reactContext));
+
         return modules;
     }
 
