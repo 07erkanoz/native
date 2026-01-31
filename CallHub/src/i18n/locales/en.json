@@ -222,6 +222,20 @@
       "onNoAnswer": "On No Answer",
       "retrying": "Retrying...",
       "attempt": "Attempt: {{current}}/{{max}}"
+    },
+
+    "swipeToAnswer": "Swipe to answer",
+    "quickReply": "Quick Reply",
+    "quickReplyTitle": "Send Quick Reply",
+    "reminder": "Remind",
+    "minimizeHint": "Swipe down to minimize",
+    "permissionMessage": "Call log permission required",
+
+    "quickReplies": {
+      "cantTalk": "Can't talk right now. I'll call you back.",
+      "inMeeting": "I'm in a meeting. Can you call later?",
+      "callLater": "I'll call you in 10 minutes.",
+      "whatsUp": "What's up?"
     }
   },
   "favorites": {

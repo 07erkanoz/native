@@ -10,3 +10,6 @@ export { default as contactsService } from './contactsService';
 
 export * from './defaultAppService';
 export { default as defaultAppService } from './defaultAppService';
+
+export * from './CallStateManager';
+export { default as callStateManager } from './CallStateManager';

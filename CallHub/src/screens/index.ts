@@ -14,6 +14,10 @@ export { default as ContactDetailScreen } from './ContactDetailScreen';
 export { default as ContactEditScreen } from './ContactEditScreen';
 export { default as CallDetailScreen } from './CallDetailScreen';
 
+// Call Screens
+export { default as IncomingCallScreen } from './IncomingCallScreen';
+export { default as OngoingCallScreen } from './OngoingCallScreen';
+
 // Other Screens
 export { default as SearchScreen } from './SearchScreen';
 export { default as DialerScreen } from './DialerScreen';

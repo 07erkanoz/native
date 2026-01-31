@@ -222,6 +222,20 @@
       "onNoAnswer": "Cevap vermezse",
       "retrying": "Tekrar deneniyor...",
       "attempt": "Deneme: {{current}}/{{max}}"
+    },
+
+    "swipeToAnswer": "Kaydırarak cevapla",
+    "quickReply": "SMS Yanıt",
+    "quickReplyTitle": "Hızlı Yanıt Gönder",
+    "reminder": "Hatırlat",
+    "minimizeHint": "Küçültmek için aşağı kaydır",
+    "permissionMessage": "Arama geçmişine erişim izni gerekli",
+
+    "quickReplies": {
+      "cantTalk": "Şu an konuşamıyorum. Seni arayacağım.",
+      "inMeeting": "Toplantıdayım. Daha sonra arayabilir misin?",
+      "callLater": "10 dakika içinde seni arayacağım.",
+      "whatsUp": "Ne için arıyorsun?"
     }
   },
   "favorites": {

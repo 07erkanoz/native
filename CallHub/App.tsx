@@ -23,6 +23,9 @@ import { initI18n } from './src/i18n';
 // Navigation
 import { RootNavigator } from './src/navigation';
 
+// Components
+import { CallOverlay } from './src/components';
+
 // Loading bileşeni
 const LoadingScreen: React.FC = () => (
   <View style={styles.loadingContainer}>
@@ -42,6 +45,8 @@ const AppContent: React.FC = () => {
         backgroundColor={theme.colors.background}
       />
       <RootNavigator />
+      {/* Çağrı Overlay - Floating UI'ları yönetir */}
+      <CallOverlay />
     </>
   );
 };

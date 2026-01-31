@@ -13,10 +13,12 @@ import { RootStackParamList } from './types';
 // Navigators
 import MainTabNavigator from './MainTabNavigator';
 
-// Placeholder ekranlar - daha sonra gerçek ekranlar oluşturulacak
+// Screens
 import ContactDetailScreen from '../screens/ContactDetailScreen';
 import ContactEditScreen from '../screens/ContactEditScreen';
 import CallDetailScreen from '../screens/CallDetailScreen';
+import IncomingCallScreen from '../screens/IncomingCallScreen';
+import OngoingCallScreen from '../screens/OngoingCallScreen';
 import SearchScreen from '../screens/SearchScreen';
 import DialerScreen from '../screens/DialerScreen';
 import SettingsAppearanceScreen from '../screens/settings/SettingsAppearanceScreen';
@@ -89,6 +91,28 @@ const RootNavigator: React.FC = () => {
         component={CallDetailScreen}
         options={{
           title: t('calls.history'),
+        }}
+      />
+
+      <Stack.Screen
+        name="IncomingCall"
+        component={IncomingCallScreen}
+        options={{
+          headerShown: false,
+          presentation: 'fullScreenModal',
+          animation: 'fade',
+          gestureEnabled: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="OngoingCall"
+        component={OngoingCallScreen}
+        options={{
+          headerShown: false,
+          presentation: 'fullScreenModal',
+          animation: 'fade',
+          gestureEnabled: false,
         }}
       />
 
