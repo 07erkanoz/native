@@ -189,6 +189,30 @@
     "filter": "Filtrar llamadas",
     "speedDial": "Marcación rápida",
     "voicemail": "Buzón de voz",
+    "details": "Detalles",
+
+    "stats": {
+      "total": "Total",
+      "totalCalls": "Llamadas totales",
+      "totalDuration": "Duración total",
+      "averageDuration": "Duración promedio",
+      "longestCall": "Llamada más larga",
+      "firstCall": "Primera llamada",
+      "lastCall": "Última llamada",
+      "incomingCall": "Llamada entrante",
+      "outgoingCall": "Llamada saliente",
+      "missedCall": "Llamada perdida",
+      "rejectedCall": "Llamada rechazada"
+    },
+
+    "menu": {
+      "callDetail": "Detalles de llamada",
+      "blockNumber": "Bloquear número",
+      "addToContacts": "Añadir a contactos",
+      "copyNumber": "Copiar número",
+      "muteContact": "Silenciar contacto",
+      "deleteCall": "Eliminar llamada"
+    },
 
     "status": {
       "dialing": "Marcando...",

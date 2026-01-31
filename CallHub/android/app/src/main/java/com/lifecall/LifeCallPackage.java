@@ -44,6 +44,9 @@ public class LifeCallPackage implements ReactPackage {
         // Widget modülü
         modules.add(new WidgetModule(reactContext));
 
+        // Zil sesi modülü
+        modules.add(new RingtoneModule(reactContext));
+
         return modules;
     }
 

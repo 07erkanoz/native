@@ -31,6 +31,7 @@ import SettingsLanguageScreen from '../screens/settings/SettingsLanguageScreen';
 import SettingsCalendarScreen from '../screens/settings/SettingsCalendarScreen';
 import SettingsAboutScreen from '../screens/settings/SettingsAboutScreen';
 import SettingsCallThemeScreen from '../screens/settings/SettingsCallThemeScreen';
+import SettingsRingtoneScreen from '../screens/settings/SettingsRingtoneScreen';
 import ThemeStoreScreen from '../screens/store/ThemeStoreScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -167,6 +168,14 @@ const RootNavigator: React.FC = () => {
         component={SettingsCallThemeScreen}
         options={{
           title: t('callThemes.title') || 'Arama Teması',
+        }}
+      />
+
+      <Stack.Screen
+        name="SettingsRingtone"
+        component={SettingsRingtoneScreen}
+        options={{
+          title: t('settings.ringtone') || 'Zil Sesi',
         }}
       />
 

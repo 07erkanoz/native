@@ -6,6 +6,8 @@
  * - E-posta adresleri
  * - Arama geçmişi
  * - Favori ve engelleme işlemleri
+ * - Kişiye özel zil sesi
+ * - Arama istatistikleri
  */
 
 import React, { useEffect, useState, useCallback } from 'react';
@@ -28,11 +30,14 @@ import {
   Button,
   ActivityIndicator,
   Chip,
+  Modal,
+  RadioButton,
 } from 'react-native-paper';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import CallLogs from 'react-native-call-log';
 
 import { useAppTheme } from '../theme';
 import { Avatar } from '../components';
@@ -40,6 +45,7 @@ import { Contact } from '../types';
 import { RootStackScreenProps } from '../navigation/types';
 import ContactRepository from '../database/repositories/ContactRepository';
 import { defaultAppService } from '../services';
+import { ringtoneService, RingtoneInfo, ContactRingtoneInfo } from '../native/RingtoneModule';
 
 type Props = RootStackScreenProps<'ContactDetail'>;
 
@@ -56,10 +62,199 @@ const ContactDetailScreen: React.FC<Props> = ({ route }) => {
   const [menuVisible, setMenuVisible] = useState(false);
   const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
 
+  // Zil sesi
+  const [ringtoneModalVisible, setRingtoneModalVisible] = useState(false);
+  const [contactRingtone, setContactRingtone] = useState<ContactRingtoneInfo | null>(null);
+  const [systemRingtones, setSystemRingtones] = useState<RingtoneInfo[]>([]);
+  const [selectedRingtoneUri, setSelectedRingtoneUri] = useState<string | null>(null);
+  const [loadingRingtones, setLoadingRingtones] = useState(false);
+
+  // Arama geçmişi
+  const [callHistory, setCallHistory] = useState<any[]>([]);
+  const [callStats, setCallStats] = useState({
+    totalCalls: 0,
+    incomingCalls: 0,
+    outgoingCalls: 0,
+    missedCalls: 0,
+    totalDuration: 0,
+    lastCallDate: null as Date | null,
+  });
+  const [showAllCalls, setShowAllCalls] = useState(false);
+
   // Kişiyi yükle
   useEffect(() => {
     loadContact();
   }, [contactId]);
+
+  // Zil sesi ve arama geçmişini yükle
+  useEffect(() => {
+    if (contact) {
+      loadContactRingtone();
+      loadCallHistory();
+    }
+  }, [contact?.id]);
+
+  // Kişinin zil sesini yükle
+  const loadContactRingtone = useCallback(async () => {
+    if (!contact) return;
+    try {
+      const ringtone = await ringtoneService.getContactRingtone(contact.id);
+      setContactRingtone(ringtone);
+      setSelectedRingtoneUri(ringtone.uri);
+    } catch (error) {
+      console.error('Zil sesi yüklenemedi:', error);
+    }
+  }, [contact]);
+
+  // Zil sesi listesini yükle
+  const loadRingtones = useCallback(async () => {
+    setLoadingRingtones(true);
+    try {
+      const ringtones = await ringtoneService.getSystemRingtones();
+      setSystemRingtones(ringtones);
+    } catch (error) {
+      console.error('Zil sesleri yüklenemedi:', error);
+    } finally {
+      setLoadingRingtones(false);
+    }
+  }, []);
+
+  // Arama geçmişini yükle
+  const loadCallHistory = useCallback(async () => {
+    if (!contact || contact.phoneNumbers.length === 0) return;
+
+    try {
+      // Tüm telefon numaralarını normalize et
+      const phoneNumbers = contact.phoneNumbers.map(p =>
+        p.number.replace(/[^0-9+]/g, '')
+      );
+
+      // Son 6 ayın aramalarını al
+      const sixMonthsAgo = new Date();
+      sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+
+      const allCalls = await CallLogs.load(-1, { minTimestamp: sixMonthsAgo.getTime() });
+
+      // Bu kişiye ait aramaları filtrele
+      const contactCalls = allCalls.filter((call: any) => {
+        const callNumber = call.phoneNumber?.replace(/[^0-9+]/g, '') || '';
+        return phoneNumbers.some(pn =>
+          callNumber.endsWith(pn.slice(-10)) || pn.endsWith(callNumber.slice(-10))
+        );
+      });
+
+      // Tarihe göre sırala (en yeni en üstte)
+      contactCalls.sort((a: any, b: any) => b.timestamp - a.timestamp);
+
+      setCallHistory(contactCalls);
+
+      // İstatistikleri hesapla
+      let incoming = 0, outgoing = 0, missed = 0, totalDuration = 0;
+      let lastCall: Date | null = null;
+
+      contactCalls.forEach((call: any) => {
+        const duration = parseInt(call.duration) || 0;
+        totalDuration += duration;
+
+        if (call.type === 'INCOMING') incoming++;
+        else if (call.type === 'OUTGOING') outgoing++;
+        else if (call.type === 'MISSED') missed++;
+
+        if (!lastCall && call.timestamp) {
+          lastCall = new Date(parseInt(call.timestamp));
+        }
+      });
+
+      setCallStats({
+        totalCalls: contactCalls.length,
+        incomingCalls: incoming,
+        outgoingCalls: outgoing,
+        missedCalls: missed,
+        totalDuration,
+        lastCallDate: lastCall,
+      });
+    } catch (error) {
+      console.error('Arama geçmişi yüklenemedi:', error);
+    }
+  }, [contact]);
+
+  // Zil sesi seçimi modal'ını aç
+  const openRingtoneModal = useCallback(() => {
+    loadRingtones();
+    setRingtoneModalVisible(true);
+  }, [loadRingtones]);
+
+  // Zil sesini kaydet
+  const saveRingtone = useCallback(async () => {
+    if (!contact) return;
+
+    try {
+      if (selectedRingtoneUri === 'default' || !selectedRingtoneUri) {
+        await ringtoneService.removeContactRingtone(contact.id);
+      } else {
+        await ringtoneService.setContactRingtone(contact.id, selectedRingtoneUri);
+      }
+      await loadContactRingtone();
+      setRingtoneModalVisible(false);
+    } catch (error) {
+      console.error('Zil sesi kaydedilemedi:', error);
+      Alert.alert('Hata', 'Zil sesi kaydedilemedi');
+    }
+  }, [contact, selectedRingtoneUri, loadContactRingtone]);
+
+  // Zil sesini önizle
+  const previewRingtone = useCallback(async (uri: string) => {
+    await ringtoneService.stopRingtone();
+    if (uri && uri !== 'default') {
+      await ringtoneService.playRingtone(uri);
+    }
+  }, []);
+
+  // Süreyi formatla
+  const formatDuration = useCallback((seconds: number) => {
+    if (seconds < 60) return `${seconds} sn`;
+    if (seconds < 3600) return `${Math.floor(seconds / 60)} dk ${seconds % 60} sn`;
+    const hours = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
+    return `${hours} sa ${mins} dk`;
+  }, []);
+
+  // Tarihi formatla
+  const formatCallDate = useCallback((timestamp: string) => {
+    const date = new Date(parseInt(timestamp));
+    const now = new Date();
+    const diffDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
+
+    if (diffDays === 0) return 'Bugün';
+    if (diffDays === 1) return 'Dün';
+    if (diffDays < 7) return `${diffDays} gün önce`;
+
+    return date.toLocaleDateString('tr-TR', {
+      day: 'numeric',
+      month: 'short',
+      year: date.getFullYear() !== now.getFullYear() ? 'numeric' : undefined,
+    });
+  }, []);
+
+  // Arama tipi ikonunu al
+  const getCallTypeIcon = useCallback((type: string) => {
+    switch (type) {
+      case 'INCOMING': return 'phone-incoming';
+      case 'OUTGOING': return 'phone-outgoing';
+      case 'MISSED': return 'phone-missed';
+      default: return 'phone';
+    }
+  }, []);
+
+  // Arama tipi rengini al
+  const getCallTypeColor = useCallback((type: string) => {
+    switch (type) {
+      case 'INCOMING': return '#4CAF50';
+      case 'OUTGOING': return '#2196F3';
+      case 'MISSED': return '#F44336';
+      default: return '#888';
+    }
+  }, []);
 
   const loadContact = useCallback(async () => {
     try {
@@ -448,6 +643,136 @@ const ContactDetailScreen: React.FC<Props> = ({ route }) => {
           </View>
         )}
 
+        {/* Zil Sesi Ayarı */}
+        <View style={styles.section}>
+          <Text
+            variant="titleSmall"
+            style={[styles.sectionTitle, { color: theme.colors.primary }]}
+          >
+            Zil Sesi
+          </Text>
+          <List.Item
+            title={contactRingtone?.title || 'Varsayılan'}
+            description={contactRingtone?.hasCustomRingtone ? 'Özel zil sesi' : 'Sistem varsayılanı'}
+            left={() => (
+              <List.Icon icon="music-note" color={theme.colors.primary} />
+            )}
+            right={() => (
+              <MaterialCommunityIcons
+                name="chevron-right"
+                size={24}
+                color={theme.colors.onSurfaceVariant}
+              />
+            )}
+            onPress={openRingtoneModal}
+            style={styles.listItem}
+          />
+        </View>
+
+        <Divider style={styles.divider} />
+
+        {/* Arama İstatistikleri */}
+        {callStats.totalCalls > 0 && (
+          <View style={styles.section}>
+            <Text
+              variant="titleSmall"
+              style={[styles.sectionTitle, { color: theme.colors.primary }]}
+            >
+              Arama İstatistikleri
+            </Text>
+
+            <View style={styles.statsContainer}>
+              <View style={styles.statItem}>
+                <MaterialCommunityIcons name="phone" size={24} color={theme.colors.primary} />
+                <Text style={styles.statValue}>{callStats.totalCalls}</Text>
+                <Text style={styles.statLabel}>Toplam</Text>
+              </View>
+
+              <View style={styles.statItem}>
+                <MaterialCommunityIcons name="phone-incoming" size={24} color="#4CAF50" />
+                <Text style={styles.statValue}>{callStats.incomingCalls}</Text>
+                <Text style={styles.statLabel}>Gelen</Text>
+              </View>
+
+              <View style={styles.statItem}>
+                <MaterialCommunityIcons name="phone-outgoing" size={24} color="#2196F3" />
+                <Text style={styles.statValue}>{callStats.outgoingCalls}</Text>
+                <Text style={styles.statLabel}>Giden</Text>
+              </View>
+
+              <View style={styles.statItem}>
+                <MaterialCommunityIcons name="phone-missed" size={24} color="#F44336" />
+                <Text style={styles.statValue}>{callStats.missedCalls}</Text>
+                <Text style={styles.statLabel}>Cevapsız</Text>
+              </View>
+            </View>
+
+            <View style={styles.totalDuration}>
+              <MaterialCommunityIcons name="clock-outline" size={20} color={theme.colors.onSurfaceVariant} />
+              <Text style={[styles.totalDurationText, { color: theme.colors.onSurfaceVariant }]}>
+                Toplam görüşme: {formatDuration(callStats.totalDuration)}
+              </Text>
+            </View>
+
+            {callStats.lastCallDate && (
+              <Text style={[styles.lastCallText, { color: theme.colors.onSurfaceVariant }]}>
+                Son arama: {callStats.lastCallDate.toLocaleDateString('tr-TR', {
+                  day: 'numeric',
+                  month: 'long',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
+              </Text>
+            )}
+          </View>
+        )}
+
+        {/* Arama Geçmişi */}
+        {callHistory.length > 0 && (
+          <View style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <Text
+                variant="titleSmall"
+                style={[styles.sectionTitle, { color: theme.colors.primary }]}
+              >
+                Arama Geçmişi
+              </Text>
+              {callHistory.length > 5 && (
+                <TouchableOpacity onPress={() => setShowAllCalls(!showAllCalls)}>
+                  <Text style={{ color: theme.colors.primary }}>
+                    {showAllCalls ? 'Daha az' : `Tümünü gör (${callHistory.length})`}
+                  </Text>
+                </TouchableOpacity>
+              )}
+            </View>
+
+            {(showAllCalls ? callHistory : callHistory.slice(0, 5)).map((call, index) => (
+              <List.Item
+                key={index}
+                title={formatCallDate(call.timestamp)}
+                description={`${call.type === 'MISSED' ? 'Cevapsız' : formatDuration(parseInt(call.duration) || 0)} • ${new Date(parseInt(call.timestamp)).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' })}`}
+                left={() => (
+                  <List.Icon
+                    icon={getCallTypeIcon(call.type)}
+                    color={getCallTypeColor(call.type)}
+                  />
+                )}
+                right={() => (
+                  <IconButton
+                    icon="phone"
+                    size={20}
+                    onPress={() => handleCall(call.phoneNumber)}
+                  />
+                )}
+                style={styles.listItem}
+              />
+            ))}
+          </View>
+        )}
+
+        <Divider style={styles.divider} />
+
         {/* Ek Bilgiler */}
         <View style={styles.section}>
           {contact.birthday && (
@@ -473,6 +798,77 @@ const ContactDetailScreen: React.FC<Props> = ({ route }) => {
           )}
         </View>
       </ScrollView>
+
+      {/* Zil Sesi Seçim Modalı */}
+      <Portal>
+        <Modal
+          visible={ringtoneModalVisible}
+          onDismiss={() => {
+            ringtoneService.stopRingtone();
+            setRingtoneModalVisible(false);
+          }}
+          contentContainerStyle={[styles.modalContent, { backgroundColor: theme.colors.surface }]}
+        >
+          <Text variant="titleMedium" style={styles.modalTitle}>
+            Zil Sesi Seç
+          </Text>
+
+          {loadingRingtones ? (
+            <ActivityIndicator style={{ marginVertical: 20 }} />
+          ) : (
+            <ScrollView style={styles.ringtoneList}>
+              {/* Varsayılan seçeneği */}
+              <TouchableOpacity
+                style={styles.ringtoneItem}
+                onPress={() => setSelectedRingtoneUri('default')}
+              >
+                <RadioButton
+                  value="default"
+                  status={selectedRingtoneUri === 'default' || !selectedRingtoneUri ? 'checked' : 'unchecked'}
+                  onPress={() => setSelectedRingtoneUri('default')}
+                />
+                <Text style={styles.ringtoneTitle}>Varsayılan</Text>
+              </TouchableOpacity>
+
+              {/* Sistem zil sesleri */}
+              {systemRingtones.map((ringtone) => (
+                <TouchableOpacity
+                  key={ringtone.id}
+                  style={styles.ringtoneItem}
+                  onPress={() => {
+                    setSelectedRingtoneUri(ringtone.uri);
+                    previewRingtone(ringtone.uri);
+                  }}
+                >
+                  <RadioButton
+                    value={ringtone.uri}
+                    status={selectedRingtoneUri === ringtone.uri ? 'checked' : 'unchecked'}
+                    onPress={() => {
+                      setSelectedRingtoneUri(ringtone.uri);
+                      previewRingtone(ringtone.uri);
+                    }}
+                  />
+                  <Text style={styles.ringtoneTitle}>{ringtone.title}</Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          )}
+
+          <View style={styles.modalActions}>
+            <Button
+              onPress={() => {
+                ringtoneService.stopRingtone();
+                setRingtoneModalVisible(false);
+              }}
+            >
+              İptal
+            </Button>
+            <Button mode="contained" onPress={saveRingtone}>
+              Kaydet
+            </Button>
+          </View>
+        </Modal>
+      </Portal>
 
       {/* Silme Onay Dialogu */}
       <Portal>
@@ -586,6 +982,77 @@ const styles = StyleSheet.create({
   emptyText: {
     marginTop: 16,
     textAlign: 'center',
+  },
+  // İstatistikler
+  statsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingVertical: 16,
+    paddingHorizontal: 8,
+  },
+  statItem: {
+    alignItems: 'center',
+    gap: 4,
+  },
+  statValue: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  statLabel: {
+    fontSize: 12,
+    color: '#888',
+  },
+  totalDuration: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    paddingVertical: 8,
+  },
+  totalDurationText: {
+    fontSize: 14,
+  },
+  lastCallText: {
+    textAlign: 'center',
+    fontSize: 13,
+    marginTop: 4,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingRight: 8,
+    marginBottom: 8,
+  },
+  // Modal
+  modalContent: {
+    margin: 20,
+    borderRadius: 12,
+    padding: 16,
+    maxHeight: '70%',
+  },
+  modalTitle: {
+    marginBottom: 16,
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+  ringtoneList: {
+    maxHeight: 300,
+  },
+  ringtoneItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 8,
+  },
+  ringtoneTitle: {
+    fontSize: 15,
+    marginLeft: 8,
+  },
+  modalActions: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    gap: 12,
+    marginTop: 16,
   },
 });
 

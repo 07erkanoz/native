@@ -10,3 +10,6 @@ export * from './CalendarNotificationModule';
 
 export { default as widgetService } from './WidgetModule';
 export * from './WidgetModule';
+
+export { default as ringtoneService } from './RingtoneModule';
+export * from './RingtoneModule';

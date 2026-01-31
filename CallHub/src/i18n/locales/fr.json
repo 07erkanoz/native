@@ -189,6 +189,30 @@
     "filter": "Filtrer les appels",
     "speedDial": "Numérotation rapide",
     "voicemail": "Messagerie vocale",
+    "details": "Détails",
+
+    "stats": {
+      "total": "Total",
+      "totalCalls": "Total des appels",
+      "totalDuration": "Durée totale",
+      "averageDuration": "Durée moyenne",
+      "longestCall": "Appel le plus long",
+      "firstCall": "Premier appel",
+      "lastCall": "Dernier appel",
+      "incomingCall": "Appel entrant",
+      "outgoingCall": "Appel sortant",
+      "missedCall": "Appel manqué",
+      "rejectedCall": "Appel rejeté"
+    },
+
+    "menu": {
+      "callDetail": "Détails d'appel",
+      "blockNumber": "Bloquer le numéro",
+      "addToContacts": "Ajouter aux contacts",
+      "copyNumber": "Copier le numéro",
+      "muteContact": "Mettre le contact en sourdine",
+      "deleteCall": "Supprimer l'appel"
+    },
 
     "status": {
       "dialing": "Composition...",

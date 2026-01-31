@@ -189,6 +189,30 @@
     "filter": "Anrufe filtern",
     "speedDial": "Kurzwahl",
     "voicemail": "Mailbox",
+    "details": "Details",
+
+    "stats": {
+      "total": "Gesamt",
+      "totalCalls": "Gesamtanrufe",
+      "totalDuration": "Gesamtdauer",
+      "averageDuration": "Durchschnittsdauer",
+      "longestCall": "Längster Anruf",
+      "firstCall": "Erster Anruf",
+      "lastCall": "Letzter Anruf",
+      "incomingCall": "Eingehender Anruf",
+      "outgoingCall": "Ausgehender Anruf",
+      "missedCall": "Verpasster Anruf",
+      "rejectedCall": "Abgelehnter Anruf"
+    },
+
+    "menu": {
+      "callDetail": "Anrufdetails",
+      "blockNumber": "Nummer blockieren",
+      "addToContacts": "Zu Kontakten hinzufügen",
+      "copyNumber": "Nummer kopieren",
+      "muteContact": "Kontakt stumm schalten",
+      "deleteCall": "Anruf löschen"
+    },
 
     "status": {
       "dialing": "Wählen...",

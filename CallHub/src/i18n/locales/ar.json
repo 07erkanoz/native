@@ -189,6 +189,30 @@
     "filter": "تصفية المكالمات",
     "speedDial": "الاتصال السريع",
     "voicemail": "البريد الصوتي",
+    "details": "التفاصيل",
+
+    "stats": {
+      "total": "الإجمالي",
+      "totalCalls": "إجمالي المكالمات",
+      "totalDuration": "المدة الإجمالية",
+      "averageDuration": "متوسط المدة",
+      "longestCall": "أطول مكالمة",
+      "firstCall": "أول مكالمة",
+      "lastCall": "آخر مكالمة",
+      "incomingCall": "مكالمة واردة",
+      "outgoingCall": "مكالمة صادرة",
+      "missedCall": "مكالمة فائتة",
+      "rejectedCall": "مكالمة مرفوضة"
+    },
+
+    "menu": {
+      "callDetail": "تفاصيل المكالمة",
+      "blockNumber": "حظر الرقم",
+      "addToContacts": "إضافة إلى جهات الاتصال",
+      "copyNumber": "نسخ الرقم",
+      "muteContact": "كتم جهة الاتصال",
+      "deleteCall": "حذف المكالمة"
+    },
 
     "status": {
       "dialing": "جاري الاتصال...",

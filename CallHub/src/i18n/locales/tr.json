@@ -173,6 +173,7 @@
   "calls": {
     "title": "Aramalar",
     "history": "Arama Geçmişi",
+    "details": "Arama Detayı",
     "missed": "Cevapsız",
     "incoming": "Gelen",
     "outgoing": "Giden",
@@ -189,6 +190,29 @@
     "filter": "Aramaları Filtrele",
     "speedDial": "Hızlı Arama",
     "voicemail": "Sesli Mesaj",
+
+    "stats": {
+      "total": "Toplam",
+      "totalCalls": "Toplam Arama",
+      "totalDuration": "Toplam Süre",
+      "averageDuration": "Ortalama Süre",
+      "longestCall": "En Uzun Arama",
+      "firstCall": "İlk Arama",
+      "lastCall": "Son Arama",
+      "incomingCall": "Gelen arama",
+      "outgoingCall": "Giden arama",
+      "missedCall": "Cevapsız arama",
+      "rejectedCall": "Reddedilen arama"
+    },
+
+    "menu": {
+      "callDetail": "Arama Detayı",
+      "blockNumber": "Numarayı Engelle",
+      "addToContacts": "Rehbere Ekle",
+      "copyNumber": "Numarayı Kopyala",
+      "muteContact": "Kişiyi Sessize Al",
+      "deleteCall": "Aramayı Sil"
+    },
 
     "status": {
       "dialing": "Aranıyor...",
@@ -316,6 +340,9 @@
     "about": {
       "title": "Hakkında"
     },
+
+    "ringtone": "Zil Sesi",
+    "ringtoneDescription": "Varsayılan zil sesini seç",
 
     "calendar": {
       "title": "Takvim Ayarları",
@@ -609,6 +636,26 @@
 
     "noteNotFound": "Not Bulunamadı",
     "noteNotFoundMessage": "Bu not silinmiş olabilir"
+  },
+  "ringtone": {
+    "title": "Zil Sesi",
+    "selectRingtone": "Zil Sesi Seç",
+    "system": "Sistem",
+    "custom": "Özel",
+    "all": "Tümü",
+    "silent": "Sessiz",
+    "default": "Varsayılan",
+    "loading": "Zil sesleri yükleniyor...",
+    "noRingtones": "Zil sesi bulunamadı",
+    "noResults": "Arama sonucu bulunamadı",
+    "noCustom": "Özel zil sesi bulunamadı",
+    "customHint": "Müzik dosyalarınızı indirmeler klasörüne ekleyin",
+    "playing": "Çalıyor...",
+    "playError": "Zil sesi çalınamadı",
+    "customRingtone": "Kişiye Özel Zil Sesi",
+    "customRingtoneDesc": "Bu kişi aradığında farklı zil sesi çal",
+    "setCustomRingtone": "Zil Sesi Ayarla",
+    "removeCustomRingtone": "Özel Zil Sesini Kaldır"
   },
   "store": {
     "themes": "Tema Mağazası",

@@ -43,6 +43,10 @@ import { CallLogEntry, CallType, Contact } from '../types';
 import { RootStackScreenProps } from '../navigation/types';
 import ContactRepository from '../database/repositories/ContactRepository';
 import { defaultAppService } from '../services';
+import Clipboard from '@react-native-clipboard/clipboard';
+import { NativeModules, Alert } from 'react-native';
+
+const { BlockingModule } = NativeModules;
 
 // Filtre tipi
 type FilterType = 'all' | 'missed' | 'incoming' | 'outgoing';
@@ -772,7 +776,8 @@ const CallsScreen: React.FC = () => {
                   style={styles.modalAction}
                   onPress={() => {
                     setActionModalVisible(false);
-                    // Numarayı kopyala
+                    Clipboard.setString(selectedCall.phoneNumber);
+                    // Toast göster
                   }}
                 >
                   <MaterialCommunityIcons
@@ -785,6 +790,58 @@ const CallsScreen: React.FC = () => {
                     style={{ color: theme.colors.onSurface, marginLeft: 16 }}
                   >
                     {t('common.copy')}
+                  </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={styles.modalAction}
+                  onPress={() => {
+                    setActionModalVisible(false);
+                    // Arama detay ekranına git
+                    navigation.navigate('CallDetail' as any, {
+                      callId: selectedCall.id,
+                      phoneNumber: selectedCall.phoneNumber,
+                      contactName: selectedCall.contactName,
+                    });
+                  }}
+                >
+                  <MaterialCommunityIcons
+                    name="information-outline"
+                    size={24}
+                    color={theme.colors.onSurfaceVariant}
+                  />
+                  <Text
+                    variant="bodyMedium"
+                    style={{ color: theme.colors.onSurface, marginLeft: 16 }}
+                  >
+                    Arama Detayı
+                  </Text>
+                </TouchableOpacity>
+
+                <Divider style={styles.modalDivider} />
+
+                <TouchableOpacity
+                  style={styles.modalAction}
+                  onPress={async () => {
+                    setActionModalVisible(false);
+                    try {
+                      await BlockingModule?.blockNumber(selectedCall.phoneNumber);
+                      Alert.alert('Başarılı', 'Numara engellendi');
+                    } catch (error) {
+                      Alert.alert('Hata', 'Numara engellenemedi');
+                    }
+                  }}
+                >
+                  <MaterialCommunityIcons
+                    name="block-helper"
+                    size={24}
+                    color={theme.colors.error}
+                  />
+                  <Text
+                    variant="bodyMedium"
+                    style={{ color: theme.colors.error, marginLeft: 16 }}
+                  >
+                    Numarayı Engelle
                   </Text>
                 </TouchableOpacity>
               </View>

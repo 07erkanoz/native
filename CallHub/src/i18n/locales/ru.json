@@ -189,6 +189,30 @@
     "filter": "Фильтр вызовов",
     "speedDial": "Быстрый набор",
     "voicemail": "Голосовая почта",
+    "details": "Детали",
+
+    "stats": {
+      "total": "Всего",
+      "totalCalls": "Всего вызовов",
+      "totalDuration": "Общая длительность",
+      "averageDuration": "Средняя длительность",
+      "longestCall": "Самый длинный вызов",
+      "firstCall": "Первый вызов",
+      "lastCall": "Последний вызов",
+      "incomingCall": "Входящий вызов",
+      "outgoingCall": "Исходящий вызов",
+      "missedCall": "Пропущенный вызов",
+      "rejectedCall": "Отклонённый вызов"
+    },
+
+    "menu": {
+      "callDetail": "Детали звонка",
+      "blockNumber": "Заблокировать номер",
+      "addToContacts": "Добавить в контакты",
+      "copyNumber": "Копировать номер",
+      "muteContact": "Отключить звук контакта",
+      "deleteCall": "Удалить вызов"
+    },
 
     "status": {
       "dialing": "Набор номера...",

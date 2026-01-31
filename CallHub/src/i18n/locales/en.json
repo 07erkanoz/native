@@ -173,6 +173,7 @@
   "calls": {
     "title": "Calls",
     "history": "Call History",
+    "details": "Call Details",
     "missed": "Missed",
     "incoming": "Incoming",
     "outgoing": "Outgoing",
@@ -189,6 +190,29 @@
     "filter": "Filter Calls",
     "speedDial": "Speed Dial",
     "voicemail": "Voicemail",
+
+    "stats": {
+      "total": "Total",
+      "totalCalls": "Total Calls",
+      "totalDuration": "Total Duration",
+      "averageDuration": "Average Duration",
+      "longestCall": "Longest Call",
+      "firstCall": "First Call",
+      "lastCall": "Last Call",
+      "incomingCall": "Incoming call",
+      "outgoingCall": "Outgoing call",
+      "missedCall": "Missed call",
+      "rejectedCall": "Rejected call"
+    },
+
+    "menu": {
+      "callDetail": "Call Details",
+      "blockNumber": "Block Number",
+      "addToContacts": "Add to Contacts",
+      "copyNumber": "Copy Number",
+      "muteContact": "Mute Contact",
+      "deleteCall": "Delete Call"
+    },
 
     "status": {
       "dialing": "Dialing...",
@@ -316,6 +340,9 @@
     "about": {
       "title": "About"
     },
+
+    "ringtone": "Ringtone",
+    "ringtoneDescription": "Select default ringtone",
 
     "calendar": {
       "title": "Calendar Settings",
@@ -609,6 +636,26 @@
 
     "noteNotFound": "Note Not Found",
     "noteNotFoundMessage": "This note may have been deleted"
+  },
+  "ringtone": {
+    "title": "Ringtone",
+    "selectRingtone": "Select Ringtone",
+    "system": "System",
+    "custom": "Custom",
+    "all": "All",
+    "silent": "Silent",
+    "default": "Default",
+    "loading": "Loading ringtones...",
+    "noRingtones": "No ringtones found",
+    "noResults": "No search results",
+    "noCustom": "No custom ringtones found",
+    "customHint": "Add music files to your downloads folder",
+    "playing": "Playing...",
+    "playError": "Could not play ringtone",
+    "customRingtone": "Custom Ringtone",
+    "customRingtoneDesc": "Play a different ringtone when this person calls",
+    "setCustomRingtone": "Set Ringtone",
+    "removeCustomRingtone": "Remove Custom Ringtone"
   },
   "store": {
     "themes": "Theme Store",

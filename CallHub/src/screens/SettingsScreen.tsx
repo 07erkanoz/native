@@ -85,6 +85,16 @@ const SettingsScreen: React.FC = () => {
           titleStyle={{ color: theme.colors.onSurface }}
           descriptionStyle={{ color: theme.colors.onSurfaceVariant }}
         />
+        <Divider />
+        <List.Item
+          title={t('settings.ringtone') || 'Zil Sesi'}
+          description={t('settings.ringtoneDescription') || 'Varsayılan zil sesini seç'}
+          left={() => renderIcon('music-note')}
+          onPress={() => navigation.navigate('SettingsRingtone')}
+          style={[styles.listItem, { backgroundColor: theme.colors.surface }]}
+          titleStyle={{ color: theme.colors.onSurface }}
+          descriptionStyle={{ color: theme.colors.onSurfaceVariant }}
+        />
       </List.Section>
 
       {/* Mağaza */}

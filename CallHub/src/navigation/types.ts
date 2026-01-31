@@ -27,9 +27,12 @@ export type RootStackParamList = {
   ContactAdd: { accountId?: string };
 
   // Arama ekranları
-  CallDetail: { callId: string };
+  CallDetail: { callId?: string; phoneNumber: string; contactName?: string };
   IncomingCall: { callId: string };
   OngoingCall: { callId: string };
+
+  // Zil sesi ayarları
+  SettingsRingtone: undefined;
 
   // Takvim ekranları
   EventDetail: { eventId: string };
