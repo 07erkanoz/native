@@ -555,12 +555,36 @@ interface CalendarSettings {
 - [x] Tema önizleme
 - [x] Tema uygulama
 
-### 8.3 Zil Sesi Mağazası
-- [ ] RingtoneStoreScreen
-- [ ] Zil sesi önizleme
-- [ ] Zil sesi indirme
+### 8.3 Zil Sesi Ayarları ✅
+- [x] SettingsRingtoneScreen - Zil sesi seçme ekranı
+- [x] RingtoneModule.java - Native Android modülü
+- [x] Sistem zil seslerini listeleme
+- [x] Özel/indirilen zil seslerini listeleme
+- [x] Zil sesi önizleme (çalma/durdurma)
+- [x] Kişiye özel zil sesi ayarlama
+- [x] Kişiye özel zil sesi kaldırma
 
-### 8.4 Diğer Ayarlar
+### 8.4 Arama Detay ve Geçmiş ✅
+- [x] CallDetailScreen - Arama detay ekranı
+  - [x] Telefon numarası profil bölümü
+  - [x] Hızlı aksiyonlar (Ara, SMS, WhatsApp)
+  - [x] İstatistik kartları (toplam, gelen, giden, cevapsız)
+  - [x] Detaylı istatistikler (toplam süre, ortalama, en uzun)
+  - [x] İlk/son arama tarihleri
+  - [x] Tam arama geçmişi listesi
+  - [x] Menü (kopyala, engelle, rehbere ekle)
+- [x] CallsScreen uzun basma menüsü
+  - [x] Arama Detayı
+  - [x] Numarayı Engelle
+  - [x] Rehbere Ekle
+  - [x] Numarayı Kopyala
+  - [x] SMS / WhatsApp
+- [x] ContactDetailScreen arama geçmişi
+  - [x] Arama istatistikleri (gelen, giden, cevapsız, toplam süre)
+  - [x] Son aramalar listesi
+  - [x] Kişiye özel zil sesi ayarlama
+
+### 8.5 Diğer Ayarlar
 - [ ] SettingsContactsScreen
 - [ ] SettingsCallsScreen
 - [ ] SettingsCalendarScreen (Faz 6.7'de detaylı)
@@ -587,10 +611,13 @@ interface CalendarSettings {
 - [ ] Ayar yedekleme
 - [ ] Bulut senkronizasyonu
 
-### 9.4 Widget'lar
-- [ ] Favori kişiler widget
-- [ ] Hızlı arama widget
-- [ ] Arama geçmişi widget
+### 9.4 Widget'lar ✅
+- [x] CalendarWidgetProvider - Takvim widget'ı
+- [x] CallsWidgetProvider - Aramalar widget'ı
+  - [x] Son aramalar listesi
+  - [x] Favori kişiler
+- [x] WidgetModule - React Native bridge
+- [x] Widget layout'ları ve drawable'lar
 
 ---
 
@@ -774,10 +801,22 @@ CallHub/
     - WidgetModule (React Native bridge)
     - Widget layout'ları ve drawable'lar
     - Otomatik güncelleme desteği
+16. **Zil Sesi Ayarları**
+    - RingtoneModule.java (Native Android modülü)
+    - RingtoneModule.ts (TypeScript wrapper)
+    - SettingsRingtoneScreen (sistem + özel zil sesleri)
+    - Zil sesi önizleme ve seçimi
+    - Kişiye özel zil sesi ayarlama (ContactsContract)
+17. **Arama Detay ve Geçmiş İyileştirmeleri**
+    - CallDetailScreen (istatistikler, geçmiş, aksiyonlar)
+    - CallsScreen uzun basma menüsü (engelle, detay, kopyala, ekle)
+    - ContactDetailScreen arama geçmişi ve istatistikleri
+    - i18n çevirileri (calls.stats, calls.menu, ringtone)
 
 **Aktif Geliştirme:**
 - Faz 6: Takvim Modülü ✅ BÜYÜK ÖLÇÜDE TAMAMLANDI
 - Faz 7: Notlar Modülü ✅ BÜYÜK ÖLÇÜDE TAMAMLANDI
+- Faz 8: Ayarlar ve Mağaza ✅ BÜYÜK ÖLÇÜDE TAMAMLANDI
 - Faz 9: Widget'lar ✅ TAMAMLANDI
 
 **Sonraki Adımlar:**
@@ -786,6 +825,7 @@ CallHub/
 3. Not şablonları
 4. Arama kaydı özelliği
 5. Yedekleme sistemi
+6. Diğer diller için çeviriler (de, fr, es, ru, ar)
 
 ---
 
