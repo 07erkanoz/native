@@ -277,3 +277,6 @@ export type MainTabParamList = {
 
 // Takvim tipleri
 export * from './calendar';
+
+// Not tipleri
+export * from './notes';

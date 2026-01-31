@@ -12,6 +12,7 @@ export type MainTabParamList = {
   Calls: undefined;
   Contacts: undefined;
   Calendar: undefined;
+  Notes: undefined;
   Settings: undefined;
 };
 
@@ -37,7 +38,9 @@ export type RootStackParamList = {
 
   // Notlar
   NoteDetail: { noteId: string };
-  NoteEdit: { noteId?: string; callId?: string };
+  NoteEdit: { noteId?: string; callId?: string; contactId?: string; eventId?: string };
+  NotesFolder: { folderId: string };
+  NotesSearch: undefined;
 
   // Mağaza
   ThemeStore: undefined;

@@ -49,6 +49,7 @@
     "calls": "Llamadas",
     "contacts": "Contactos",
     "calendar": "Calendario",
+    "notes": "Notas",
     "settings": "Ajustes"
   },
   "contacts": {
@@ -304,6 +305,32 @@
       "rateApp": "Valorar app",
       "privacyPolicy": "Política de privacidad",
       "termsOfService": "Términos de servicio"
+    },
+
+    "calendar": {
+      "title": "Ajustes del calendario",
+      "sync": "Sincronización",
+      "googleSync": "Sincronizar Google Calendar",
+      "googleSyncDesc": "Sincronizar con Google Calendar",
+      "autoSync": "Sincronización automática",
+      "autoSyncDesc": "Sincronizar cambios automáticamente",
+      "syncInterval": "Intervalo de sincronización",
+      "lastSync": "Última sincronización",
+      "neverSynced": "Nunca sincronizado",
+      "syncNow": "Sincronizar ahora",
+      "importExport": "Importar/Exportar",
+      "importCalendar": "Importar calendario",
+      "exportCalendar": "Exportar calendario",
+      "defaultReminder": "Recordatorio predeterminado",
+      "defaultReminderDesc": "Recordatorio predeterminado para nuevos eventos",
+      "weekStartsOn": "La semana comienza el",
+      "defaultView": "Vista predeterminada",
+      "showWeekNumbers": "Mostrar números de semana",
+      "showDeclinedEvents": "Mostrar eventos rechazados",
+      "defaultCalendar": "Calendario predeterminado",
+      "ringtone": "Tono de recordatorio",
+      "vibration": "Vibración",
+      "notificationSound": "Sonido de notificación"
     }
   },
   "calendar": {
@@ -313,25 +340,261 @@
     "week": "Semana",
     "day": "Día",
     "agenda": "Agenda",
+    "monthView": "Vista mensual",
+    "weekView": "Vista semanal",
+    "dayView": "Vista diaria",
     "newEvent": "Nuevo evento",
     "editEvent": "Editar evento",
     "deleteEvent": "Eliminar evento",
+    "deleteConfirm": "¿Está seguro de que desea eliminar este evento?",
     "noEvents": "Sin eventos",
+    "noEventsForDay": "Sin eventos para este día",
+    "tapToAdd": "Toca para añadir",
+    "events": "Eventos",
+    "event": "Evento",
+    "eventTitle": "Título del evento",
     "allDay": "Todo el día",
+    "startDate": "Fecha de inicio",
+    "endDate": "Fecha de fin",
+    "startTime": "Hora de inicio",
+    "endTime": "Hora de fin",
     "reminder": "Recordatorio",
+    "reminders": "Recordatorios",
+    "addReminder": "Añadir recordatorio",
     "repeat": "Repetir",
+    "recurrence": "Recurrencia",
     "location": "Ubicación",
+    "selectLocation": "Seleccionar ubicación",
+    "openInMaps": "Abrir en Mapas",
     "description": "Descripción",
-    "googleSync": "Sincronizar Google Calendar"
+    "notes": "Notas",
+    "attachNote": "Adjuntar nota",
+    "color": "Color",
+    "calendar": "Calendario",
+    "selectCalendar": "Seleccionar calendario",
+    "participants": "Participantes",
+    "addParticipant": "Añadir participante",
+    "organizer": "Organizador",
+    "status": "Estado",
+    "busy": "Ocupado",
+    "free": "Disponible",
+    "tentative": "Provisional",
+    "callReminder": "Recordatorio de llamada",
+    "callReminderDesc": "Recordatorio para llamar a este contacto",
+    "share": "Compartir",
+    "shareEvent": "Compartir evento",
+    "exportEvent": "Exportar evento",
+
+    "reminderOptions": {
+      "none": "Ninguno",
+      "atTime": "A la hora del evento",
+      "5min": "5 minutos antes",
+      "10min": "10 minutos antes",
+      "15min": "15 minutos antes",
+      "30min": "30 minutos antes",
+      "1hour": "1 hora antes",
+      "2hours": "2 horas antes",
+      "1day": "1 día antes",
+      "2days": "2 días antes",
+      "1week": "1 semana antes"
+    },
+
+    "recurrenceOptions": {
+      "none": "No repetir",
+      "daily": "Diario",
+      "weekly": "Semanal",
+      "biweekly": "Quincenal",
+      "monthly": "Mensual",
+      "yearly": "Anual",
+      "custom": "Personalizado"
+    },
+
+    "sync": {
+      "googleSync": "Sincronizar Google Calendar",
+      "syncEnabled": "Sincronización activada",
+      "syncDisabled": "Sincronización desactivada",
+      "lastSync": "Última sincronización",
+      "syncNow": "Sincronizar ahora",
+      "syncing": "Sincronizando...",
+      "syncSuccess": "Sincronización exitosa",
+      "syncError": "Error de sincronización",
+      "connectGoogle": "Conectar cuenta Google",
+      "disconnectGoogle": "Desconectar cuenta Google",
+      "googleConnected": "Cuenta Google conectada",
+      "googleNotConnected": "Cuenta Google no conectada"
+    },
+
+    "import": {
+      "title": "Importar",
+      "importICS": "Importar desde archivo ICS",
+      "importExcel": "Importar desde Excel",
+      "importing": "Importando...",
+      "importSuccess": "{{count}} eventos importados",
+      "importError": "Error de importación",
+      "selectFile": "Seleccionar archivo"
+    },
+
+    "export": {
+      "title": "Exportar",
+      "exportICS": "Exportar como ICS",
+      "exportExcel": "Exportar como Excel",
+      "exportAll": "Exportar todos los eventos",
+      "exportRange": "Exportar rango de fechas",
+      "exporting": "Exportando...",
+      "exportSuccess": "Exportación exitosa",
+      "exportError": "Error de exportación"
+    },
+
+    "weekDays": {
+      "sun": "Dom",
+      "mon": "Lun",
+      "tue": "Mar",
+      "wed": "Mié",
+      "thu": "Jue",
+      "fri": "Vie",
+      "sat": "Sáb"
+    },
+
+    "weekDaysFull": {
+      "sunday": "Domingo",
+      "monday": "Lunes",
+      "tuesday": "Martes",
+      "wednesday": "Miércoles",
+      "thursday": "Jueves",
+      "friday": "Viernes",
+      "saturday": "Sábado"
+    },
+
+    "months": {
+      "january": "Enero",
+      "february": "Febrero",
+      "march": "Marzo",
+      "april": "Abril",
+      "may": "Mayo",
+      "june": "Junio",
+      "july": "Julio",
+      "august": "Agosto",
+      "september": "Septiembre",
+      "october": "Octubre",
+      "november": "Noviembre",
+      "december": "Diciembre"
+    },
+
+    "notifications": {
+      "eventReminder": "Recordatorio de evento",
+      "upcomingEvent": "Evento próximo: {{title}}",
+      "callReminder": "Recordatorio de llamada",
+      "timeToCall": "Hora de llamar a {{name}}"
+    }
   },
   "notes": {
     "title": "Notas",
     "newNote": "Nueva nota",
     "editNote": "Editar nota",
     "deleteNote": "Eliminar nota",
+    "deleteNoteConfirm": "¿Está seguro de que desea eliminar esta nota?",
     "noNotes": "Sin notas",
+    "createFirstNote": "Crea tu primera nota",
     "searchNotes": "Buscar notas",
-    "voiceNote": "Nota de voz"
+    "searchPlaceholder": "Buscar en notas...",
+    "noSearchResults": "No se encontraron notas",
+    "tryDifferentSearch": "Intenta con otro término de búsqueda",
+
+    "allNotes": "Todas las notas",
+    "archive": "Archivo",
+    "trash": "Papelera",
+    "pinned": "Fijadas",
+
+    "text": "Texto",
+    "checklist": "Lista",
+    "voice": "Voz",
+    "textNotes": "Notas de texto",
+    "checklists": "Listas de verificación",
+    "voiceNotes": "Notas de voz",
+    "voiceNote": "Nota de voz",
+    "all": "Todas",
+
+    "titlePlaceholder": "Título",
+    "contentPlaceholder": "Empieza a escribir...",
+    "emptyNote": "Nota vacía",
+    "emptyNoteError": "La nota está vacía",
+    "untitled": "Sin título",
+
+    "pin": "Fijar",
+    "unpin": "Desfijar",
+    "archiveAction": "Archivar",
+    "unarchive": "Desarchivar",
+    "moveToTrash": "Mover a papelera",
+    "restore": "Restaurar",
+    "deletePermanently": "Eliminar permanentemente",
+    "deletePermanentlyMessage": "Esta nota se eliminará permanentemente y no se podrá recuperar.",
+
+    "checklistItemPlaceholder": "Elemento de lista",
+    "addChecklistItem": "Añadir elemento",
+    "completed": "completado",
+
+    "voiceRecordingPlaceholder": "Toca para grabar",
+    "startRecording": "Iniciar grabación",
+    "stopRecording": "Detener grabación",
+    "playRecording": "Reproducir grabación",
+
+    "linkContact": "Vincular contacto",
+    "unlinkContact": "Desvincular contacto",
+    "selectContacts": "Seleccionar contactos",
+    "linkedContacts": "Contactos vinculados",
+    "linkEvent": "Vincular evento",
+    "unlinkEvent": "Desvincular evento",
+    "selectEvents": "Seleccionar eventos",
+    "linkedEvents": "Eventos vinculados",
+
+    "addReminder": "Añadir recordatorio",
+    "setReminder": "Establecer recordatorio",
+    "reminders": "Recordatorios",
+    "reminderSet": "Recordatorio establecido",
+
+    "addLocation": "Añadir ubicación",
+    "location": "Ubicación",
+    "locationSet": "Ubicación establecida",
+    "viewOnMap": "Ver en el mapa",
+
+    "addTags": "Añadir etiquetas",
+    "selectTags": "Seleccionar etiquetas",
+    "tags": "Etiquetas",
+    "noTags": "Sin etiquetas",
+
+    "selectFolder": "Seleccionar carpeta",
+    "createFolder": "Crear carpeta",
+    "folder": "Carpeta",
+
+    "attachments": "Adjuntos",
+    "addAttachment": "Añadir adjunto",
+
+    "color": "Color",
+    "priority": {
+      "low": "Baja",
+      "normal": "Normal",
+      "high": "Alta",
+      "urgent": "Urgente"
+    },
+
+    "sortByUpdated": "Última modificación",
+    "sortByCreated": "Creación",
+    "sortByTitle": "Título",
+    "sortByPriority": "Prioridad",
+
+    "lastModified": "Última modificación",
+    "created": "Creada",
+
+    "unsavedChanges": "Cambios sin guardar",
+    "unsavedChangesMessage": "Tienes cambios sin guardar. ¿Deseas guardarlos?",
+    "saveError": "No se pudo guardar la nota",
+    "error": "Error",
+
+    "share": "Compartir",
+    "shareNote": "Compartir nota",
+
+    "noteNotFound": "Nota no encontrada",
+    "noteNotFoundMessage": "Esta nota puede haber sido eliminada"
   },
   "store": {
     "themes": "Tienda de temas",

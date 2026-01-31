@@ -49,6 +49,7 @@
     "calls": "المكالمات",
     "contacts": "جهات الاتصال",
     "calendar": "التقويم",
+    "notes": "الملاحظات",
     "settings": "الإعدادات"
   },
   "contacts": {
@@ -304,6 +305,32 @@
       "rateApp": "تقييم التطبيق",
       "privacyPolicy": "سياسة الخصوصية",
       "termsOfService": "شروط الخدمة"
+    },
+
+    "calendar": {
+      "title": "إعدادات التقويم",
+      "sync": "المزامنة",
+      "googleSync": "مزامنة تقويم جوجل",
+      "googleSyncDesc": "المزامنة مع تقويم جوجل",
+      "autoSync": "مزامنة تلقائية",
+      "autoSyncDesc": "مزامنة التغييرات تلقائياً",
+      "syncInterval": "فترة المزامنة",
+      "lastSync": "آخر مزامنة",
+      "neverSynced": "لم تتم المزامنة",
+      "syncNow": "مزامنة الآن",
+      "importExport": "استيراد/تصدير",
+      "importCalendar": "استيراد تقويم",
+      "exportCalendar": "تصدير تقويم",
+      "defaultReminder": "التذكير الافتراضي",
+      "defaultReminderDesc": "التذكير الافتراضي للأحداث الجديدة",
+      "weekStartsOn": "الأسبوع يبدأ يوم",
+      "defaultView": "العرض الافتراضي",
+      "showWeekNumbers": "عرض أرقام الأسابيع",
+      "showDeclinedEvents": "عرض الأحداث المرفوضة",
+      "defaultCalendar": "التقويم الافتراضي",
+      "ringtone": "نغمة التذكير",
+      "vibration": "الاهتزاز",
+      "notificationSound": "صوت الإشعار"
     }
   },
   "calendar": {
@@ -313,25 +340,261 @@
     "week": "الأسبوع",
     "day": "اليوم",
     "agenda": "الأجندة",
+    "monthView": "عرض الشهر",
+    "weekView": "عرض الأسبوع",
+    "dayView": "عرض اليوم",
     "newEvent": "حدث جديد",
     "editEvent": "تعديل الحدث",
     "deleteEvent": "حذف الحدث",
+    "deleteConfirm": "هل أنت متأكد من حذف هذا الحدث؟",
     "noEvents": "لا توجد أحداث",
+    "noEventsForDay": "لا توجد أحداث لهذا اليوم",
+    "tapToAdd": "اضغط للإضافة",
+    "events": "الأحداث",
+    "event": "حدث",
+    "eventTitle": "عنوان الحدث",
     "allDay": "طوال اليوم",
+    "startDate": "تاريخ البدء",
+    "endDate": "تاريخ الانتهاء",
+    "startTime": "وقت البدء",
+    "endTime": "وقت الانتهاء",
     "reminder": "تذكير",
+    "reminders": "التذكيرات",
+    "addReminder": "إضافة تذكير",
     "repeat": "تكرار",
+    "recurrence": "التكرار",
     "location": "الموقع",
+    "selectLocation": "اختيار الموقع",
+    "openInMaps": "فتح في الخرائط",
     "description": "الوصف",
-    "googleSync": "مزامنة تقويم جوجل"
+    "notes": "الملاحظات",
+    "attachNote": "إرفاق ملاحظة",
+    "color": "اللون",
+    "calendar": "التقويم",
+    "selectCalendar": "اختيار التقويم",
+    "participants": "المشاركون",
+    "addParticipant": "إضافة مشارك",
+    "organizer": "المنظم",
+    "status": "الحالة",
+    "busy": "مشغول",
+    "free": "متاح",
+    "tentative": "مبدئي",
+    "callReminder": "تذكير بالاتصال",
+    "callReminderDesc": "تذكير للاتصال بهذا الشخص",
+    "share": "مشاركة",
+    "shareEvent": "مشاركة الحدث",
+    "exportEvent": "تصدير الحدث",
+
+    "reminderOptions": {
+      "none": "لا شيء",
+      "atTime": "في وقت الحدث",
+      "5min": "قبل 5 دقائق",
+      "10min": "قبل 10 دقائق",
+      "15min": "قبل 15 دقيقة",
+      "30min": "قبل 30 دقيقة",
+      "1hour": "قبل ساعة",
+      "2hours": "قبل ساعتين",
+      "1day": "قبل يوم",
+      "2days": "قبل يومين",
+      "1week": "قبل أسبوع"
+    },
+
+    "recurrenceOptions": {
+      "none": "لا يتكرر",
+      "daily": "يومياً",
+      "weekly": "أسبوعياً",
+      "biweekly": "كل أسبوعين",
+      "monthly": "شهرياً",
+      "yearly": "سنوياً",
+      "custom": "مخصص"
+    },
+
+    "sync": {
+      "googleSync": "مزامنة تقويم جوجل",
+      "syncEnabled": "المزامنة مفعّلة",
+      "syncDisabled": "المزامنة معطّلة",
+      "lastSync": "آخر مزامنة",
+      "syncNow": "مزامنة الآن",
+      "syncing": "جاري المزامنة...",
+      "syncSuccess": "تمت المزامنة بنجاح",
+      "syncError": "خطأ في المزامنة",
+      "connectGoogle": "ربط حساب جوجل",
+      "disconnectGoogle": "إلغاء ربط حساب جوجل",
+      "googleConnected": "حساب جوجل مرتبط",
+      "googleNotConnected": "حساب جوجل غير مرتبط"
+    },
+
+    "import": {
+      "title": "استيراد",
+      "importICS": "استيراد من ملف ICS",
+      "importExcel": "استيراد من Excel",
+      "importing": "جاري الاستيراد...",
+      "importSuccess": "تم استيراد {{count}} حدث",
+      "importError": "خطأ في الاستيراد",
+      "selectFile": "اختيار ملف"
+    },
+
+    "export": {
+      "title": "تصدير",
+      "exportICS": "تصدير كـ ICS",
+      "exportExcel": "تصدير كـ Excel",
+      "exportAll": "تصدير جميع الأحداث",
+      "exportRange": "تصدير نطاق التاريخ",
+      "exporting": "جاري التصدير...",
+      "exportSuccess": "تم التصدير بنجاح",
+      "exportError": "خطأ في التصدير"
+    },
+
+    "weekDays": {
+      "sun": "أحد",
+      "mon": "اثنين",
+      "tue": "ثلاثاء",
+      "wed": "أربعاء",
+      "thu": "خميس",
+      "fri": "جمعة",
+      "sat": "سبت"
+    },
+
+    "weekDaysFull": {
+      "sunday": "الأحد",
+      "monday": "الاثنين",
+      "tuesday": "الثلاثاء",
+      "wednesday": "الأربعاء",
+      "thursday": "الخميس",
+      "friday": "الجمعة",
+      "saturday": "السبت"
+    },
+
+    "months": {
+      "january": "يناير",
+      "february": "فبراير",
+      "march": "مارس",
+      "april": "أبريل",
+      "may": "مايو",
+      "june": "يونيو",
+      "july": "يوليو",
+      "august": "أغسطس",
+      "september": "سبتمبر",
+      "october": "أكتوبر",
+      "november": "نوفمبر",
+      "december": "ديسمبر"
+    },
+
+    "notifications": {
+      "eventReminder": "تذكير بالحدث",
+      "upcomingEvent": "حدث قادم: {{title}}",
+      "callReminder": "تذكير بالاتصال",
+      "timeToCall": "حان وقت الاتصال بـ {{name}}"
+    }
   },
   "notes": {
     "title": "الملاحظات",
     "newNote": "ملاحظة جديدة",
     "editNote": "تعديل الملاحظة",
     "deleteNote": "حذف الملاحظة",
+    "deleteNoteConfirm": "هل أنت متأكد من حذف هذه الملاحظة؟",
     "noNotes": "لا توجد ملاحظات",
+    "createFirstNote": "أنشئ ملاحظتك الأولى",
     "searchNotes": "البحث في الملاحظات",
-    "voiceNote": "ملاحظة صوتية"
+    "searchPlaceholder": "البحث في الملاحظات...",
+    "noSearchResults": "لم يتم العثور على ملاحظات",
+    "tryDifferentSearch": "جرب مصطلح بحث مختلف",
+
+    "allNotes": "كل الملاحظات",
+    "archive": "الأرشيف",
+    "trash": "سلة المهملات",
+    "pinned": "المثبتة",
+
+    "text": "نص",
+    "checklist": "قائمة",
+    "voice": "صوت",
+    "textNotes": "ملاحظات نصية",
+    "checklists": "قوائم المهام",
+    "voiceNotes": "ملاحظات صوتية",
+    "voiceNote": "ملاحظة صوتية",
+    "all": "الكل",
+
+    "titlePlaceholder": "العنوان",
+    "contentPlaceholder": "ابدأ الكتابة...",
+    "emptyNote": "ملاحظة فارغة",
+    "emptyNoteError": "الملاحظة فارغة",
+    "untitled": "بدون عنوان",
+
+    "pin": "تثبيت",
+    "unpin": "إلغاء التثبيت",
+    "archiveAction": "أرشفة",
+    "unarchive": "إلغاء الأرشفة",
+    "moveToTrash": "نقل إلى سلة المهملات",
+    "restore": "استعادة",
+    "deletePermanently": "حذف نهائي",
+    "deletePermanentlyMessage": "سيتم حذف هذه الملاحظة نهائياً ولا يمكن استعادتها.",
+
+    "checklistItemPlaceholder": "عنصر القائمة",
+    "addChecklistItem": "إضافة عنصر",
+    "completed": "مكتمل",
+
+    "voiceRecordingPlaceholder": "اضغط للتسجيل",
+    "startRecording": "بدء التسجيل",
+    "stopRecording": "إيقاف التسجيل",
+    "playRecording": "تشغيل التسجيل",
+
+    "linkContact": "ربط جهة اتصال",
+    "unlinkContact": "إلغاء ربط جهة الاتصال",
+    "selectContacts": "اختيار جهات الاتصال",
+    "linkedContacts": "جهات الاتصال المرتبطة",
+    "linkEvent": "ربط حدث",
+    "unlinkEvent": "إلغاء ربط الحدث",
+    "selectEvents": "اختيار الأحداث",
+    "linkedEvents": "الأحداث المرتبطة",
+
+    "addReminder": "إضافة تذكير",
+    "setReminder": "تعيين تذكير",
+    "reminders": "التذكيرات",
+    "reminderSet": "تم تعيين التذكير",
+
+    "addLocation": "إضافة موقع",
+    "location": "الموقع",
+    "locationSet": "تم تعيين الموقع",
+    "viewOnMap": "عرض على الخريطة",
+
+    "addTags": "إضافة علامات",
+    "selectTags": "اختيار العلامات",
+    "tags": "العلامات",
+    "noTags": "لا توجد علامات",
+
+    "selectFolder": "اختيار مجلد",
+    "createFolder": "إنشاء مجلد",
+    "folder": "مجلد",
+
+    "attachments": "المرفقات",
+    "addAttachment": "إضافة مرفق",
+
+    "color": "اللون",
+    "priority": {
+      "low": "منخفض",
+      "normal": "عادي",
+      "high": "مرتفع",
+      "urgent": "عاجل"
+    },
+
+    "sortByUpdated": "آخر تعديل",
+    "sortByCreated": "تاريخ الإنشاء",
+    "sortByTitle": "العنوان",
+    "sortByPriority": "الأولوية",
+
+    "lastModified": "آخر تعديل",
+    "created": "تاريخ الإنشاء",
+
+    "unsavedChanges": "تغييرات غير محفوظة",
+    "unsavedChangesMessage": "لديك تغييرات غير محفوظة. هل تريد حفظها؟",
+    "saveError": "تعذر حفظ الملاحظة",
+    "error": "خطأ",
+
+    "share": "مشاركة",
+    "shareNote": "مشاركة الملاحظة",
+
+    "noteNotFound": "الملاحظة غير موجودة",
+    "noteNotFoundMessage": "ربما تم حذف هذه الملاحظة"
   },
   "store": {
     "themes": "متجر السمات",

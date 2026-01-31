@@ -22,6 +22,7 @@ import FavoritesScreen from '../screens/FavoritesScreen';
 import CallsScreen from '../screens/CallsScreen';
 import ContactsScreen from '../screens/ContactsScreen';
 import CalendarScreen from '../screens/CalendarScreen';
+import NotesScreen from '../screens/NotesScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
@@ -137,6 +138,23 @@ const MainTabNavigator: React.FC = () => {
               size={size}
               name="calendar"
               focusedName="calendar"
+            />
+          ),
+        }}
+      />
+
+      <Tab.Screen
+        name="Notes"
+        component={NotesScreen}
+        options={{
+          tabBarLabel: t('tabs.notes'),
+          tabBarIcon: ({ focused, color, size }) => (
+            <TabBarIcon
+              focused={focused}
+              color={color}
+              size={size}
+              name="note-text"
+              focusedName="note-text"
             />
           ),
         }}

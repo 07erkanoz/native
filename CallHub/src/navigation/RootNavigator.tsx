@@ -24,6 +24,8 @@ import DialerScreen from '../screens/DialerScreen';
 import SetupWizardScreen from '../screens/SetupWizardScreen';
 import EventEditScreen from '../screens/EventEditScreen';
 import EventDetailScreen from '../screens/EventDetailScreen';
+import NoteEditScreen from '../screens/NoteEditScreen';
+import NoteDetailScreen from '../screens/NoteDetailScreen';
 import SettingsAppearanceScreen from '../screens/settings/SettingsAppearanceScreen';
 import SettingsLanguageScreen from '../screens/settings/SettingsLanguageScreen';
 import SettingsCalendarScreen from '../screens/settings/SettingsCalendarScreen';
@@ -184,6 +186,25 @@ const RootNavigator: React.FC = () => {
         component={SettingsCalendarScreen}
         options={{
           title: t('settings.calendar.title'),
+        }}
+      />
+
+      {/* Not Ekranları */}
+      <Stack.Screen
+        name="NoteEdit"
+        component={NoteEditScreen}
+        options={{
+          headerShown: false,
+          presentation: 'modal',
+          animation: 'slide_from_bottom',
+        }}
+      />
+
+      <Stack.Screen
+        name="NoteDetail"
+        component={NoteDetailScreen}
+        options={{
+          headerShown: false,
         }}
       />
 

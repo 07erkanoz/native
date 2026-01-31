@@ -49,6 +49,7 @@
     "calls": "Вызовы",
     "contacts": "Контакты",
     "calendar": "Календарь",
+    "notes": "Заметки",
     "settings": "Настройки"
   },
   "contacts": {
@@ -304,6 +305,32 @@
       "rateApp": "Оценить",
       "privacyPolicy": "Политика конфиденциальности",
       "termsOfService": "Условия использования"
+    },
+
+    "calendar": {
+      "title": "Настройки календаря",
+      "sync": "Синхронизация",
+      "googleSync": "Синхронизация Google",
+      "googleSyncDesc": "Синхронизировать с Google Календарём",
+      "autoSync": "Автосинхронизация",
+      "autoSyncDesc": "Автоматически синхронизировать изменения",
+      "syncInterval": "Интервал синхронизации",
+      "lastSync": "Последняя синхронизация",
+      "neverSynced": "Никогда не синхронизировался",
+      "syncNow": "Синхронизировать сейчас",
+      "importExport": "Импорт/Экспорт",
+      "importCalendar": "Импортировать календарь",
+      "exportCalendar": "Экспортировать календарь",
+      "defaultReminder": "Напоминание по умолчанию",
+      "defaultReminderDesc": "Напоминание по умолчанию для новых событий",
+      "weekStartsOn": "Неделя начинается с",
+      "defaultView": "Вид по умолчанию",
+      "showWeekNumbers": "Показывать номера недель",
+      "showDeclinedEvents": "Показывать отклонённые",
+      "defaultCalendar": "Календарь по умолчанию",
+      "ringtone": "Мелодия напоминания",
+      "vibration": "Вибрация",
+      "notificationSound": "Звук уведомления"
     }
   },
   "calendar": {
@@ -313,25 +340,261 @@
     "week": "Неделя",
     "day": "День",
     "agenda": "Повестка",
+    "monthView": "Месяц",
+    "weekView": "Неделя",
+    "dayView": "День",
     "newEvent": "Новое событие",
     "editEvent": "Изменить событие",
     "deleteEvent": "Удалить событие",
+    "deleteConfirm": "Вы уверены, что хотите удалить это событие?",
     "noEvents": "Нет событий",
+    "noEventsForDay": "Нет событий на этот день",
+    "tapToAdd": "Нажмите, чтобы добавить",
+    "events": "События",
+    "event": "Событие",
+    "eventTitle": "Название события",
     "allDay": "Весь день",
+    "startDate": "Дата начала",
+    "endDate": "Дата окончания",
+    "startTime": "Время начала",
+    "endTime": "Время окончания",
     "reminder": "Напоминание",
+    "reminders": "Напоминания",
+    "addReminder": "Добавить напоминание",
     "repeat": "Повтор",
+    "recurrence": "Повторение",
     "location": "Место",
+    "selectLocation": "Выбрать место",
+    "openInMaps": "Открыть в картах",
     "description": "Описание",
-    "googleSync": "Синхронизация Google"
+    "notes": "Заметки",
+    "attachNote": "Прикрепить заметку",
+    "color": "Цвет",
+    "calendar": "Календарь",
+    "selectCalendar": "Выбрать календарь",
+    "participants": "Участники",
+    "addParticipant": "Добавить участника",
+    "organizer": "Организатор",
+    "status": "Статус",
+    "busy": "Занят",
+    "free": "Свободен",
+    "tentative": "Предварительно",
+    "callReminder": "Напоминание о звонке",
+    "callReminderDesc": "Напоминание позвонить этому контакту",
+    "share": "Поделиться",
+    "shareEvent": "Поделиться событием",
+    "exportEvent": "Экспортировать событие",
+
+    "reminderOptions": {
+      "none": "Нет",
+      "atTime": "Во время события",
+      "5min": "За 5 минут",
+      "10min": "За 10 минут",
+      "15min": "За 15 минут",
+      "30min": "За 30 минут",
+      "1hour": "За 1 час",
+      "2hours": "За 2 часа",
+      "1day": "За 1 день",
+      "2days": "За 2 дня",
+      "1week": "За 1 неделю"
+    },
+
+    "recurrenceOptions": {
+      "none": "Без повтора",
+      "daily": "Ежедневно",
+      "weekly": "Еженедельно",
+      "biweekly": "Раз в две недели",
+      "monthly": "Ежемесячно",
+      "yearly": "Ежегодно",
+      "custom": "Настроить"
+    },
+
+    "sync": {
+      "googleSync": "Синхронизация Google",
+      "syncEnabled": "Синхронизация включена",
+      "syncDisabled": "Синхронизация отключена",
+      "lastSync": "Последняя синхронизация",
+      "syncNow": "Синхронизировать",
+      "syncing": "Синхронизация...",
+      "syncSuccess": "Синхронизация успешна",
+      "syncError": "Ошибка синхронизации",
+      "connectGoogle": "Подключить Google",
+      "disconnectGoogle": "Отключить Google",
+      "googleConnected": "Google подключён",
+      "googleNotConnected": "Google не подключён"
+    },
+
+    "import": {
+      "title": "Импорт",
+      "importICS": "Импорт из ICS-файла",
+      "importExcel": "Импорт из Excel",
+      "importing": "Импорт...",
+      "importSuccess": "Импортировано {{count}} событий",
+      "importError": "Ошибка импорта",
+      "selectFile": "Выбрать файл"
+    },
+
+    "export": {
+      "title": "Экспорт",
+      "exportICS": "Экспорт в ICS",
+      "exportExcel": "Экспорт в Excel",
+      "exportAll": "Экспортировать все события",
+      "exportRange": "Экспортировать период",
+      "exporting": "Экспорт...",
+      "exportSuccess": "Экспорт успешен",
+      "exportError": "Ошибка экспорта"
+    },
+
+    "weekDays": {
+      "sun": "Вс",
+      "mon": "Пн",
+      "tue": "Вт",
+      "wed": "Ср",
+      "thu": "Чт",
+      "fri": "Пт",
+      "sat": "Сб"
+    },
+
+    "weekDaysFull": {
+      "sunday": "Воскресенье",
+      "monday": "Понедельник",
+      "tuesday": "Вторник",
+      "wednesday": "Среда",
+      "thursday": "Четверг",
+      "friday": "Пятница",
+      "saturday": "Суббота"
+    },
+
+    "months": {
+      "january": "Январь",
+      "february": "Февраль",
+      "march": "Март",
+      "april": "Апрель",
+      "may": "Май",
+      "june": "Июнь",
+      "july": "Июль",
+      "august": "Август",
+      "september": "Сентябрь",
+      "october": "Октябрь",
+      "november": "Ноябрь",
+      "december": "Декабрь"
+    },
+
+    "notifications": {
+      "eventReminder": "Напоминание о событии",
+      "upcomingEvent": "Предстоящее событие: {{title}}",
+      "callReminder": "Напоминание о звонке",
+      "timeToCall": "Пора позвонить {{name}}"
+    }
   },
   "notes": {
     "title": "Заметки",
     "newNote": "Новая заметка",
     "editNote": "Изменить заметку",
     "deleteNote": "Удалить заметку",
+    "deleteNoteConfirm": "Вы уверены, что хотите удалить эту заметку?",
     "noNotes": "Нет заметок",
+    "createFirstNote": "Создайте свою первую заметку",
     "searchNotes": "Поиск заметок",
-    "voiceNote": "Голосовая заметка"
+    "searchPlaceholder": "Поиск в заметках...",
+    "noSearchResults": "Заметки не найдены",
+    "tryDifferentSearch": "Попробуйте другой поисковый запрос",
+
+    "allNotes": "Все заметки",
+    "archive": "Архив",
+    "trash": "Корзина",
+    "pinned": "Закреплённые",
+
+    "text": "Текст",
+    "checklist": "Список",
+    "voice": "Голос",
+    "textNotes": "Текстовые заметки",
+    "checklists": "Списки дел",
+    "voiceNotes": "Голосовые заметки",
+    "voiceNote": "Голосовая заметка",
+    "all": "Все",
+
+    "titlePlaceholder": "Заголовок",
+    "contentPlaceholder": "Начните писать...",
+    "emptyNote": "Пустая заметка",
+    "emptyNoteError": "Заметка пуста",
+    "untitled": "Без названия",
+
+    "pin": "Закрепить",
+    "unpin": "Открепить",
+    "archiveAction": "Архивировать",
+    "unarchive": "Разархивировать",
+    "moveToTrash": "В корзину",
+    "restore": "Восстановить",
+    "deletePermanently": "Удалить навсегда",
+    "deletePermanentlyMessage": "Эта заметка будет удалена безвозвратно.",
+
+    "checklistItemPlaceholder": "Элемент списка",
+    "addChecklistItem": "Добавить элемент",
+    "completed": "выполнено",
+
+    "voiceRecordingPlaceholder": "Нажмите для записи",
+    "startRecording": "Начать запись",
+    "stopRecording": "Остановить запись",
+    "playRecording": "Воспроизвести запись",
+
+    "linkContact": "Связать с контактом",
+    "unlinkContact": "Отвязать контакт",
+    "selectContacts": "Выбрать контакты",
+    "linkedContacts": "Связанные контакты",
+    "linkEvent": "Связать с событием",
+    "unlinkEvent": "Отвязать событие",
+    "selectEvents": "Выбрать события",
+    "linkedEvents": "Связанные события",
+
+    "addReminder": "Добавить напоминание",
+    "setReminder": "Установить напоминание",
+    "reminders": "Напоминания",
+    "reminderSet": "Напоминание установлено",
+
+    "addLocation": "Добавить место",
+    "location": "Место",
+    "locationSet": "Место установлено",
+    "viewOnMap": "Показать на карте",
+
+    "addTags": "Добавить теги",
+    "selectTags": "Выбрать теги",
+    "tags": "Теги",
+    "noTags": "Нет тегов",
+
+    "selectFolder": "Выбрать папку",
+    "createFolder": "Создать папку",
+    "folder": "Папка",
+
+    "attachments": "Вложения",
+    "addAttachment": "Добавить вложение",
+
+    "color": "Цвет",
+    "priority": {
+      "low": "Низкий",
+      "normal": "Обычный",
+      "high": "Высокий",
+      "urgent": "Срочный"
+    },
+
+    "sortByUpdated": "По изменению",
+    "sortByCreated": "По созданию",
+    "sortByTitle": "По названию",
+    "sortByPriority": "По приоритету",
+
+    "lastModified": "Изменено",
+    "created": "Создано",
+
+    "unsavedChanges": "Несохранённые изменения",
+    "unsavedChangesMessage": "У вас есть несохранённые изменения. Сохранить?",
+    "saveError": "Не удалось сохранить заметку",
+    "error": "Ошибка",
+
+    "share": "Поделиться",
+    "shareNote": "Поделиться заметкой",
+
+    "noteNotFound": "Заметка не найдена",
+    "noteNotFoundMessage": "Возможно, эта заметка была удалена"
   },
   "store": {
     "themes": "Магазин тем",

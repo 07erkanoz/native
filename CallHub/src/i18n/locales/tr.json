@@ -49,6 +49,7 @@
     "calls": "Aramalar",
     "contacts": "Kişiler",
     "calendar": "Takvim",
+    "notes": "Notlar",
     "settings": "Ayarlar"
   },
   "contacts": {
@@ -505,9 +506,109 @@
     "newNote": "Yeni Not",
     "editNote": "Notu Düzenle",
     "deleteNote": "Notu Sil",
+    "deleteNoteConfirm": "Bu notu silmek istediğinizden emin misiniz?",
     "noNotes": "Henüz not yok",
+    "createFirstNote": "İlk notunuzu oluşturun",
     "searchNotes": "Notlarda ara",
-    "voiceNote": "Sesli Not"
+    "searchPlaceholder": "Notlarda ara...",
+    "noSearchResults": "Not bulunamadı",
+    "tryDifferentSearch": "Farklı bir arama terimi deneyin",
+
+    "allNotes": "Tüm Notlar",
+    "archive": "Arşiv",
+    "trash": "Çöp Kutusu",
+    "pinned": "Sabitlenmiş",
+
+    "text": "Metin",
+    "checklist": "Kontrol Listesi",
+    "voice": "Sesli",
+    "textNotes": "Metin Notları",
+    "checklists": "Kontrol Listeleri",
+    "voiceNotes": "Sesli Notlar",
+    "voiceNote": "Sesli Not",
+    "all": "Tümü",
+
+    "titlePlaceholder": "Başlık",
+    "contentPlaceholder": "Yazmaya başlayın...",
+    "emptyNote": "Boş not",
+    "emptyNoteError": "Not boş",
+    "untitled": "Başlıksız",
+
+    "pin": "Sabitle",
+    "unpin": "Sabitlemeyi Kaldır",
+    "archiveAction": "Arşivle",
+    "unarchive": "Arşivden Çıkar",
+    "moveToTrash": "Çöp Kutusuna Taşı",
+    "restore": "Geri Yükle",
+    "deletePermanently": "Kalıcı Olarak Sil",
+    "deletePermanentlyMessage": "Bu not kalıcı olarak silinecek ve kurtarılamayacak.",
+
+    "checklistItemPlaceholder": "Liste öğesi",
+    "addChecklistItem": "Öğe ekle",
+    "completed": "tamamlandı",
+
+    "voiceRecordingPlaceholder": "Kayıt başlatmak için dokunun",
+    "startRecording": "Kayda Başla",
+    "stopRecording": "Kaydı Durdur",
+    "playRecording": "Kaydı Oynat",
+
+    "linkContact": "Kişi Bağla",
+    "unlinkContact": "Kişi Bağlantısını Kaldır",
+    "selectContacts": "Kişileri Seç",
+    "linkedContacts": "Bağlı Kişiler",
+    "linkEvent": "Etkinlik Bağla",
+    "unlinkEvent": "Etkinlik Bağlantısını Kaldır",
+    "selectEvents": "Etkinlikleri Seç",
+    "linkedEvents": "Bağlı Etkinlikler",
+
+    "addReminder": "Hatırlatıcı Ekle",
+    "setReminder": "Hatırlatıcı Ayarla",
+    "reminders": "Hatırlatıcılar",
+    "reminderSet": "Hatırlatıcı ayarlandı",
+
+    "addLocation": "Konum Ekle",
+    "location": "Konum",
+    "locationSet": "Konum ayarlandı",
+    "viewOnMap": "Haritada Görüntüle",
+
+    "addTags": "Etiket Ekle",
+    "selectTags": "Etiketleri Seç",
+    "tags": "Etiketler",
+    "noTags": "Henüz etiket yok",
+
+    "selectFolder": "Klasör Seç",
+    "createFolder": "Klasör Oluştur",
+    "folder": "Klasör",
+
+    "attachments": "Ekler",
+    "addAttachment": "Ek Ekle",
+
+    "color": "Renk",
+    "priority": {
+      "low": "Düşük",
+      "normal": "Normal",
+      "high": "Yüksek",
+      "urgent": "Acil"
+    },
+
+    "sortByUpdated": "Son Değiştirilen",
+    "sortByCreated": "Oluşturulma",
+    "sortByTitle": "Başlık",
+    "sortByPriority": "Öncelik",
+
+    "lastModified": "Son değişiklik",
+    "created": "Oluşturulma",
+
+    "unsavedChanges": "Kaydedilmemiş Değişiklikler",
+    "unsavedChangesMessage": "Kaydedilmemiş değişiklikleriniz var. Kaydetmek istiyor musunuz?",
+    "saveError": "Not kaydedilemedi",
+    "error": "Hata",
+
+    "share": "Paylaş",
+    "shareNote": "Notu Paylaş",
+
+    "noteNotFound": "Not Bulunamadı",
+    "noteNotFoundMessage": "Bu not silinmiş olabilir"
   },
   "store": {
     "themes": "Tema Mağazası",
