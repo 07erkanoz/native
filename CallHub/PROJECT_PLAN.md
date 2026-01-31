@@ -527,8 +527,14 @@ interface CalendarSettings {
 - [x] Rusça (ru.json)
 - [x] Arapça (ar.json)
 
-### 7.8 Bekleyen Özellikler
-- [ ] Sesli not kaydetme/oynatma
+### 7.8 Sesli Not Özelliği ✅
+- [x] VoiceNoteService - Kayıt ve oynatma servisi
+- [x] NoteEditScreen - Kayıt başlatma/durdurma UI
+- [x] NoteDetailScreen - Sesli not oynatma kontrolü
+- [x] 7 dilde sesli not çevirileri
+- [x] Yerel SQLite'da saklama (Supabase'e yüklenmez)
+
+### 7.9 Bekleyen Özellikler
 - [ ] Resim ekleme (kamera/galeri)
 - [ ] Dosya ekleme
 - [ ] Zengin metin formatları (kalın, italik, vb.)
@@ -723,6 +729,22 @@ CallHub/
    - NoteEditScreen (zengin metin, kontrol listesi, kişi/etkinlik bağlama)
    - NoteDetailScreen (detay görüntüleme, paylaşım, çöp/arşiv)
    - Çoklu dil desteği (7 dil: TR, EN, DE, FR, ES, RU, AR)
+8. **Arama Engelleme ve Spam Sistemi**
+   - BlockingModule (Java native)
+   - BlockedNumberContract API entegrasyonu
+   - Spam raporlama (Supabase bulut veritabanı)
+   - Ülke kodları veritabanı (60+ ülke)
+9. **VoLTE/HD Voice Tespit Sistemi**
+   - LifeCallInCallService (GERÇEK HD durumu)
+   - Call.Details.PROPERTY_HIGH_DEF_AUDIO kullanımı
+   - VoLTEModule (Java + TypeScript)
+   - Arama ekranlarında küçük HD rozeti
+10. **Sesli Not Özelliği**
+    - VoiceNoteService (kayıt ve oynatma)
+    - NoteEditScreen'de kayıt UI
+    - NoteDetailScreen'de oynatma kontrolü
+    - Yerel SQLite'da saklama (Supabase'e yüklenmez)
+    - 7 dilde çeviri
 
 **Aktif Geliştirme:**
 - Faz 6: Takvim Modülü (temel ekranlar tamamlandı, servisler devam ediyor)
