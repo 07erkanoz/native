@@ -9,3 +9,6 @@ export { default as FavoriteCard } from './FavoriteCard';
 export { default as FloatingCallBubble } from './FloatingCallBubble';
 export { default as FloatingCallNotification } from './FloatingCallNotification';
 export { default as CallOverlay } from './CallOverlay';
+
+// Call screen themed components
+export { CallBackground, AnswerButtons } from './call';

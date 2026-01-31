@@ -16,7 +16,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { store, persistor } from './src/store';
 
 // Theme
-import { ThemeProvider, useAppTheme } from './src/theme';
+import { ThemeProvider, useAppTheme, CallThemeProvider } from './src/theme';
 
 // i18n
 import { initI18n } from './src/i18n';
@@ -139,12 +139,14 @@ function App(): React.JSX.Element {
         <Provider store={store}>
           <PersistGate loading={<LoadingScreen />} persistor={persistor}>
             <ThemeProvider>
-              <NavigationContainer>
-                <AppContent
-                  showSetupWizard={showSetupWizard}
-                  onSetupComplete={handleSetupComplete}
-                />
-              </NavigationContainer>
+              <CallThemeProvider>
+                <NavigationContainer>
+                  <AppContent
+                    showSetupWizard={showSetupWizard}
+                    onSetupComplete={handleSetupComplete}
+                  />
+                </NavigationContainer>
+              </CallThemeProvider>
             </ThemeProvider>
           </PersistGate>
         </Provider>
