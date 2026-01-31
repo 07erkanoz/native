@@ -814,7 +814,7 @@ const CallsScreen: React.FC = () => {
                     variant="bodyMedium"
                     style={{ color: theme.colors.onSurface, marginLeft: 16 }}
                   >
-                    Arama Detayı
+                    {t('calls.menu.callDetail')}
                   </Text>
                 </TouchableOpacity>
 
@@ -826,9 +826,9 @@ const CallsScreen: React.FC = () => {
                     setActionModalVisible(false);
                     try {
                       await BlockingModule?.blockNumber(selectedCall.phoneNumber);
-                      Alert.alert('Başarılı', 'Numara engellendi');
+                      Alert.alert(t('common.success'), t('blocking.blocked'));
                     } catch (error) {
-                      Alert.alert('Hata', 'Numara engellenemedi');
+                      Alert.alert(t('common.error'), t('blocking.blockFailed'));
                     }
                   }}
                 >
@@ -841,7 +841,7 @@ const CallsScreen: React.FC = () => {
                     variant="bodyMedium"
                     style={{ color: theme.colors.error, marginLeft: 16 }}
                   >
-                    Numarayı Engelle
+                    {t('calls.menu.blockNumber')}
                   </Text>
                 </TouchableOpacity>
               </View>

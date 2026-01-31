@@ -649,11 +649,11 @@ const ContactDetailScreen: React.FC<Props> = ({ route }) => {
             variant="titleSmall"
             style={[styles.sectionTitle, { color: theme.colors.primary }]}
           >
-            Zil Sesi
+            {t('ringtone.title')}
           </Text>
           <List.Item
-            title={contactRingtone?.title || 'Varsayılan'}
-            description={contactRingtone?.hasCustomRingtone ? 'Özel zil sesi' : 'Sistem varsayılanı'}
+            title={contactRingtone?.title || t('ringtone.default')}
+            description={contactRingtone?.hasCustomRingtone ? t('ringtone.customRingtone') : t('common.default')}
             left={() => (
               <List.Icon icon="music-note" color={theme.colors.primary} />
             )}
@@ -678,45 +678,45 @@ const ContactDetailScreen: React.FC<Props> = ({ route }) => {
               variant="titleSmall"
               style={[styles.sectionTitle, { color: theme.colors.primary }]}
             >
-              Arama İstatistikleri
+              {t('calls.stats.totalCalls')}
             </Text>
 
             <View style={styles.statsContainer}>
               <View style={styles.statItem}>
                 <MaterialCommunityIcons name="phone" size={24} color={theme.colors.primary} />
                 <Text style={styles.statValue}>{callStats.totalCalls}</Text>
-                <Text style={styles.statLabel}>Toplam</Text>
+                <Text style={styles.statLabel}>{t('calls.stats.total')}</Text>
               </View>
 
               <View style={styles.statItem}>
                 <MaterialCommunityIcons name="phone-incoming" size={24} color="#4CAF50" />
                 <Text style={styles.statValue}>{callStats.incomingCalls}</Text>
-                <Text style={styles.statLabel}>Gelen</Text>
+                <Text style={styles.statLabel}>{t('calls.incoming')}</Text>
               </View>
 
               <View style={styles.statItem}>
                 <MaterialCommunityIcons name="phone-outgoing" size={24} color="#2196F3" />
                 <Text style={styles.statValue}>{callStats.outgoingCalls}</Text>
-                <Text style={styles.statLabel}>Giden</Text>
+                <Text style={styles.statLabel}>{t('calls.outgoing')}</Text>
               </View>
 
               <View style={styles.statItem}>
                 <MaterialCommunityIcons name="phone-missed" size={24} color="#F44336" />
                 <Text style={styles.statValue}>{callStats.missedCalls}</Text>
-                <Text style={styles.statLabel}>Cevapsız</Text>
+                <Text style={styles.statLabel}>{t('calls.missed')}</Text>
               </View>
             </View>
 
             <View style={styles.totalDuration}>
               <MaterialCommunityIcons name="clock-outline" size={20} color={theme.colors.onSurfaceVariant} />
               <Text style={[styles.totalDurationText, { color: theme.colors.onSurfaceVariant }]}>
-                Toplam görüşme: {formatDuration(callStats.totalDuration)}
+                {t('calls.stats.totalDuration')}: {formatDuration(callStats.totalDuration)}
               </Text>
             </View>
 
             {callStats.lastCallDate && (
               <Text style={[styles.lastCallText, { color: theme.colors.onSurfaceVariant }]}>
-                Son arama: {callStats.lastCallDate.toLocaleDateString('tr-TR', {
+                {t('calls.stats.lastCall')}: {callStats.lastCallDate.toLocaleDateString('tr-TR', {
                   day: 'numeric',
                   month: 'long',
                   year: 'numeric',
@@ -736,12 +736,12 @@ const ContactDetailScreen: React.FC<Props> = ({ route }) => {
                 variant="titleSmall"
                 style={[styles.sectionTitle, { color: theme.colors.primary }]}
               >
-                Arama Geçmişi
+                {t('calls.history')}
               </Text>
               {callHistory.length > 5 && (
                 <TouchableOpacity onPress={() => setShowAllCalls(!showAllCalls)}>
                   <Text style={{ color: theme.colors.primary }}>
-                    {showAllCalls ? 'Daha az' : `Tümünü gör (${callHistory.length})`}
+                    {showAllCalls ? t('common.less') || 'Less' : `${t('common.all')} (${callHistory.length})`}
                   </Text>
                 </TouchableOpacity>
               )}
@@ -751,7 +751,7 @@ const ContactDetailScreen: React.FC<Props> = ({ route }) => {
               <List.Item
                 key={index}
                 title={formatCallDate(call.timestamp)}
-                description={`${call.type === 'MISSED' ? 'Cevapsız' : formatDuration(parseInt(call.duration) || 0)} • ${new Date(parseInt(call.timestamp)).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' })}`}
+                description={`${call.type === 'MISSED' ? t('calls.missed') : formatDuration(parseInt(call.duration) || 0)} • ${new Date(parseInt(call.timestamp)).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' })}`}
                 left={() => (
                   <List.Icon
                     icon={getCallTypeIcon(call.type)}
