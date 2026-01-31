@@ -58,6 +58,7 @@ export type RootStackParamList = {
   SettingsAbout: undefined;
   SettingsLanguage: undefined;
   BlockedNumbers: undefined;
+  SpamReport: { phoneNumber?: string; callerName?: string };
 
   // Dialer
   Dialer: undefined;
